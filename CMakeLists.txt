@@ -232,7 +232,7 @@ set(  GLES_GUI_LIBRARIES
 #	m
 #	Xrender
       Xext
-#	X11
+      X11
 #	xcb
 #	Xau
 #	Xdmcp
