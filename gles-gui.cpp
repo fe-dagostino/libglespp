@@ -68,7 +68,7 @@ public:
     fl->setFontsPath( "/usr/share/fonts/" );
     
     //GLFont* font = fl->createFont( "FreeMono.ttf", GLSize( 0, 500) );
-    GLFont* font = fl->createFont( "truetype/fontsquirrel/TitanOne-Regular.ttf", GLSize( 0, 500) );
+    GLFont* font = fl->createFont( "truetype/fontsquirrel/TitanOne-Regular.ttf", GLSize( 0, 20) );
     
     
     font->setMargins( 0, 0, 0, 0 );
