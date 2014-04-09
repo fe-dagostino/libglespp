@@ -48,7 +48,7 @@ BOOL      GLButton::OnDrawBackground( const GLRecti& rect )
   {
     if ( m_imFocus != nullptr )
     {
-      drawRect( m_bkVertices, m_bkTexCoord, m_imFocus, GL_REPEAT, GL_REPEAT );
+      drawRect( m_bkVertices, m_bkTexCoord, m_imFocus, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE );
     }
   }
 
