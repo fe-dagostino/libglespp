@@ -158,7 +158,7 @@ BOOL      GLWidget::draw( const glm::mat4& mvp, const GLRecti& rect )
   
       if ( m_eBackground == ImageBrush )
       {
-        drawRect( m_bkVertices, m_bkTexCoord, m_imBackground, GL_REPEAT, GL_REPEAT );
+        drawRect( m_bkVertices, m_bkTexCoord, m_imBackground, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE );
       }
     }
   }
