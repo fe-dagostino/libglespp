@@ -286,7 +286,7 @@ add_definitions(
 )
 ENDIF(USE_AVCPP)
 
-add_library   ( gles++${LIBGLES++_VERSION}  STATIC ${LIBGLES++_SRC} ${LIBGLES++_SRC_FONT} ${LIBGLES++_SRC_WIDGETS} )
+add_library   ( gles++${LIBGLES++_VERSION}  SHARED  ${LIBGLES++_SRC} ${LIBGLES++_SRC_FONT} ${LIBGLES++_SRC_WIDGETS} )
 
 if (BUILD_GLPLAYER)
 add_executable( glplayer                     ${LIBGLES++_SRC} ${LIBGLES++_SRC_FONT} ${LIBGLES++_SRC_WIDGETS} glplayer.cpp )
@@ -304,7 +304,7 @@ if (BUILD_GLES_GUI)
 target_link_libraries( gles-gui                    ${LIBGLES++_LIBRARIES} ${LIBGLES++_FI_LIBRARIES} ${GLES_GUI_LIBRARIES} ${GL_LIBRARIES}  )
 endif()
 
-install( TARGETS gles++${LIBGLES++_VERSION}  ARCHIVE DESTINATION lib                       )
+install( TARGETS gles++${LIBGLES++_VERSION}  LIBRARY DESTINATION lib                       )
 install( FILES   ${LIBGLES++_INCLUDE}                DESTINATION include/libgles++         )
 install( FILES   ${LIBGLES++_INCLUDE_FONT}           DESTINATION include/libgles++/font    )
 install( FILES   ${LIBGLES++_INCLUDE_WIDGETS}        DESTINATION include/libgles++/widgets )
