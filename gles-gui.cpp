@@ -68,7 +68,7 @@ public:
     fl->setFontsPath( "/usr/share/fonts/" );
     
     //GLFont* font = fl->createFont( "FreeMono.ttf", GLSize( 0, 500) );
-    GLFont* font = fl->createFont( "truetype/fontsquirrel/TitanOne-Regular.ttf", GLSize( 0, 500) );
+    GLFont* font = fl->createFont( "truetype/fontsquirrel/TitanOne-Regular.ttf", GLSize( 0, 20) );
     
     
     font->setMargins( 0, 0, 0, 0 );
@@ -245,7 +245,11 @@ protected:
   /***/
   virtual VOID     OnCreating( GLWindow* pWindow )
   {
-    glfwWindowHint( GLFW_DECORATED, GL_FALSE );
+    glfwWindowHint( GLFW_RED_BITS  , 8        );
+    glfwWindowHint( GLFW_GREEN_BITS, 8        );
+    glfwWindowHint( GLFW_BLUE_BITS , 8        );
+    glfwWindowHint( GLFW_ALPHA_BITS, 8        );
+    glfwWindowHint( GLFW_DECORATED , GL_FALSE );
   
     GLWindowEvents::OnCreating( pWindow );
   }
