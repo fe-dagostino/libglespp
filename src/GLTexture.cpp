@@ -27,6 +27,8 @@ extern "C"
 }
 #endif
 
+#include "LOGGING/FLogger.h"
+
 
 GLTexture::GLTexture()
  : m_size( 0, 0 ), m_format( 0 ), m_type( 0 ), m_length( 0 ), m_pixels( nullptr )
@@ -91,13 +93,19 @@ BOOL                    GLTexture::fiLoad( const FString& sFilename )
   
   m_pixels = fi_load( sFilename.GetBuffer(), &m_length, &width, &height );
   if (m_pixels==nullptr)
+  {
+    ERROR_INFO( FString( 0, "Failed to load Texture [%s]", sFilename.GetBuffer() ), fiLoad() );
+    
     return FALSE;
+  }
   
   m_size.width  = width;
   m_size.height = height;
   
   m_format = GL_RGBA;
   m_type   = GL_UNSIGNED_BYTE;
+
+  LOG_INFO( FString( 0, "Loaded Texture [%s] MEM BYTES [%d] W:[%d] Pixel x H:[%d] D:[32] Bits", sFilename.GetBuffer(), m_length, m_size.width, m_size.height ), fiLoad() );
   
   return TRUE;
 }
