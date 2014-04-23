@@ -52,6 +52,9 @@ VOID  GLFontLoaderException::AddMessageCodeToErrorMsg( DWORD nErrorCode )
     case WRONG_THREAD :
       m_sErroMsg += FMAKE_STRING( WRONG_THREAD );
     break;
+    case FONT_FILENAME_NOT_FOUND :
+      m_sErroMsg += FMAKE_STRING( FONT_FILENAME_NOT_FOUND );
+    break;
   }
 }
 

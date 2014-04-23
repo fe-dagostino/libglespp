@@ -32,7 +32,8 @@ class GLFontLoaderException : public FException
 public:
   enum EXCEPTION_CODES {
                          INITIALIZE_ERROR,
-                         WRONG_THREAD
+                         WRONG_THREAD,
+                         FONT_FILENAME_NOT_FOUND
                        };
 
   /***/
