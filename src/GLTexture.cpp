@@ -85,31 +85,49 @@ VOID                    GLTexture::setUnpacking( GLint param )
   glPixelStorei(GL_UNPACK_ALIGNMENT, param );
 }
 
-#ifdef _USE_FREEIMAGE
-BOOL                    GLTexture::fiLoad( const FString& sFilename )
+
+BOOL                    GLTexture::load( TextureLoader tl, const FString& sFilename )
 {
   int width  = 0;
   int height = 0;
   
-  m_pixels = fi_load( sFilename.GetBuffer(), &m_length, &width, &height );
-  if (m_pixels==nullptr)
+  if ( tl == etlFreeImage )
   {
-    ERROR_INFO( FString( 0, "Failed to load Texture [%s]", sFilename.GetBuffer() ), fiLoad() );
+#ifdef _USE_FREEIMAGE
+    m_pixels = fi_load( sFilename.GetBuffer(), &m_length, &width, &height );
+    if (m_pixels==nullptr)
+    {
+      ERROR_INFO( FString( 0, "Failed to load Texture [%s]", sFilename.GetBuffer() ), load() );
     
+      return FALSE;
+    }
+  
+    m_size.width  = width;
+    m_size.height = height;
+  
+    m_format = GL_RGBA;
+    m_type   = GL_UNSIGNED_BYTE;
+    
+    LOG_INFO( FString( 0, "Loaded Texture [%s] MEM BYTES [%d] W:[%d] Pixel x H:[%d] D:[32] Bits", sFilename.GetBuffer(), m_length, m_size.width, m_size.height ), load() );
+    return TRUE;
+#else  //_USE_FREEIMAGE
+    ERROR_INFO( "Use: cmake -DUSE_FREEIMAGE=ON in order to enable FreeImage loader", load() )
     return FALSE;
+#endif //_USE_FREEIMAGE   
   }
   
-  m_size.width  = width;
-  m_size.height = height;
-  
-  m_format = GL_RGBA;
-  m_type   = GL_UNSIGNED_BYTE;
+  if ( tl == etlLibAV )
+  {
+#ifdef _USE_AVCPP
 
-  LOG_INFO( FString( 0, "Loaded Texture [%s] MEM BYTES [%d] W:[%d] Pixel x H:[%d] D:[32] Bits", sFilename.GetBuffer(), m_length, m_size.width, m_size.height ), fiLoad() );
+#else  //_USE_AVCPP
+    ERROR_INFO( "Use: cmake -DUSE_AVCPP=ON in order to enable FreeImage loader", load() )
+    return FALSE;
+#endif //_USE_AVCPP    
+  }
   
-  return TRUE;
+  return FALSE;
 }
-#endif //_USE_FREEIMAGE
 
 VOID                    GLTexture::render(  const std::vector<glm::vec2>& vertices, 
                                             const std::vector<glm::vec2>& texCoord, 

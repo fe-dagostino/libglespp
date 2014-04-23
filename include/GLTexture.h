@@ -40,6 +40,12 @@ USING_NAMESPACE_FED
 class GLTexture : public GLReference, public GLHandleObject
 {
 public:
+  enum TextureLoader
+  {
+    etlFreeImage,
+    etlLibAV
+  };
+  
   /***/
   GLTexture();
   
@@ -103,10 +109,8 @@ public:
 				  GLenum target, GLint level, GLint uLocation, GLuint aVertices, GLuint aTexCoord,
 				  GLint  tws, GLint twt );
 
-#ifdef _USE_FREEIMAGE
   /***/
-  BOOL                    fiLoad( const FString& sFilename );
-#endif
+  BOOL                    load( TextureLoader tl, const FString& sFilename );
 
 private:
   GLSize                   m_size;
