@@ -153,7 +153,7 @@ public:
     GLLabel* widget = new GLLabel(nullptr);
     
     GLTexture* pTexture = new GLTexture();
-    pTexture->fiLoad( "/etc/gles-gui/media/wall.jpg" );
+    pTexture->load( GLTexture::etlFreeImage, "/etc/gles-gui/media/wall.jpg" );
     
     widget->setPosition( 100, 100 );
     widget->setSize( 800, 600 );
@@ -254,15 +254,15 @@ protected:
     GLWindowEvents::OnCreating( pWindow );
   }
   /***/
-  virtual VOID     OnKeyPressed( GLWindow* pWindow, INT iKey, INT iScanCode )
+  virtual VOID     OnKeyPressed( GLWindow* pWindow, INT iKey, INT iScanCode, WORD wMods )
   { 
     HandleKey( iKey ); 
     
     if ( m_bDefaultKeys )
-      GLWindowEvents::OnKeyPressed( pWindow, iKey, iScanCode);    
+      GLWindowEvents::OnKeyPressed( pWindow, iKey, iScanCode, wMods );    
   }
   /***/
-  virtual VOID     OnKeyRepeated( GLWindow* pGlWindow, INT iKey, INT iScanCode )
+  virtual VOID     OnKeyRepeated( GLWindow* pGlWindow, INT iKey, INT iScanCode, WORD wMods )
   { HandleKey( iKey ); }
 
 protected:
