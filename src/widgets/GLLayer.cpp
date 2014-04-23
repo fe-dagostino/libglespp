@@ -168,6 +168,8 @@ VOID   GLLayer::OnKeyReleased( GLWindow* pGlWindow, INT iKey, INT iScanCode )
   if ( isEnabled() == FALSE )
     return;
  
+  // Propagate event to all registered functions even 
+  // there is no focus.
   signalKeyReleased.emit( pGlWindow, this, iKey, iScanCode );
 }
 
@@ -176,8 +178,13 @@ VOID   GLLayer::OnKeyPressed( GLWindow* pGlWindow, INT iKey, INT iScanCode )
   if ( isEnabled() == FALSE )
     return;
   
-  handleDefaultKeys( iKey, iScanCode );
+  if ( iKey == GLFW_KEY_TAB )
+  {
+    stepFocus();
+  }
   
+  // Propagate event to all registered functions even 
+  // there is no focus.
   signalKeyPressed.emit( pGlWindow, this, iKey, iScanCode );
 }
 
@@ -186,8 +193,13 @@ VOID   GLLayer::OnKeyRepeated( GLWindow* pGlWindow, INT iKey, INT iScanCode )
   if ( isEnabled() == FALSE )
     return;
   
-  handleDefaultKeys( iKey, iScanCode );
+  if ( iKey == GLFW_KEY_TAB )
+  {
+    stepFocus();
+  }
   
+  // Propagate event to all registered functions even 
+  // there is no focus.
   signalKeyRepeated.emit( pGlWindow, this, iKey, iScanCode );
 }
 

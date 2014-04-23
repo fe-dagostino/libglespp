@@ -40,6 +40,7 @@ enum WidgetTextAligment
                               // position will be relative to client area center in client coordinates.
 };
   
+
 /**
  */
 class GLLabel : public GLWidget
@@ -61,7 +62,7 @@ public:
   
   /***/
   BOOL                setLabel( GLFont* pFont, const FWString& sLabel, const glm::vec4& fgColor, WidgetTextAligment align );
-  
+
 protected:
   /***/
   virtual BOOL        OnDraw( const GLRecti& rect );

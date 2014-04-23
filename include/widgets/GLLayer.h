@@ -32,7 +32,7 @@
 
 USING_NAMESPACE_FED
 
-class GLLayer : public GLReference, protected GLWidget, public GLWindowEvents
+class GLLayer : public GLReference, public GLWidget, public GLWindowEvents
 {
 public:
  
@@ -40,31 +40,7 @@ public:
   GLLayer( GLViewPort& rViewPort );
   /***/
   virtual ~GLLayer();
-  
-  using GLWidget::getParent;
-  
-  using GLWidget::addChild;
-  using GLWidget::getChildren;
-  
-  using GLWidget::isVisible;
-  using GLWidget::setVisible;
-  
-  using GLWidget::setPosition;  
-  using GLWidget::getPosition;
-  
-  using GLWidget::setSize;
-  using GLWidget::getSize;
-  
-  using GLWidget::getClientArea;
-  
-  using GLWidget::hasBackground;
-  
-  using GLWidget::setBackground;
- 
-  using GLWidget::getBkColor;
-  
-  using GLWidget::getBkImage;
-  
+    
   /***/
   inline GLViewPort&    getViewPort()
   { return m_rViewPort; }

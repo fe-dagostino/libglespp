@@ -37,6 +37,7 @@
 
 USING_NAMESPACE_FED
 
+
 class GLLayer;
 
 class GLWidget : public GLCanvas, public sigc::trackable
@@ -90,7 +91,10 @@ public:
   inline VOID                    setEnabled( BOOL bEnabled )
   { m_bEnabled = bEnabled;     }
   
-  /***/
+  /**
+   * @return TRUE if it is referred by parent window as current focused.
+   * @return FALSE if the widget has no parent or focus is on an other widget.
+   */
   BOOL                           hasFocus() const;
   /**
    * Must be reimplemented at specialized class in order to
@@ -139,14 +143,33 @@ public:
   /***/
   BOOL                           draw( const glm::mat4& mvp, const GLRecti& rect );
   
+public:
+  typedef sigc::signal<VOID, GLWidget*>  SignalOnClick;
+  
+  
+  SignalOnClick               OnClick;
+  
 protected:
   /**
-   * Default implementation will propagate event to all chields.
+   * Default implementation will check if current widget has th focus and then will 
+   * propagate the event to all child widgets.
+   * Usual implementation propagate event only to focused child, that can be done
+   * exending the class with a specialized event.
    */
   virtual VOID     OnKeyReleased( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iKey, INT iScanCode );
-  /***/
+  /**
+   * Default implementation will check if current widget has th focus and then will 
+   * propagate the event to all child widgets.
+   * Usual implementation propagate event only to focused child, that can be done
+   * exending the class with a specialized event.
+   */
   virtual VOID     OnKeyPressed ( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iKey, INT iScanCode );
-  /***/
+  /**
+   * Default implementation will check if current widget has th focus and then will 
+   * propagate the event to all child widgets.
+   * Usual implementation propagate event only to focused child, that can be done
+   * exending the class with a specialized event.
+   */
   virtual VOID     OnKeyRepeated( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iKey, INT iScanCode );
   
 protected:

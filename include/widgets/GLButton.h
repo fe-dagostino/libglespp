@@ -58,6 +58,7 @@ public:
   virtual BOOL        isFocusable() const
   { return TRUE; }
 
+  
 protected:
   /***/
   virtual BOOL        OnDrawBackground( const GLRecti& rect );

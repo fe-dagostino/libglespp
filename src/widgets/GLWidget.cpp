@@ -175,7 +175,7 @@ VOID     GLWidget::OnKeyReleased( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iK
 { 
   if ( hasFocus() == FALSE )
     return;
-  
+    
   signalKeyReleased.emit( pGlWindow, pGlLayer, iKey, iScanCode );   
 } 
   
@@ -184,6 +184,8 @@ VOID     GLWidget::OnKeyPressed ( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iK
   if ( hasFocus() == FALSE )
     return;
     
+  handleDefaultKeys( iKey, iScanCode );
+  
   signalKeyPressed.emit ( pGlWindow, pGlLayer, iKey, iScanCode ); 
 } 
 
@@ -191,6 +193,8 @@ VOID     GLWidget::OnKeyRepeated( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iK
 { 
   if ( hasFocus() == FALSE )
     return;
+  
+  handleDefaultKeys( iKey, iScanCode );
   
   signalKeyRepeated.emit( pGlWindow, pGlLayer, iKey, iScanCode );  
 } 
@@ -202,7 +206,6 @@ VOID  GLWidget::clientResize( const GLSize& size )
   _updateBkVertices( );
 } 
 
-// @ FIXME each widget can have a list of focusable widgets
 BOOL  GLWidget::stepFocus()
 {
   if ( hasFocusable() == FALSE )
@@ -220,7 +223,11 @@ BOOL  GLWidget::stepFocus()
   }
 
   // Move to the first focusable item. It can be also the last item when the loop is ended.
-  while ( ( m_Focused != m_vChildren.end() ) && (*m_Focused)->isFocusable() == FALSE )
+  while ( ( m_Focused != m_vChildren.end()        ) && 
+          (( (*m_Focused)->isFocusable() == FALSE ) || 
+	   ( (*m_Focused)->isEnabled()   == FALSE ) ||
+	   ( (*m_Focused)->isVisible()   == FALSE ))
+	)
   {
     m_Focused++;
   }
@@ -247,9 +254,10 @@ VOID       GLWidget::handleDefaultKeys( INT iKey, INT iScanCode )
 {
   switch ( iKey )
   {
-    case 258 :
+    case GLFW_KEY_ENTER :  // ENTER KEY
     {
-      stepFocus();
+      // Raise on click event as for mouse when 
+      OnClick.emit( this );
     }; break;
   }
 }
