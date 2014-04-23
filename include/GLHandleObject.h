@@ -30,6 +30,7 @@ USING_NAMESPACE_FED
 
 class GLHandleObject : public GLObject
 {
+  ENABLE_FRTTI( GLHandleObject )
 public:
   /***/
   GLHandleObject();

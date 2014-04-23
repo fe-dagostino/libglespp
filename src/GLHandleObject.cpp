@@ -20,6 +20,10 @@
 
 #include "../include/GLHandleObject.h"
 
+
+GENERATE_CLASSINFO( GLHandleObject, GLObject )
+
+
 GLHandleObject::GLHandleObject()
   : m_uiId(0)
 {
