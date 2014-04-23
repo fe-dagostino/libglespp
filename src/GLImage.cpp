@@ -19,6 +19,8 @@
 
 #include "../include/GLImage.h"
 
+#include "LOGGING/FLogger.h"
+
 #ifdef _USE_FREEIMAGE
 extern "C"
 {
@@ -26,6 +28,7 @@ extern "C"
 }
 #endif
 
+GENERATE_CLASSINFO( GLImage, GLObject )
 
 GLImage::GLImage()
  : m_iWidth(0), m_iHeight(0), m_pData(nullptr)
@@ -42,25 +45,37 @@ GLImage::~GLImage()
   }
 }
 
+
+GLboolean   GLImage::load( ImageLoader il, const FString& sFilename )
+{
+  if ( il == eilFreeImage )
+  {
 #ifdef _USE_FREEIMAGE
-GLboolean   GLImage::fiLoad( const FString& sFilename )
-{
-  m_pData = fi_load( sFilename.GetBuffer(), &m_uiDataSize, &m_iWidth, &m_iHeight );
-  if (m_pData==nullptr)
-    return false;
-  
-  return true;
-}
+    m_pData = fi_load( sFilename.GetBuffer(), &m_uiDataSize, &m_iWidth, &m_iHeight );
+    if (m_pData==nullptr)
+    {
+      ERROR_INFO( FString( 0, "Failed to load Image [%s]", sFilename.GetBuffer() ), load() );
+      return FALSE;
+    }
+    
+    LOG_INFO( FString( 0, "Loaded Image [%s] MEM BYTES [%d] W:[%d] Pixel x H:[%d] D:[32] Bits", sFilename.GetBuffer(), m_uiDataSize, m_iWidth, m_iHeight ), load() );
+    return TRUE;
+#else  //_USE_FREEIMAGE
+    ERROR_INFO( "Use: cmake -DUSE_FREEIMAGE=ON in order to enable FreeImage loader", load() )
+    return FALSE;
 #endif //_USE_FREEIMAGE
+  }
 
-
+  if ( il == eilLibAV )
+  {
 #ifdef _USE_AVCPP
-GLboolean   GLImage::avLoad( const FString& sFilename )
-{
-  
-  
-  return TRUE;
-}
 
-#endif //_USE_AVCPP
+#else  //_USE_AVCPP
+    ERROR_INFO( "Use: cmake -DUSE_AVCPP=ON in order to enable FreeImage loader", load() )
+    return FALSE;
+#endif //_USE_AVCPP    
+  }
+  
+  return FALSE;
+}
 

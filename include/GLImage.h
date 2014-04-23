@@ -33,24 +33,26 @@ USING_NAMESPACE_FED
 
 /**
  */
-class GLImage : public GLReference
+class GLImage : public GLObject, public GLReference
 {
+  ENABLE_FRTTI( GLImage )
 public:
+  enum ImageLoader
+  {
+    eilFreeImage,
+    eilLibAV
+  };
+  
   /***/
   GLImage();
   /***/
   virtual ~GLImage();
   
-#ifdef _USE_FREEIMAGE  
   /**
    * Loading image using FreeImage library.
    * 
    */
-  GLboolean       fiLoad( const FString& sFilename );
-#endif //_USE_FREEIMAGE
-#ifdef _USE_AVCPP
-  GLboolean       avLoad( const FString& sFilename );
-#endif //_USE_AVCPP
+  GLboolean       load( ImageLoader il, const FString& sFilename );
   
   /***/
   inline GLint    getWidth() const
