@@ -437,13 +437,13 @@ void GLWindow::key_callback(GLFWwindow* window, int key, int scancode, int actio
       switch( action )
       {
         case GLFW_RELEASE:
-	  e->OnKeyReleased( pWindow, key, scancode );
+	  e->OnKeyReleased( pWindow, key, scancode, mods );
         break;
         case GLFW_PRESS:
-	  e->OnKeyPressed( pWindow, key, scancode );
+	  e->OnKeyPressed( pWindow, key, scancode, mods );
         break;
         case GLFW_REPEAT:
-	  e->OnKeyRepeated( pWindow, key, scancode );
+	  e->OnKeyRepeated( pWindow, key, scancode, mods );
         break;
       }
     }
