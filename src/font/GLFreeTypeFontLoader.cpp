@@ -66,8 +66,10 @@ GLFont*  GLFreeTypeFontLoader::createFont( const FString& sFontFileName, const G
   FT_Face  face  =  nullptr;
   FString  sFont( 0, "%s/%s", getFontsPath().GetBuffer(), sFontFileName.GetBuffer() );
   if ( FFile::Exist( sFont, nullptr ) == FALSE )
-    return nullptr;
-
+  {
+    FTHROW_MSG_EXCEPTION( GLFontLoaderException, FString( 0, "Font [%s]", sFontFileName.GetBuffer() ) , GLFontLoaderException::FONT_FILENAME_NOT_FOUND );
+  }
+  
   FT_Error error = FT_New_Face( m_library, sFont.GetBuffer(), 0, &face );
   if ( error != 0 )
   {
