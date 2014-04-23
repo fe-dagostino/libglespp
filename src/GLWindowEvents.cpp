@@ -114,18 +114,18 @@ VOID     GLWindowEvents::OnMouseScroll( GLWindow* pGlWindow, double dOffsetX, do
   
 }
 
-VOID     GLWindowEvents::OnKeyReleased( GLWindow* pGlWindow, INT iKey, INT iScanCode )
+VOID     GLWindowEvents::OnKeyReleased( GLWindow* pGlWindow, INT iKey, INT iScanCode, WORD wMods )
 { 
   
 }
 
-VOID     GLWindowEvents::OnKeyPressed( GLWindow* pGlWindow, INT iKey, INT iScanCode ) 
+VOID     GLWindowEvents::OnKeyPressed( GLWindow* pGlWindow, INT iKey, INT iScanCode, WORD wMods ) 
 {
   if ( iKey == GLFW_KEY_ESCAPE )
     pGlWindow->close();
 }
 
-VOID     GLWindowEvents::OnKeyRepeated( GLWindow* pGlWindow, INT iKey, INT iScanCode )
+VOID     GLWindowEvents::OnKeyRepeated( GLWindow* pGlWindow, INT iKey, INT iScanCode, WORD wMods )
 {
   
 }

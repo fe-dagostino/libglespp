@@ -94,13 +94,13 @@ public:
   /***/
   virtual VOID     OnMouseScroll( GLWindow* pGlWindow, double dOffsetX, double dOffsetY );
   /***/
-  virtual VOID     OnKeyReleased( GLWindow* pGlWindow, INT iKey, INT iScanCode ); 
+  virtual VOID     OnKeyReleased( GLWindow* pGlWindow, INT iKey, INT iScanCode, WORD wMods ); 
   /**
    * Default implementation will close widows when ESCAPE key went pressed.
    */
-  virtual VOID     OnKeyPressed( GLWindow* pGlWindow, INT iKey, INT iScanCode ); 
+  virtual VOID     OnKeyPressed( GLWindow* pGlWindow, INT iKey, INT iScanCode, WORD wMods ); 
   /***/
-  virtual VOID     OnKeyRepeated( GLWindow* pGlWindow, INT iKey, INT iScanCode ); 
+  virtual VOID     OnKeyRepeated( GLWindow* pGlWindow, INT iKey, INT iScanCode, WORD wMods ); 
   /***/
   virtual VOID     OnUnicodeChar( GLWindow* pGlWindow, UINT iCodePoint ); 
 
