@@ -163,17 +163,17 @@ VOID   GLLayer::OnMouseScroll( GLWindow* pGlWindow, double dOffsetX, double dOff
   
 }
 
-VOID   GLLayer::OnKeyReleased( GLWindow* pGlWindow, INT iKey, INT iScanCode )
+VOID   GLLayer::OnKeyReleased( GLWindow* pGlWindow, INT iKey, INT iScanCode, WORD wMods )
 {
   if ( isEnabled() == FALSE )
     return;
  
   // Propagate event to all registered functions even 
   // there is no focus.
-  signalKeyReleased.emit( pGlWindow, this, iKey, iScanCode );
+  signalKeyReleased.emit( pGlWindow, this, iKey, iScanCode, wMods );
 }
 
-VOID   GLLayer::OnKeyPressed( GLWindow* pGlWindow, INT iKey, INT iScanCode )
+VOID   GLLayer::OnKeyPressed( GLWindow* pGlWindow, INT iKey, INT iScanCode, WORD wMods )
 {
   if ( isEnabled() == FALSE )
     return;
@@ -185,10 +185,10 @@ VOID   GLLayer::OnKeyPressed( GLWindow* pGlWindow, INT iKey, INT iScanCode )
   
   // Propagate event to all registered functions even 
   // there is no focus.
-  signalKeyPressed.emit( pGlWindow, this, iKey, iScanCode );
+  signalKeyPressed.emit( pGlWindow, this, iKey, iScanCode, wMods );
 }
 
-VOID   GLLayer::OnKeyRepeated( GLWindow* pGlWindow, INT iKey, INT iScanCode )
+VOID   GLLayer::OnKeyRepeated( GLWindow* pGlWindow, INT iKey, INT iScanCode, WORD wMods )
 {
   if ( isEnabled() == FALSE )
     return;
@@ -200,7 +200,7 @@ VOID   GLLayer::OnKeyRepeated( GLWindow* pGlWindow, INT iKey, INT iScanCode )
   
   // Propagate event to all registered functions even 
   // there is no focus.
-  signalKeyRepeated.emit( pGlWindow, this, iKey, iScanCode );
+  signalKeyRepeated.emit( pGlWindow, this, iKey, iScanCode, wMods );
 }
 
 VOID   GLLayer::OnUnicodeChar( GLWindow* pGlWindow, UINT iCodePoint )

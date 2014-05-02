@@ -156,21 +156,21 @@ protected:
    * Usual implementation propagate event only to focused child, that can be done
    * exending the class with a specialized event.
    */
-  virtual VOID     OnKeyReleased( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iKey, INT iScanCode );
+  virtual VOID     OnKeyReleased( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iKey, INT iScanCode, WORD wMods );
   /**
    * Default implementation will check if current widget has th focus and then will 
    * propagate the event to all child widgets.
    * Usual implementation propagate event only to focused child, that can be done
    * exending the class with a specialized event.
    */
-  virtual VOID     OnKeyPressed ( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iKey, INT iScanCode );
+  virtual VOID     OnKeyPressed ( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iKey, INT iScanCode, WORD wMods );
   /**
    * Default implementation will check if current widget has th focus and then will 
    * propagate the event to all child widgets.
    * Usual implementation propagate event only to focused child, that can be done
    * exending the class with a specialized event.
    */
-  virtual VOID     OnKeyRepeated( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iKey, INT iScanCode );
+  virtual VOID     OnKeyRepeated( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iKey, INT iScanCode, WORD wMods );
   
 protected:
   /**
@@ -204,7 +204,7 @@ private:
   VOID      _updateBkVertices();
 
 protected:
-  typedef sigc::signal<VOID, GLWindow*, GLLayer*, INT, INT>  KeySignal;
+  typedef sigc::signal<VOID, GLWindow*, GLLayer*, INT, INT, WORD>  KeySignal;
   
   KeySignal  signalKeyReleased;
   KeySignal  signalKeyPressed;

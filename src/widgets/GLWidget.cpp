@@ -171,32 +171,32 @@ BOOL      GLWidget::draw( const glm::mat4& mvp, const GLRecti& rect )
   return OnDraw( cliRect );
 }
 
-VOID     GLWidget::OnKeyReleased( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iKey, INT iScanCode )
+VOID     GLWidget::OnKeyReleased( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iKey, INT iScanCode, WORD wMods )
 { 
   if ( hasFocus() == FALSE )
     return;
     
-  signalKeyReleased.emit( pGlWindow, pGlLayer, iKey, iScanCode );   
+  signalKeyReleased.emit( pGlWindow, pGlLayer, iKey, iScanCode, wMods );   
 } 
   
-VOID     GLWidget::OnKeyPressed ( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iKey, INT iScanCode )
+VOID     GLWidget::OnKeyPressed ( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iKey, INT iScanCode, WORD wMods )
 {
   if ( hasFocus() == FALSE )
     return;
     
   handleDefaultKeys( iKey, iScanCode );
   
-  signalKeyPressed.emit ( pGlWindow, pGlLayer, iKey, iScanCode ); 
+  signalKeyPressed.emit ( pGlWindow, pGlLayer, iKey, iScanCode, wMods ); 
 } 
 
-VOID     GLWidget::OnKeyRepeated( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iKey, INT iScanCode )
+VOID     GLWidget::OnKeyRepeated( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iKey, INT iScanCode, WORD wMods )
 { 
   if ( hasFocus() == FALSE )
     return;
   
   handleDefaultKeys( iKey, iScanCode );
   
-  signalKeyRepeated.emit( pGlWindow, pGlLayer, iKey, iScanCode );  
+  signalKeyRepeated.emit( pGlWindow, pGlLayer, iKey, iScanCode, wMods );  
 } 
 
 VOID  GLWidget::clientResize( const GLSize& size )
