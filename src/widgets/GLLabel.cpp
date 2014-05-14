@@ -63,7 +63,10 @@ BOOL      GLLabel::setLabel( GLFont* pFont, const FWString& sLabel, const glm::v
 
 BOOL      GLLabel::OnDraw( const GLRecti& rect )
 {
-  drawText( m_vVertices, m_vTexCoord, m_pText, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE );
+  if ( m_pText != nullptr )
+  {
+    drawText( m_vVertices, m_vTexCoord, m_pText, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE );
+  }
   
   return TRUE;
 }
