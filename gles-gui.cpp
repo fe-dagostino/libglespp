@@ -68,7 +68,7 @@ public:
     fl->setFontsPath( "/usr/share/fonts/" );
     
     //GLFont* font = fl->createFont( "FreeMono.ttf", GLSize( 0, 500) );
-    GLFont* font = fl->createFont( "truetype/fontsquirrel/TitanOne-Regular.ttf", GLSize( 0, 20) );
+    GLFont* font = fl->createFont( "truetype/fontsquirrel/TitanOne-Regular.ttf", GLSize( 0, 50) );
     
     
     font->setMargins( 0, 0, 0, 0 );
@@ -149,25 +149,25 @@ public:
     
     
     
-    GLFont*  wfont = fl->createFont( "truetype/freefont/FreeMono.ttf", GLSize( 0, 16) );
+    GLFont*  wfont = fl->createFont( "truetype/freefont/FreeMono.ttf", GLSize( 0, 40) );
     GLLabel* widget = new GLLabel(nullptr);
     
     GLTexture* pTexture = new GLTexture();
     pTexture->load( GLTexture::etlFreeImage, "/etc/gles-gui/media/wall.jpg" );
     
     widget->setPosition( 100, 100 );
-    widget->setSize( 800, 600 );
+    //widget->setSize( 800, 800 );
     //widget->setBackground( glm::vec4( 0,0,1,1 ) );
-    widget->setBackground( pTexture );
+    //widget->setBackground( pTexture );
     
     wfont->setMargins(  10,10,10,10 );
     
     widget->setLabel( wfont, L"Testo Di Prova", glm::vec4( 1,1,1,1), wtaAutoResize );
     
-    //((GLLayer*)pNodeLayer1->getReference())->setBackground( pTexture );
+    ((GLLayer*)pNodeLayer1->getReference())->setBackground( pTexture );
     ((GLLayer*)pNodeLayer1->getReference())->addChild( widget );
     
-    
+    int counter = 0;
     while ( m_pWindow->check( GLWindow::eWindowShouldClose ) == FALSE )
     {
       m_pWindow->getFramebufferSize( _iWidth, _iHeight );
@@ -181,6 +181,12 @@ public:
       ///////////////
       m_pViewPort->clearBuffer( GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT );
 
+      FString sLabel( 0, "Counter %03d", counter++ );
+      if (counter > 999 )
+	counter = 0;
+      widget->setLabel( wfont, sLabel, glm::vec4( 1,1,1,1), wtaCentered );
+
+      
       ///////////////
       m_pViewPort->render();
       
