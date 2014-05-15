@@ -40,21 +40,18 @@ public:
   /**
    * Used to check identifier validity.
    */
-  inline BOOL isValid() const
-  { return (m_uiId!=0); }
+  BOOL    isValid() const;
 
 protected:
   /**
    * Return shader object identifier.
    */
-  inline GLuint	getId() const
-  { return m_uiId; }
+  GLuint  getId() const;
   
   /**
    * Initialize uid value.
    */
-  inline void   setId( GLuint uiId )
-  { m_uiId = uiId; }
+  void    setId( GLuint uiId );
 
 private:
   GLuint    m_uiId;

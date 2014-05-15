@@ -33,7 +33,19 @@ GLHandleObject::~GLHandleObject()
 {
 }
 
+BOOL    GLHandleObject::isValid() const
+{ 
+  return (m_uiId!=0);
+}
 
 
-
+GLuint  GLHandleObject::getId() const
+{ 
+  return m_uiId;  
+}
+  
+void    GLHandleObject::setId( GLuint uiId )
+{ 
+  m_uiId = uiId;
+}
 
