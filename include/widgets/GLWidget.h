@@ -173,12 +173,15 @@ protected:
   virtual VOID     OnKeyRepeated( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iKey, INT iScanCode, WORD wMods );
   
 protected:
+  virtual VOID                   OnBeginDrawing( const GLRecti& rect );
   /**
    * Called before drawing background. To hinibit defalut drawing return FALSE.
    */
   virtual BOOL                   OnDrawBackground( const GLRecti& rect );
   /***/
   virtual BOOL                   OnDraw( const GLRecti& rect );
+  /***/
+  virtual VOID                   OnEndDrawing( const GLRecti& rect );
   /***/
   virtual VOID                   OnPositionChanged( const GLPosition& pos );
   /***/

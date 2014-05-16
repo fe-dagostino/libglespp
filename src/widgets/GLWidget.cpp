@@ -147,6 +147,8 @@ BOOL      GLWidget::draw( const glm::mat4& mvp, const GLRecti& rect )
   
   GLRecti cliRect( getPosition().x, getPosition().y, getSize().width, getSize().height );
   
+  OnBeginDrawing( cliRect );
+  
   if ( OnDrawBackground( cliRect ) == TRUE )
   {
     if ( m_eBackground != NoBackground )
@@ -168,7 +170,11 @@ BOOL      GLWidget::draw( const glm::mat4& mvp, const GLRecti& rect )
     w->draw( mvp, cliRect );
   }
   
-  return OnDraw( cliRect );
+  BOOL bRetVal = OnDraw( cliRect );
+  
+  OnEndDrawing( cliRect );
+  
+  return bRetVal;
 }
 
 VOID     GLWidget::OnKeyReleased( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iKey, INT iScanCode, WORD wMods )
@@ -262,6 +268,11 @@ VOID       GLWidget::handleDefaultKeys( INT iKey, INT iScanCode )
   }
 }
 
+VOID                   GLWidget::OnBeginDrawing( const GLRecti& rect )
+{
+  
+}
+
 BOOL                   GLWidget::OnDrawBackground( const GLRecti& rect )
 {
   return TRUE;  
@@ -271,6 +282,11 @@ BOOL                   GLWidget::OnDraw( const GLRecti& rect )
 {
   
   return TRUE;
+}
+
+VOID                   GLWidget::OnEndDrawing( const GLRecti& rect )
+{
+  
 }
 
 VOID                   GLWidget::OnPositionChanged( const GLPosition& pos )
