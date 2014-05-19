@@ -72,6 +72,7 @@ endif (TARGET_NV_CARD)
 
 set(  LIBGLES++_INCLUDE 
         ./include/GLApplication.h
+        ./include/GLAutoPtr.h
         ./include/GLCamera.h
         ./include/GLCanvas.h
         ./include/GLCommonDefs.h
