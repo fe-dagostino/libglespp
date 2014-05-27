@@ -35,8 +35,8 @@ GLSceneTextNode::GLSceneTextNode( const FString& sInstanceName, GLText* text, GL
  : GLSceneNode( sInstanceName, text ), m_program( program )
 {
   // Init model matrix
-  m_matModel.get() = glm::ortho( (float)0, (float)1024, (float)768, (float)0);
-  
+  m_matModel.get() = glm::mat4( 1.0f );
+    
   // Uodate datas related to specific reference
   OnSetReference( text );
   
@@ -69,7 +69,7 @@ GLSceneTextNode::~GLSceneTextNode()
   }
 }  
   
-BOOL   GLSceneTextNode::render( GLCamera* pCamera, const glm::mat4& mView )
+BOOL   GLSceneTextNode::render( const glm::mat4& mProjection, GLCamera* pCamera )
 {
   GLText* text = dynamic_cast<GLText*>(getReference());
   if ( text == nullptr )
@@ -81,9 +81,9 @@ BOOL   GLSceneTextNode::render( GLCamera* pCamera, const glm::mat4& mView )
   if ( m_program == nullptr )
     return FALSE;
   
-  // Retrieving projection matrix from active camera.
+  // Retrieving mView (camera) matrix from active camera.
   // If not present an identity matrix will be used.
-  glm::mat4  mProjection = (pCamera==nullptr)?glm::mat4(1.0f):pCamera->getProjectionMatrix().get();
+  glm::mat4  mView = (pCamera==nullptr)?glm::mat4(1.0f):pCamera->getViewMatrix().get();
   
   glm::mat4  mvp = mProjection * mView * m_matModel.get();
   

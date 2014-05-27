@@ -29,7 +29,7 @@ GLSceneGraph::GLSceneGraph( )
   : GLSceneNode( "Root", nullptr ),
     m_red(0.0f), m_green(0.0f), m_blue(0.0f), m_alpha(1.0f)
 {
-  m_matView.get() = glm::mat4(1.0f);
+  //m_matView.get() = glm::lookAt(glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 0.0, 0.0));
 }
 
 GLSceneGraph::~GLSceneGraph()
@@ -69,19 +69,20 @@ const GLSceneCameraNode*  GLSceneGraph::getActiveCamera() const
   return nullptr;
 }
   
-BOOL GLSceneGraph::render()
+BOOL GLSceneGraph::render( const glm::mat4& mProjection )
 {
   const GLSceneCameraNode* pActiveCamera = getActiveCamera();
   GLCamera*                pCamera       = (pActiveCamera!=nullptr)?(GLCamera*)pActiveCamera->getCamera():nullptr; 
 
-  return render( pCamera, m_matView.get() );
+  return render( mProjection, pCamera );
 }
 
-BOOL GLSceneGraph::render( GLCamera* pCamera, const glm::mat4& mView )
+BOOL GLSceneGraph::render( const glm::mat4& mProjection, GLCamera* pCamera )
 { 
   ///////////////////
   // Reset background color
   glClearColor( m_red, m_green, m_blue, m_alpha );
+  
   /*
   for ( auto snm : m_mMap )
   {
@@ -94,7 +95,7 @@ BOOL GLSceneGraph::render( GLCamera* pCamera, const glm::mat4& mView )
   }*/
   for ( auto n : m_vRender )
   {
-    n->render( pCamera, mView );
+    n->render( mProjection, pCamera );
   }
   
   return TRUE; 

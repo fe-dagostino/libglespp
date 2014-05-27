@@ -56,3 +56,21 @@ GLReference*          GLSceneNodeBase::setReference( GLReference* ref )
   
   return pOldRef;
 }
+
+GLAnimation*          GLSceneNodeBase::getAnimation()
+{
+  return m_ani;
+}
+
+GLAnimation*          GLSceneNodeBase::setAnimation( GLAnimation* ani )
+{
+  GLAnimation*  pOldAni = m_ani.detach();
+
+  m_ani.attach(ani);
+  
+  OnSetAnimation( ani );
+  
+  return pOldAni;
+}
+
+

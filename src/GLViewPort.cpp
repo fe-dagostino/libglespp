@@ -24,13 +24,13 @@
 GLViewPort::GLViewPort( )
   : m_pSceneGraph( NULL )
 {
-  
+  m_matProjection.get() = glm::mat4( 1.0f );
 }
 
-GLViewPort::GLViewPort( GLSceneGraph* pSceneGraph )
+GLViewPort::GLViewPort( GLSceneGraph* pSceneGraph, const glm::mat4& mProjection )
   : m_pSceneGraph( pSceneGraph )
 {
-  
+  m_matProjection.get() = mProjection;
 }
 
 GLViewPort::~GLViewPort()
@@ -80,7 +80,7 @@ BOOL GLViewPort::render()
   if ( m_pSceneGraph == NULL )
     return FALSE;
   
-  m_pSceneGraph->render();
+  m_pSceneGraph->render( getProjectionMatrix().get() );
   
   return TRUE;
 }

@@ -42,21 +42,21 @@ public:
   virtual ~GLSceneNode();
 
   /***/
-  BOOL                  addSceneNode( GLSceneNodeBase* pSceneNode );
+  BOOL              addSceneNode( GLSceneNodeBase* pSceneNode );
   /**
    */
-  GLSceneNodeBase*      getSceneNode( const FString& sNodeClass, const FString& sInstanceName );
+  GLSceneNodeBase*  getSceneNode( const FString& sNodeClass, const FString& sInstanceName );
 
   /**
    * @param pCamera    pointer to the active camera it will provide
    *                   projection matrix.
    */
-  virtual BOOL    render( GLCamera* pCamera, const glm::mat4& mView ) = 0;
+  virtual BOOL      render( const glm::mat4& mProjection, GLCamera* pCamera ) = 0;
   
   
 protected:
   /***/
-  virtual BOOL                  OnAddSceneNode( GLSceneNodeBase* pSceneNode ) { return TRUE; };
+  virtual BOOL      OnAddSceneNode( GLSceneNodeBase* pSceneNode ) { return TRUE; };
   
   
 protected:

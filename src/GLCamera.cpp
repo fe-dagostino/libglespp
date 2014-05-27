@@ -25,9 +25,10 @@
 
 
 GLCamera::GLCamera( BOOL bActivate )
- : GLReference(), m_bActive( bActivate )
+ : GLReference(), m_bActive( bActivate ),
+   m_vPosition( 0, 0, 0 ), m_vCenter( 0, 0, 0 ), m_vUp( 0, 0, 0 )
 {
-  m_matProjection.get() = glm::mat4(1.0);
+  lookAt();
 }
 
 GLCamera::~GLCamera()
@@ -44,5 +45,26 @@ BOOL                GLCamera::setActive( BOOL bActive )
   return  _bPrevValue;
 }
 
+void                GLCamera::setPosition( const glm::vec3& vPos )
+{
+  m_vPosition     = vPos;
+  lookAt();
+}
 
+void                GLCamera::setCenter( const glm::vec3& vCenter )
+{
+  m_vCenter       = vCenter;
+  lookAt();
+}
+
+void                GLCamera::setUp( const glm::vec3& vUp )
+{
+  m_vUp           = vUp;
+  lookAt();
+}
+
+void                GLCamera::lookAt()
+{
+  m_matView.get() = glm::lookAt( m_vPosition, m_vCenter, m_vUp );
+}
 

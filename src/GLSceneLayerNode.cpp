@@ -23,6 +23,7 @@
 #include "../include/GLVertexShader.h"
 #include "../include/GLFragmentShader.h"
 #include "../include/GLCamera.h"
+#include "../include/GLAnimation.h"
 
 #include "fedlibrary/include/LOGGING/FLogger.h"
 
@@ -39,23 +40,13 @@ GLSceneLayerNode::GLSceneLayerNode( const FString& sInstanceName, GLLayer* layer
 {
   // Init model matrix
   m_matModel.get() = glm::mat4( 1.0f );
-  
-  if ( layer != nullptr )
-  {
-    GLint   x,y;
-    GLsizei width, height;
-    
-    layer->getViewPort().getArea( x,y, width, height );
-    
-    m_matModel.get() = glm::ortho( (float)x, (float)width, (float)height, (float)y );
-  }    
 }
   
 GLSceneLayerNode::~GLSceneLayerNode()
 {
 }  
   
-BOOL GLSceneLayerNode::render( GLCamera* pCamera, const glm::mat4& mView )
+BOOL GLSceneLayerNode::render( const glm::mat4& mProjection, GLCamera* pCamera )
 {
   GLLayer* layer = dynamic_cast<GLLayer*>(getReference());
   if ( layer == nullptr )
@@ -63,12 +54,15 @@ BOOL GLSceneLayerNode::render( GLCamera* pCamera, const glm::mat4& mView )
   
   if ( layer->isVisible() == FALSE )
     return FALSE;
-  
-  // Retrieving projection matrix from active camera.
-  // If not present an identity matrix will be used.
-  glm::mat4  mProjection = (pCamera==nullptr)?glm::mat4(1.0f):pCamera->getProjectionMatrix().get();
-  
-  glm::mat4  mvp = mProjection * mView * m_matModel.get();
 
+  // Retrieving camera (view) matrix from active camera.
+  // If not present an identity matrix will be used.
+  glm::mat4  mView = (pCamera==nullptr)?glm::mat4(1.0f):pCamera->getViewMatrix().get();
+  
+  glm::mat4  mvp =  mProjection * mView * m_matModel.get();
+  if (getAnimation() != nullptr)
+    mvp *= getAnimation()->getMatrix().get();
+  
   return layer->render( mvp );
 }
+

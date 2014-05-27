@@ -26,6 +26,7 @@
 #include "GLFW/glfw3.h"
 #include <functional>
 #include "GLSceneGraph.h"
+#include "GLTransformationsMatrix.h"
 
 
 USING_NAMESPACE_FED
@@ -38,7 +39,7 @@ public:
   /***/
   GLViewPort();
   /***/
-  GLViewPort( GLSceneGraph* pSceneGraph );
+  GLViewPort( GLSceneGraph* pSceneGraph, const glm::mat4& mProjection );
 
   /***/
   ~GLViewPort();
@@ -52,6 +53,14 @@ public:
   VOID setArea( GLint x, GLint y, GLsizei width, GLsizei height );
   /***/
   VOID getArea( GLint& x, GLint& y, GLsizei& width, GLsizei& height );
+ 
+  /**
+   * eg.
+   * Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
+   * glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+   */
+  inline GLTransformationsMatrix&     getProjectionMatrix()
+  { return m_matProjection; }
   
   /**
    * GL_COLOR_BUFFER_BIT     Indicates the buffers currently enabled for color writing.
@@ -63,11 +72,13 @@ public:
   /***/
   virtual BOOL render();
   
+  
 protected:
   
 
 private:
-  GLSceneGraph* m_pSceneGraph;
+  GLSceneGraph*              m_pSceneGraph;
+  GLTransformationsMatrix    m_matProjection;
   
 };
 

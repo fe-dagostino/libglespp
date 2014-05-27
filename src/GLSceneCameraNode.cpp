@@ -34,7 +34,7 @@ GLSceneCameraNode::~GLSceneCameraNode()
 
 }
 
-BOOL GLSceneCameraNode::render( GLCamera* pCamera, const glm::mat4& mView )
+BOOL GLSceneCameraNode::render( const glm::mat4& mProjection, GLCamera* pCamera )
 {
   return TRUE;
 }

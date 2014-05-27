@@ -34,6 +34,7 @@ USING_NAMESPACE_FED
 class GLCamera : public GLReference
 {
 public:
+  
   /***/
   GLCamera( BOOL bActivate );
   /***/
@@ -51,13 +52,38 @@ public:
    * Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
    * glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
    */
-  inline GLTransformationsMatrix&     getProjectionMatrix()
-  { return m_matProjection; }
+  inline GLTransformationsMatrix&     getViewMatrix()
+  { return m_matView; }
+  
+  /***/  
+  const glm::vec3&                    getPosition() const
+  { return m_vPosition; }
+  /***/
+  void                                setPosition( const glm::vec3& vPos );
+  
+  /***/
+  const glm::vec3&                    getCenter() const
+  { return m_vCenter; }
+  /***/
+  void                                setCenter( const glm::vec3& vCenter );
+
+  /***/
+  const glm::vec3&                    getUp() const
+  { return m_vUp; }
+  /***/
+  void                                setUp( const glm::vec3& vUp );
+  
+private:
+  /***/
+  void lookAt();
   
 protected:
   BOOL                    m_bActive;
-  GLTransformationsMatrix m_matProjection;
+  GLTransformationsMatrix m_matView;
   
+  glm::vec3 m_vPosition;  // Camera Position (eyes)
+  glm::vec3 m_vCenter;    // Where the camera is pointed to
+  glm::vec3 m_vUp;        // Top of the camera
 };
 
 #endif // GLCAMERA_H

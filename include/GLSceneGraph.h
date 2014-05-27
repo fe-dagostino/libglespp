@@ -46,11 +46,6 @@ public:
   ~GLSceneGraph();
   
   /**
-   */
-  inline GLTransformationsMatrix&  getViewMatrix()
-  { return m_matView; }
-
-  /**
    * Return current active camera that will be used during render operation.
    * If there is no camera, return value will be nullptr and identity matrix
    * will be used for render.
@@ -64,7 +59,7 @@ public:
   VOID    getBackground( GLclampf& red, GLclampf& green, GLclampf& blue, GLclampf& alpha );
   
   /***/
-  BOOL    render();
+  BOOL    render( const glm::mat4& mProjection );
   
 protected:  
   /**
@@ -72,16 +67,14 @@ protected:
    * 
    * @todo implements rendering order
    */
-  virtual BOOL render( GLCamera* pCamera, const glm::mat4& mView );
+  virtual BOOL render( const glm::mat4& mProjection, GLCamera* pCamera );
 
   /***/
   virtual BOOL OnAddSceneNode( GLSceneNodeBase* pSceneNode );
   
 private:
-  GLTransformationsMatrix m_matView;
-  
   GLclampf   m_red, m_green, m_blue, m_alpha;  
-  
+
   std::vector<GLSceneNodeBase*>    m_vRender;
 };
 

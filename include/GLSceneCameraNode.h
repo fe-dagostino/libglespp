@@ -46,7 +46,7 @@ public:
   { return dynamic_cast<GLCamera*>( getReference() ); }
 
   /***/  
-  virtual BOOL render( GLCamera* pCamera, const glm::mat4& mView );
+  virtual BOOL render( const glm::mat4& mProjection, GLCamera* pCamera );
 
 protected:
   

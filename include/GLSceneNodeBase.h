@@ -25,7 +25,9 @@
 #include "GLObject.h"
 #include "GLReference.h"
 
+
 class GLCamera;
+class GLAnimation;
 
 /**
  */
@@ -66,19 +68,29 @@ public:
    */
   GLReference*                 setReference( GLReference* ref );
   
+  /***/
+  GLAnimation*                 getAnimation();
+  /***/
+  GLAnimation*                 setAnimation( GLAnimation* ref );
+  
   /**
    * @param pCamera    pointer to the active camera it will provide
    *                   projection matrix.
    */
-  virtual BOOL    render( GLCamera* pCamera, const glm::mat4& mView ) = 0;
+  virtual BOOL    render( const glm::mat4& mProjection, GLCamera* pCamera ) = 0;
   
 protected:
   /***/
   virtual VOID    OnSetReference( GLReference* ref ) {}
+  /***/
+  virtual VOID    OnSetAnimation( GLAnimation* ani ) {}
+  
   
 private:
   const FString           m_sInstanceName;
   GLAutoRef<GLReference>  m_ref;
+  GLAutoRef<GLAnimation>  m_ani;
+  
 };
 
 #endif // GLSCENENODEBASE_H

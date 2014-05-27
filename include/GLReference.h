@@ -93,7 +93,7 @@ public:
     return true;
   }
   
-  GLReference*   detach()
+  T*   detach()
   {
     GLReference* ref = (GLReference*)m_pRef;
     
@@ -103,8 +103,11 @@ public:
       (*ref)--;
     }
     
-    return ref;
+    return (T*)ref;
   }
+  
+  T* operator ->()
+  { return m_pRef; }
   
   operator const T*() const
   { return m_pRef; }

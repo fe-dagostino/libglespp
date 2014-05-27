@@ -9,6 +9,7 @@
 #include "GLViewPort.h"
 #include "GLWindow.h"
 #include "GLFpsSync.h"
+#include "GLAnimation.h"
 
 #include "font/GLFreeTypeFontLoader.h"
 
@@ -83,15 +84,22 @@ public:
     
     GLSceneCameraNode* pMainCamera = dynamic_cast<GLSceneCameraNode*>(m_pSceneGraph->getSceneNode( "GLSceneCameraNode", "MainCamera" ));
     
-    pMainCamera->getCamera()->getProjectionMatrix().get() = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 50.0f);
-    pMainCamera->getCamera()->getProjectionMatrix().translate( 0, 0, 0.0f );
+    pMainCamera->getCamera()->setPosition( glm::vec3( 0, 0,  -20)    );
+    pMainCamera->getCamera()->setCenter  ( glm::vec3( 0, 0, 0) );
+    pMainCamera->getCamera()->setUp      ( glm::vec3( 0, 0.1, 0 ) );
+    
+    //pMainCamera->getCamera()->getViewMatrix().get() = glm::perspective(45.0f, (float)m_iWidth / (float)m_iHeight, 0.1f, 50.0f);
+    //pMainCamera->getCamera()->getProjectionMatrix().get() = glm::ortho( (float)0, (float)m_iWidth, (float)m_iHeight, (float)0 );
     
     // Add text node
-    m_pSceneGraph->addSceneNode( tnode );
+//    m_pSceneGraph->addSceneNode( tnode );
     
-    m_pViewPort   = new GLViewPort( m_pSceneGraph ); 
+    //
+    m_pViewPort   = new GLViewPort( m_pSceneGraph, glm::perspective(45.0f, (float)m_iWidth / (float)m_iHeight, 0.1f, 50.0f) ); 
 
-
+    //m_pViewPort   = new GLViewPort( m_pSceneGraph, glm::ortho( (float)0, (float)m_iWidth, (float)m_iHeight, (float)0 ) );
+    
+    
     FStopWatch  swTotSeconds;
     FStopWatch  swParSeconds;
     FStopWatch  swRender;
@@ -112,40 +120,45 @@ public:
     GLLayer* pLayer4 = new GLLayer( *m_pViewPort );
     GLLayer* pLayer5 = new GLLayer( *m_pViewPort );
     
-    m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer5", pLayer5 ) );
-    m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer4", pLayer4 ) );
-    m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer3", pLayer3 ) );
-    m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer2", pLayer2 ) );
+//    m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer5", pLayer5 ) );
+//    m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer4", pLayer4 ) );
+//    m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer3", pLayer3 ) );
+//    m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer2", pLayer2 ) );
     m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer1", pLayer1 ) );
     
-    
     m_pWindow->connect( pLayer1 );
-    m_pWindow->connect( pLayer2 );
-    m_pWindow->connect( pLayer3 );
-    m_pWindow->connect( pLayer4 );
-    m_pWindow->connect( pLayer5 );
-    
+//    m_pWindow->connect( pLayer2 );
+//    m_pWindow->connect( pLayer3 );
+//    m_pWindow->connect( pLayer4 );
+//    m_pWindow->connect( pLayer5 );
     
     
     GLSceneLayerNode* pNodeLayer1 = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer1" ));
-    GLSceneLayerNode* pNodeLayer2 = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer2" ));
-    GLSceneLayerNode* pNodeLayer3 = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer3" ));
-    GLSceneLayerNode* pNodeLayer4 = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer4" ));
-    GLSceneLayerNode* pNodeLayer5 = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer5" ));
+
+    //pNodeLayer1->getMatrixModel().get() = glm::translate( glm::mat4(1.0f), glm::vec3( 0, 0, 0 ) );
+    
+    //m_Animation.attach( new GLAnimation() );
+    //pNodeLayer1->setAnimation( m_Animation );
+    
+//    GLSceneLayerNode* pNodeLayer2 = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer2" ));
+//    GLSceneLayerNode* pNodeLayer3 = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer3" ));
+//    GLSceneLayerNode* pNodeLayer4 = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer4" ));
+//    GLSceneLayerNode* pNodeLayer5 = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer5" ));
 
     
-    pNodeLayer1->getMatrixModel().translate( 0, 0,  1 );
-    pNodeLayer2->getMatrixModel().translate( 0, 0,  2 );
-    pNodeLayer3->getMatrixModel().translate( 0, 0,  3 );
-    pNodeLayer4->getMatrixModel().translate( 0, 0,  4 );
-    pNodeLayer5->getMatrixModel().translate( 0, 0,  5 );
+    //pNodeLayer1->getMatrixModel().translate( 10, 0,  1 );
+    
+//    pNodeLayer2->getMatrixModel().translate( 0, 0,  2 );
+//    pNodeLayer3->getMatrixModel().translate( 0, 0,  3 );
+//    pNodeLayer4->getMatrixModel().translate( 0, 0,  4 );
+//    pNodeLayer5->getMatrixModel().translate( 0, 0,  5 );
     
     
     ((GLLayer*)pNodeLayer1->getReference())->setBackground( glm::vec4( 0.5,0.5,0.5, 0.2 ) );
-    ((GLLayer*)pNodeLayer2->getReference())->setBackground( glm::vec4( 0.0,0.0,0.5, 0.3 ) );
-    ((GLLayer*)pNodeLayer3->getReference())->setBackground( glm::vec4( 0.0,0.5,0.0, 0.4 ) );
-    ((GLLayer*)pNodeLayer4->getReference())->setBackground( glm::vec4( 0.5,0.0,0.0, 0.5 ) );
-    ((GLLayer*)pNodeLayer5->getReference())->setBackground( glm::vec4( 0.0,0.5,0.5, 1.0 ) );
+//    ((GLLayer*)pNodeLayer2->getReference())->setBackground( glm::vec4( 0.0,0.0,0.5, 0.3 ) );
+//    ((GLLayer*)pNodeLayer3->getReference())->setBackground( glm::vec4( 0.0,0.5,0.0, 0.4 ) );
+//    ((GLLayer*)pNodeLayer4->getReference())->setBackground( glm::vec4( 0.5,0.0,0.0, 0.5 ) );
+//    ((GLLayer*)pNodeLayer5->getReference())->setBackground( glm::vec4( 0.0,0.5,0.5, 1.0 ) );
     
     
     
@@ -262,14 +275,14 @@ protected:
   /***/
   virtual VOID     OnKeyPressed( GLWindow* pWindow, INT iKey, INT iScanCode, WORD wMods )
   { 
-    HandleKey( iKey ); 
+    HandleKey( iKey, wMods ); 
     
     if ( m_bDefaultKeys )
       GLWindowEvents::OnKeyPressed( pWindow, iKey, iScanCode, wMods );    
   }
   /***/
   virtual VOID     OnKeyRepeated( GLWindow* pGlWindow, INT iKey, INT iScanCode, WORD wMods )
-  { HandleKey( iKey ); }
+  { HandleKey( iKey, wMods ); }
 
 protected:
   /***/
@@ -385,39 +398,72 @@ private:
   }
 
   /***/
-  VOID   HandleKey( INT iKey )
+  VOID   HandleKey( INT iKey, WORD wMods )
   {
     GLSceneCameraNode* pMainCamera = dynamic_cast<GLSceneCameraNode*>(m_pSceneGraph->getSceneNode( "GLSceneCameraNode", "MainCamera" ));
+    GLSceneLayerNode*  pLayer1     = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer1" ));
+    
+    if ( wMods & GLFW_MOD_CONTROL )
+    {
+      switch ( iKey )
+      {
+	case GLFW_KEY_LEFT : // left arrow
+	{
+	  m_Animation->getMatrix().rotateX( -.01 );
+	  //pLayer1->getMatrixModel().rotateX( -.001 );
+	}; break;
+	
+	case GLFW_KEY_RIGHT : // right arrow
+	{
+	  m_Animation->getMatrix().rotateX( +.01 );
+	  //pLayer1->getMatrixModel().rotateX( +.001 );
+	}; break;
+
+	case GLFW_KEY_UP : // up arrow
+	{
+	  m_Animation->getMatrix().rotateY( -.01 );
+	  //pLayer1->getMatrixModel().rotateY( -.001 );
+	}; break;
+	
+	case GLFW_KEY_DOWN : // down arrow
+	{
+	  m_Animation->getMatrix().rotateY( +.01 );
+	  //pLayer1->getMatrixModel().rotateY( +.001 );
+	}; break;
+      }
+      
+      return;
+    }
     
     switch ( iKey )
     {
       case 65 : // a
       {
-	pMainCamera->getCamera()->getProjectionMatrix().translate( 0, 0, -.1 );
+	pMainCamera->getCamera()->getViewMatrix().translate( 0, 0, -.1 );
       }; break;
       
       case 90 : // z
       {
-	pMainCamera->getCamera()->getProjectionMatrix().translate( 0, 0, +.1 );
+	pMainCamera->getCamera()->getViewMatrix().translate( 0, 0, +.1 );
       }; break;
       
       case 263 : // left arrow
       {
-	pMainCamera->getCamera()->getProjectionMatrix().rotateX( -.1 );
+	pMainCamera->getCamera()->getViewMatrix().rotateX( -.1 );
       }; break;
       
       case 262 : // right arrow
       {
-	pMainCamera->getCamera()->getProjectionMatrix().rotateX( +.1 );
+	pMainCamera->getCamera()->getViewMatrix().rotateX( +.1 );
       }; break;
 
       case 265 : // up arrow
       {
-	pMainCamera->getCamera()->getProjectionMatrix().rotateY( -.1 );
+	pMainCamera->getCamera()->getViewMatrix().rotateY( -.1 );
       }; break;
       case 264 : // down arrow
       {
-	pMainCamera->getCamera()->getProjectionMatrix().rotateY( +.1 );
+	pMainCamera->getCamera()->getViewMatrix().rotateY( +.1 );
       }; break;
 
       default :
@@ -425,24 +471,24 @@ private:
       break;
     }
     
-    printf( "(0) %f %f %f \n", pMainCamera->getCamera()->getProjectionMatrix().get()[0][0], 
-			       pMainCamera->getCamera()->getProjectionMatrix().get()[0][1], 
-			       pMainCamera->getCamera()->getProjectionMatrix().get()[0][2] 
+    printf( "(0) %f %f %f \n", pMainCamera->getCamera()->getViewMatrix().get()[0][0], 
+			       pMainCamera->getCamera()->getViewMatrix().get()[0][1], 
+			       pMainCamera->getCamera()->getViewMatrix().get()[0][2] 
 	    );
     
-    printf( "(1) %f %f %f \n", pMainCamera->getCamera()->getProjectionMatrix().get()[1][0], 
-			       pMainCamera->getCamera()->getProjectionMatrix().get()[1][1], 
-			       pMainCamera->getCamera()->getProjectionMatrix().get()[1][2] 
+    printf( "(1) %f %f %f \n", pMainCamera->getCamera()->getViewMatrix().get()[1][0], 
+			       pMainCamera->getCamera()->getViewMatrix().get()[1][1], 
+			       pMainCamera->getCamera()->getViewMatrix().get()[1][2] 
 	    );
     
-    printf( "(2) %f %f %f \n", pMainCamera->getCamera()->getProjectionMatrix().get()[2][0], 
-	    		       pMainCamera->getCamera()->getProjectionMatrix().get()[2][1], 
-			       pMainCamera->getCamera()->getProjectionMatrix().get()[2][2] 
+    printf( "(2) %f %f %f \n", pMainCamera->getCamera()->getViewMatrix().get()[2][0], 
+	    		       pMainCamera->getCamera()->getViewMatrix().get()[2][1], 
+			       pMainCamera->getCamera()->getViewMatrix().get()[2][2] 
 	    );
 
-    printf( "(3) %f %f %f \n", pMainCamera->getCamera()->getProjectionMatrix().get()[3][0], 
-			       pMainCamera->getCamera()->getProjectionMatrix().get()[3][1], 
-			       pMainCamera->getCamera()->getProjectionMatrix().get()[3][2] 
+    printf( "(3) %f %f %f \n", pMainCamera->getCamera()->getViewMatrix().get()[3][0], 
+			       pMainCamera->getCamera()->getViewMatrix().get()[3][1], 
+			       pMainCamera->getCamera()->getViewMatrix().get()[3][2] 
 	    );
   }
 
@@ -483,6 +529,8 @@ private:
   GLWindow*       m_pWindow;
   GLSceneGraph*   m_pSceneGraph;
   GLViewPort*     m_pViewPort;
+  
+  GLAutoRef<GLAnimation>  m_Animation;
 };
 
 GENERATE_CLASSINFO( GlesGui, FSingleton )
