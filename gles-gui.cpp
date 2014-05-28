@@ -409,26 +409,22 @@ private:
       {
 	case GLFW_KEY_LEFT : // left arrow
 	{
-	  m_Animation->getMatrix().rotateX( -.01 );
-	  //pLayer1->getMatrixModel().rotateX( -.001 );
+	  pLayer1->getMatrixModel().rotateX( -.1 );
 	}; break;
 	
 	case GLFW_KEY_RIGHT : // right arrow
 	{
-	  m_Animation->getMatrix().rotateX( +.01 );
-	  //pLayer1->getMatrixModel().rotateX( +.001 );
+	  pLayer1->getMatrixModel().rotateX( +.1 );
 	}; break;
 
 	case GLFW_KEY_UP : // up arrow
 	{
-	  m_Animation->getMatrix().rotateY( -.01 );
-	  //pLayer1->getMatrixModel().rotateY( -.001 );
+	  pLayer1->getMatrixModel().rotateY( -.1 );
 	}; break;
 	
 	case GLFW_KEY_DOWN : // down arrow
 	{
-	  m_Animation->getMatrix().rotateY( +.01 );
-	  //pLayer1->getMatrixModel().rotateY( +.001 );
+	  pLayer1->getMatrixModel().rotateY( +.1 );
 	}; break;
       }
       
@@ -530,7 +526,6 @@ private:
   GLSceneGraph*   m_pSceneGraph;
   GLViewPort*     m_pViewPort;
   
-  GLAutoRef<GLAnimation>  m_Animation;
 };
 
 GENERATE_CLASSINFO( GlesGui, FSingleton )

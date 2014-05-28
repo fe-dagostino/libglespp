@@ -179,7 +179,7 @@ BOOL      GLWidget::draw( const glm::mat4& mvp, const GLRecti& rect )
 
 VOID     GLWidget::OnKeyReleased( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iKey, INT iScanCode, WORD wMods )
 { 
-  if ( hasFocus() == FALSE )
+  if (( hasFocus() == FALSE ) || ( isEnabled() == FALSE ))
     return;
     
   signalKeyReleased.emit( pGlWindow, pGlLayer, iKey, iScanCode, wMods );   
@@ -187,7 +187,7 @@ VOID     GLWidget::OnKeyReleased( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iK
   
 VOID     GLWidget::OnKeyPressed ( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iKey, INT iScanCode, WORD wMods )
 {
-  if ( hasFocus() == FALSE )
+  if (( hasFocus() == FALSE ) || ( isEnabled() == FALSE ))
     return;
     
   handleDefaultKeys( iKey, iScanCode );
@@ -197,7 +197,7 @@ VOID     GLWidget::OnKeyPressed ( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iK
 
 VOID     GLWidget::OnKeyRepeated( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iKey, INT iScanCode, WORD wMods )
 { 
-  if ( hasFocus() == FALSE )
+  if (( hasFocus() == FALSE ) || ( isEnabled() == FALSE ))
     return;
   
   handleDefaultKeys( iKey, iScanCode );
