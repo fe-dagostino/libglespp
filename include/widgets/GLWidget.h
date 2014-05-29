@@ -198,7 +198,10 @@ protected:
   BOOL   stepFocus();
   /***/
   BOOL   hasFocusable();
-  /***/
+  /**
+   * NOTE: this method should be called only when current 
+   *       widget is both visible and enabled.
+   */
   VOID   handleDefaultKeys( INT iKey, INT iScanCode );
   
 private:

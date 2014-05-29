@@ -256,6 +256,7 @@ BOOL       GLWidget::hasFocusable()
   return FALSE;
 }
 
+// Called only in case current widget is both visible and enabled.
 VOID       GLWidget::handleDefaultKeys( INT iKey, INT iScanCode )
 {
   switch ( iKey )
