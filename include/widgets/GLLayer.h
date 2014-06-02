@@ -34,6 +34,7 @@ USING_NAMESPACE_FED
 
 class GLLayer : public GLReference, public GLWidget, public GLWindowEvents
 {
+  ENABLE_FRTTI( GLLayer )
 public:
  
   /***/

@@ -20,6 +20,8 @@
 
 #include "../include/widgets/GLLayer.h"
 
+GENERATE_CLASSINFO( GLLayer, GLWidget )
+
 GLLayer::GLLayer( GLViewPort& rViewPort )
  : GLWidget(nullptr), m_rViewPort( rViewPort )
 {
