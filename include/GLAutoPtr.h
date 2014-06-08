@@ -39,6 +39,10 @@ class GLAutoPtr
 {
 public:
   /***/
+  GLAutoPtr()
+  { m_pObject = nullptr; }
+  
+  /***/
   GLAutoPtr( T* pObject )
   { m_pObject = pObject; }
   
