@@ -71,6 +71,9 @@ BOOL                               GLSceneNode::addSceneNode( GLSceneNodeBase* p
 
 GLSceneNodeBase*      GLSceneNode::getSceneNode( const FString& sNodeClass, const FString& sInstanceName )
 {
+  if ( sNodeClass.IsEmpty() || sInstanceName.IsEmpty() )
+    return nullptr;
+  
   std::map< FString, SceneNodeMap* >::const_iterator  _iter = m_mMap.find( sNodeClass );
   if ( _iter == m_mMap.end() )
     return nullptr;
