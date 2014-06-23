@@ -229,6 +229,7 @@ set(  GLPLAYER_LIBRARIES
 set(  GLES_GUI_LIBRARIES
       glfw3
       rt
+      Xcursor
       Xrandr
       Xi
       Xxf86vm
