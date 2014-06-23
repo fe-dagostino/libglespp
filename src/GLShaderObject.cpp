@@ -20,8 +20,10 @@
 
 #include "../include/GLShaderObject.h"
 #include "FFile.h"
+#include "LOGGING/FLogger.h"
 
 USING_NAMESPACE_FED
+USING_NAMESPACE_LOGGING
 
 GLShaderObject::GLShaderObject( ShaderType eType )
 {
@@ -52,6 +54,8 @@ BOOL GLShaderObject::load( const GLchar *shaderSource )
 
 BOOL GLShaderObject::loadFromFile( const FString& sFilename )
 {
+  LOG_INFO( FString( 0, "Loading File [%s]", sFilename.GetBuffer() ), loadFromFile() )
+  
   FFile  _shaderFile( nullptr, sFilename );
   
   _shaderFile.Open( FREAD_OPEN, 0, FOPEN_EXISTING, 0 );
