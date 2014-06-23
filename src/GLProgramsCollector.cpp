@@ -23,6 +23,7 @@
 #include "../include/GLFragmentShader.h"
 
 #include "LOGGING/FLogger.h"
+#include <fcntl.h>
 
 GENERATE_CLASSINFO( GLProgramsCollector, FSingleton )
 IMPLEMENT_SINGLETON( GLProgramsCollector )
@@ -48,6 +49,7 @@ GLProgram*   GLProgramsCollector::create( const FString& sProgramName, const std
   GLProgram* pProgram = GLProgramsCollector::GetInstance().find( sProgramName );
   if ( pProgram == nullptr )
   {
+    LOG_INFO( FString(  0, "ShaderPath [%s] - ProgramName [%s]", GLProgramsCollector::GetInstance().getShadersPath().GetBuffer(), sProgramName.GetBuffer() ), create() )
     FString           _sVS(0, "%s/%s.vs", GLProgramsCollector::GetInstance().getShadersPath().GetBuffer(), sProgramName.GetBuffer() );
     FString           _sFS(0, "%s/%s.fs", GLProgramsCollector::GetInstance().getShadersPath().GetBuffer(), sProgramName.GetBuffer() );
     GLVertexShader    _vertexShader;
