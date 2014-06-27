@@ -25,8 +25,8 @@ GENERATE_CLASSINFO( GLLayer, GLWidget )
 GLLayer::GLLayer( GLViewPort& rViewPort )
  : GLWidget(nullptr), m_rViewPort( rViewPort )
 {
-  GLint    x,y;
-  GLsizei  w,h;
+  GLint    x,y = 0;
+  GLsizei  w,h = 0;
   
   m_rViewPort.getArea( x, y, w, h );
   
@@ -44,10 +44,9 @@ BOOL    GLLayer::render( const glm::mat4& mvp )
   if ( isVisible() == FALSE )
     return FALSE;
   
-  GLint x;
-  GLint y;
-  GLsizei width;
-  GLsizei height;
+  GLint   x, y   = 0;
+  GLsizei width  = 0;
+  GLsizei height = 0;
   
   getViewPort().getArea( x, y, width, height );
 
