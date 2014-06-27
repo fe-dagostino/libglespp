@@ -26,7 +26,7 @@ GENERATE_CLASSINFO( GLWidget, GLCanvas )
 
 GLWidget::GLWidget( GLWidget* pParent )
  : m_size( 0, 0 ), m_bVisible( TRUE ), m_bEnabled( TRUE ),
-   m_pParent( nullptr ), m_imBackground( nullptr )
+   m_pParent( nullptr ), m_eBackground( NoBackground ), m_imBackground( nullptr )
 {
   m_Focused = m_vChildren.end();
   
