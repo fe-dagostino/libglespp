@@ -92,7 +92,7 @@ GLText*   GLFreeTypeFont::getText( const FWString& sText, const glm::vec4& frCol
   
   while ( iChars-- )
   {
-    FT_Glyph pGlyph = new FT_GlyphRec_();
+    FT_Glyph pGlyph = nullptr;
     
     error = FT_Load_Char ( m_face, *pBuffer++, FT_LOAD_RENDER );
     if ( error == 0 )
