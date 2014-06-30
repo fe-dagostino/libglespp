@@ -46,11 +46,13 @@ GLSceneTextNode::GLSceneTextNode( const FString& sInstanceName, GLText* text, GL
     if ( _pProgram == nullptr )
     {
      std::vector< std::pair<int,std::string> >  attributes;
-   
+     attributes.reserve(2);
      attributes.push_back( std::pair<int,std::string>( 0, "a_v2Point"    ) );
      attributes.push_back( std::pair<int,std::string>( 1, "a_v2TexCoord" ) );
       
      _pProgram = GLProgramsCollector::GetInstance().create( "DefaultText", attributes );
+     
+     attributes.clear();
     }
     
     m_program.attach( _pProgram );
@@ -113,6 +115,7 @@ VOID   GLSceneTextNode::OnSetReference( GLReference* ref )
   
   // Default Texture coordinates
   m_texCoord.clear();
+  m_texCoord.reserve(4);
   m_texCoord.push_back( glm::vec2( 0.0f, 0.0f )  );
   m_texCoord.push_back( glm::vec2( 1.0f, 0.0f )  );
   m_texCoord.push_back( glm::vec2( 0.0f, 1.0f )  );
@@ -123,6 +126,7 @@ VOID   GLSceneTextNode::OnSetReference( GLReference* ref )
   float  ar   = (float)size.height / (float)size.width;
   
   m_vertices.clear();
+  m_vertices.reserve(4);
   m_vertices.push_back( glm::vec2(            0.0f,             0.0f ) );
   m_vertices.push_back( glm::vec2( size.width * ar,             0.0f ) );
   m_vertices.push_back( glm::vec2(            0.0f, size.height * ar ) );
