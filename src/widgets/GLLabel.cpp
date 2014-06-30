@@ -51,6 +51,7 @@ BOOL      GLLabel::setLabel( GLFont* pFont, const FWString& sLabel, const glm::v
   
   // Default Texture coordinates
   m_vTexCoord.clear();
+  m_vTexCoord.reserve(4);
   m_vTexCoord.push_back( glm::vec2( 0.0f, 0.0f )  );
   m_vTexCoord.push_back( glm::vec2( 1.0f, 0.0f )  );
   m_vTexCoord.push_back( glm::vec2( 0.0f, 1.0f )  );
