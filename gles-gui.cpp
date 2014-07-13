@@ -62,42 +62,35 @@ public:
       return ;
     }
     
-    ////////////////////////////////
-    ///  Free Type Font Loader
-    GLFontLoader* fl = new GLFreeTypeFontLoader();
     
-    fl->setFontsPath( "/usr/share/fonts/" );
+    GLCamera*  pCamera =  new GLCamera( TRUE );
     
-    //GLFont* font = fl->createFont( "FreeMono.ttf", GLSize( 0, 500) );
-    GLFont* font = fl->createFont( "truetype/fontsquirrel/TitanOne-Regular.ttf", GLSize( 0, 50) );
-    
-    
-    font->setMargins( 0, 0, 0, 0 );
-    
-    GLText* text = font->getText( L"B.K.M. S.r.l.", glm::vec4( 255,0,0,1 ) ); 
-    
-    GLSceneTextNode* tnode = new GLSceneTextNode( "Text1", text, nullptr );
-    
-    tnode->getMatrixModel().translate( 0, 0, -1 );
-    
-    m_pSceneGraph->addSceneNode( new GLSceneCameraNode( "MainCamera", new GLCamera( TRUE ) ) );
-    
-    GLSceneCameraNode* pMainCamera = dynamic_cast<GLSceneCameraNode*>(m_pSceneGraph->getSceneNode( "GLSceneCameraNode", "MainCamera" ));
-    
-    pMainCamera->getCamera()->setPosition( glm::vec3( 0, 0,  -20)    );
-    pMainCamera->getCamera()->setCenter  ( glm::vec3( 0, 0, 0) );
-    pMainCamera->getCamera()->setUp      ( glm::vec3( 0, 0.1, 0 ) );
-    
-    //pMainCamera->getCamera()->getViewMatrix().get() = glm::perspective(45.0f, (float)m_iWidth / (float)m_iHeight, 0.1f, 50.0f);
-    //pMainCamera->getCamera()->getProjectionMatrix().get() = glm::ortho( (float)0, (float)m_iWidth, (float)m_iHeight, (float)0 );
-    
-    // Add text node
-//    m_pSceneGraph->addSceneNode( tnode );
-    
-    //
-    m_pViewPort   = new GLViewPort( m_pSceneGraph, glm::perspective(45.0f, (float)m_iWidth / (float)m_iHeight, 0.1f, 50.0f) ); 
+    glm::vec3 cameraPosition = glm::vec3(4,3,3); // Camera is at (4,3,3), in World Space
+    glm::vec3 cameraTarget   = glm::vec3(0,0,0); // and looks at the origin
+    glm::vec3 upVector       = glm::vec3(0,1,0);  // Head is up (set to 0,-1,0 to look upside-down)
 
-    //m_pViewPort   = new GLViewPort( m_pSceneGraph, glm::ortho( (float)0, (float)m_iWidth, (float)m_iHeight, (float)0 ) );
+    glm::mat4 CameraMatrix = glm::lookAt(
+                                            cameraPosition, // the position of your camera, in world space
+                                            cameraTarget,   // where you want to look at, in world space
+                                            upVector        // probably glm::vec3(0,1,0), but (0,-1,0) would make you looking upside-down, which can be great too
+                                        );
+    pCamera->getViewMatrix().get() = CameraMatrix;
+    //pCamera->getViewMatrix().get() = glm::mat4(1.0);
+    //pCamera->getViewMatrix().get() = glm::ortho( (float)0, (float)m_iWidth, (float)m_iHeight, (float)0 );
+    //pCamera->getViewMatrix().get() = glm::perspective(45.0f, (float)m_iWidth / (float)m_iHeight, 0.1f, 50.0f);
+	
+    m_pSceneGraph->addSceneNode( new GLSceneCameraNode( "MainCamera", pCamera ) );
+  
+    
+    //glm::mat4 mProjection = glm::mat4( 0.1f );
+    //glm::mat4 mProjection = glm::perspective(45.0f, (float)m_iWidth / (float)m_iHeight, 0.1f, 50.0f); 
+    //glm::mat4 mProjection = glm::ortho( (float)0, (float)m_iWidth, (float)m_iHeight, (float)0 );
+    //glm::mat4 mProjection = glm::ortho( (float)0, (float)m_iWidth, (float)m_iHeight, (float)0 );
+    glm::mat4 mProjection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+  
+    m_pViewPort   = new GLViewPort( m_pSceneGraph, mProjection ); 
+  
+    //
     
     
     FStopWatch  swTotSeconds;
@@ -120,47 +113,60 @@ public:
     GLLayer* pLayer4 = new GLLayer( *m_pViewPort );
     GLLayer* pLayer5 = new GLLayer( *m_pViewPort );
     
-//    m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer5", pLayer5 ) );
-//    m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer4", pLayer4 ) );
-//    m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer3", pLayer3 ) );
-//    m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer2", pLayer2 ) );
+    m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer5", pLayer5 ) );
+    m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer4", pLayer4 ) );
+    m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer3", pLayer3 ) );
+    m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer2", pLayer2 ) );
     m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer1", pLayer1 ) );
     
     m_pWindow->connect( pLayer1 );
-//    m_pWindow->connect( pLayer2 );
-//    m_pWindow->connect( pLayer3 );
-//    m_pWindow->connect( pLayer4 );
-//    m_pWindow->connect( pLayer5 );
+    m_pWindow->connect( pLayer2 );
+    m_pWindow->connect( pLayer3 );
+    m_pWindow->connect( pLayer4 );
+    m_pWindow->connect( pLayer5 );
     
     
     GLSceneLayerNode* pNodeLayer1 = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer1" ));
+    GLSceneLayerNode* pNodeLayer2 = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer2" ));
+    GLSceneLayerNode* pNodeLayer3 = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer3" ));
+    GLSceneLayerNode* pNodeLayer4 = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer4" ));
+    GLSceneLayerNode* pNodeLayer5 = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer5" ));
 
-    //pNodeLayer1->getMatrixModel().get() = glm::translate( glm::mat4(1.0f), glm::vec3( 0, 0, 0 ) );
-    
+    //glm::mat4 mModel = glm::mat4( 0.1f );
+    //glm::mat4 mModel = glm::translate( glm::mat4(1.0f), glm::vec3( 0, 0, 0 ) );
+    glm::mat4 mModel =  glm::ortho( (float)0, (float)m_iWidth, (float)m_iHeight, (float)0 );
+    //glm::mat4 mModel =  glm::perspective(45.0f, (float)m_iWidth / (float)m_iHeight, 0.1f, 50.0f);
+
+    pNodeLayer1->getMatrixModel().get() =  mModel;
+    pNodeLayer2->getMatrixModel().get() =  mModel;
+    pNodeLayer3->getMatrixModel().get() =  mModel;
+    pNodeLayer4->getMatrixModel().get() =  mModel;
+    pNodeLayer5->getMatrixModel().get() =  mModel;
+
+	
     //m_Animation.attach( new GLAnimation() );
     //pNodeLayer1->setAnimation( m_Animation );
     
-//    GLSceneLayerNode* pNodeLayer2 = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer2" ));
-//    GLSceneLayerNode* pNodeLayer3 = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer3" ));
-//    GLSceneLayerNode* pNodeLayer4 = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer4" ));
-//    GLSceneLayerNode* pNodeLayer5 = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer5" ));
+    pNodeLayer1->getMatrixModel().translate( 10, 0,  1 );
 
-    
-    //pNodeLayer1->getMatrixModel().translate( 10, 0,  1 );
-    
-//    pNodeLayer2->getMatrixModel().translate( 0, 0,  2 );
-//    pNodeLayer3->getMatrixModel().translate( 0, 0,  3 );
-//    pNodeLayer4->getMatrixModel().translate( 0, 0,  4 );
-//    pNodeLayer5->getMatrixModel().translate( 0, 0,  5 );
+    pNodeLayer2->getMatrixModel().translate( 0, 0,  2 );
+    pNodeLayer3->getMatrixModel().translate( 0, 0,  3 );
+    pNodeLayer4->getMatrixModel().translate( 0, 0,  4 );
+    pNodeLayer5->getMatrixModel().translate( 0, 0,  5 );
     
     
     ((GLLayer*)pNodeLayer1->getReference())->setBackground( glm::vec4( 0.5,0.5,0.5, 0.2 ) );
-//    ((GLLayer*)pNodeLayer2->getReference())->setBackground( glm::vec4( 0.0,0.0,0.5, 0.3 ) );
-//    ((GLLayer*)pNodeLayer3->getReference())->setBackground( glm::vec4( 0.0,0.5,0.0, 0.4 ) );
-//    ((GLLayer*)pNodeLayer4->getReference())->setBackground( glm::vec4( 0.5,0.0,0.0, 0.5 ) );
-//    ((GLLayer*)pNodeLayer5->getReference())->setBackground( glm::vec4( 0.0,0.5,0.5, 1.0 ) );
+    ((GLLayer*)pNodeLayer2->getReference())->setBackground( glm::vec4( 0.0,0.0,0.5, 0.3 ) );
+    ((GLLayer*)pNodeLayer3->getReference())->setBackground( glm::vec4( 0.0,0.5,0.0, 0.4 ) );
+    ((GLLayer*)pNodeLayer4->getReference())->setBackground( glm::vec4( 0.5,0.0,0.0, 0.5 ) );
+    ((GLLayer*)pNodeLayer5->getReference())->setBackground( glm::vec4( 0.0,0.5,0.5, 1.0 ) );
     
     
+    
+    
+    GLFreeTypeFontLoader* fl = new GLFreeTypeFontLoader();
+    
+    fl->setFontsPath( "/usr/share/fonts" );
     
     GLFont*  wfont = fl->createFont( "truetype/freefont/FreeMono.ttf", GLSize( 0, 40) );
     GLLabel* widget = new GLLabel(nullptr);
@@ -169,7 +175,7 @@ public:
     pTexture->load( GLTexture::etlFreeImage, "/etc/gles-gui/media/wall.jpg" );
     
     widget->setPosition( 100, 100 );
-    //widget->setSize( 800, 800 );
+    widget->setSize( 800, 800 );
     //widget->setBackground( glm::vec4( 0,0,1,1 ) );
     //widget->setBackground( pTexture );
     
@@ -181,6 +187,8 @@ public:
     ((GLLayer*)pNodeLayer1->getReference())->addChild( widget );
     
     int counter = 0;
+    FString sLabel( 0, "Counter %03d", counter++ );
+
     while ( m_pWindow->check( GLWindow::eWindowShouldClose ) == FALSE )
     {
       m_pWindow->getFramebufferSize( _iWidth, _iHeight );
@@ -194,9 +202,10 @@ public:
       ///////////////
       m_pViewPort->clearBuffer( GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT );
 
-      FString sLabel( 0, "Counter %03d", counter++ );
+      sLabel.Format ( 0, "Counter %03d", counter++ );
       if (counter > 999 )
 	counter = 0;
+      
       widget->setLabel( wfont, sLabel, glm::vec4( 1,1,1,1), wtaCentered );
 
       
