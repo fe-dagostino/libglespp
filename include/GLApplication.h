@@ -22,8 +22,8 @@
 #define GLAPPLICATION_H
 
 #include "GLCommonDefs.h"
-#include "fedlibrary/include/FSingleton.h"
-#include "fedlibrary/template_include/FTList.tlh"
+#include "FSingleton.h"
+#include "FTList.tlh"
 #include "GLFW/glfw3.h"
 #include "GLShape.h"
 #include "GLMonitor.h"
