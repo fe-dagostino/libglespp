@@ -2,12 +2,15 @@
 cmake_minimum_required (VERSION 2.6)
 project(libgles++)
 
+include_directories( ./include/ )
 include_directories( /usr/include/freetype2/  )
-include_directories( /usr/local/include/sigc++-2.0/ )
-include_directories( include/ )
-include_directories( /usr/local/include/fedlibrary/include )
-include_directories( /usr/local/include/fedlibrary/template_include )
+include_directories( ${CMAKE_INSTALL_PREFIX}/include/ )
+include_directories( ${CMAKE_INSTALL_PREFIX}/include/sigc++-2.0/ )
+include_directories( ${CMAKE_INSTALL_PREFIX}/include/fedlibrary/include )
+include_directories( ${CMAKE_INSTALL_PREFIX}/include/fedlibrary/template_include )
 
+link_directories( ${CMAKE_FIND_ROOT_PATH}/lib )
+link_directories( ${CMAKE_FIND_ROOT_PATH}/usr/lib )
 
 IF(NOT CMAKE_BUILD_TYPE )
   SET(CMAKE_BUILD_TYPE Release CACHE STRING
