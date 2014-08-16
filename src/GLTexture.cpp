@@ -37,33 +37,9 @@ GLTexture::GLTexture()
 }
 
 GLTexture::GLTexture( GLsizei width, GLsizei height, GLenum format, GLenum type )
- : m_size( width, height ), m_format( format ), m_type( type ), m_length( 0 ), m_pixels( nullptr )
+ : m_size( 0, 0 ), m_format( 0 ), m_type( 0 ), m_length( 0 ), m_pixels( nullptr )
 {
-  if ( 
-      ( type != GL_UNSIGNED_BYTE          ) &&
-      ( type != GL_UNSIGNED_SHORT_5_6_5   ) &&
-      ( type != GL_UNSIGNED_SHORT_4_4_4_4 ) &&
-      ( type != GL_UNSIGNED_SHORT_5_5_5_1 )
-     )
-  {
-    //@todo
-  }
-      
-  if ( m_pixels == nullptr )
-  {
-    // Accepted values
-    //GL_UNSIGNED_BYTE             1 byte
-    //GL_UNSIGNED_SHORT_5_6_5      2 bytes
-    //GL_UNSIGNED_SHORT_4_4_4_4    2 bytes
-    //GL_UNSIGNED_SHORT_5_5_5_1    2 bytes
-    
-    m_length = width*height*((type==GL_UNSIGNED_BYTE)?1:2);
-    m_pixels = calloc( m_length, 1 );
-    if ( m_pixels == nullptr )
-    {
-      //@todo
-    }
-  }
+  init( width, height, format, type, nullptr );
 }
 
 GLTexture::~GLTexture()
@@ -73,6 +49,55 @@ GLTexture::~GLTexture()
     free( m_pixels );
     m_pixels = nullptr;
   }
+}
+
+BOOL                    GLTexture::init(  GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid* pixels )
+{
+  if ( type != GL_UNSIGNED_BYTE )
+  {
+    return FALSE;
+  }
+  
+  if (
+       ( getSize().width  != width   ) || 
+       ( getSize().height != height  ) ||
+       ( getFormat()      != format  ) ||
+       ( getType()        != type    ) 
+     )
+  {
+    if ( m_pixels != nullptr )
+    {
+      free( m_pixels );
+      m_pixels = nullptr;
+    }
+    
+    m_size.width  = width;
+    m_size.height = height;
+    m_format      = format;
+    m_type        = type;
+    
+    // Accepted values
+    int bpp = 4;
+    switch ( format )
+    {
+      case GL_RGBA: bpp = 4; break;
+      case GL_RGB : bpp = 3; break;
+    }
+    
+    m_length      = width*height*bpp;
+    m_pixels      = calloc( m_length, 1 );
+    if ( m_pixels == nullptr )
+    {
+      return FALSE;
+    }
+  }  
+  
+  if ( (m_pixels != nullptr) && (pixels != nullptr) )
+  {
+    memcpy( m_pixels, pixels, m_length );
+  }
+  
+  return TRUE;
 }
 
 VOID                    GLTexture::setPacking( GLint param )

@@ -59,6 +59,9 @@ public:
   ~GLTexture();
   
   /***/
+  BOOL                    init(  GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid* pixels );
+  
+  /***/
   inline GLenum           getFormat() const
   { return m_format; }
   /***/
