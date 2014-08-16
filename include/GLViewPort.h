@@ -52,7 +52,7 @@ public:
   /***/
   VOID setArea( GLint x, GLint y, GLsizei width, GLsizei height );
   /***/
-  VOID getArea( GLint& x, GLint& y, GLsizei& width, GLsizei& height );
+  VOID getArea( GLint& x, GLint& y, GLsizei& width, GLsizei& height ) const;
  
   /**
    * eg.

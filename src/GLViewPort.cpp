@@ -57,7 +57,7 @@ VOID GLViewPort::setArea( GLint x, GLint y, GLsizei width, GLsizei height )
   glViewport( x, y, width, height );
 }
 
-VOID GLViewPort::getArea( GLint& x, GLint& y, GLsizei& width, GLsizei& height )
+VOID GLViewPort::getArea( GLint& x, GLint& y, GLsizei& width, GLsizei& height ) const
 {
   GLint viewport[4];
   
