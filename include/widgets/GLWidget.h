@@ -39,6 +39,7 @@ USING_NAMESPACE_FED
 
 
 class GLLayer;
+class GLViewPort;
 
 class GLWidget : public GLCanvas, public sigc::trackable
 {
@@ -51,6 +52,15 @@ public:
     SolidColor,
     ImageBrush
   };
+  /***/
+  enum BackgroundOptions
+  {
+    eboUndefined,
+    eboOriginal,
+    eboFlipHorizontal,
+    eboFlipVertical,
+    eboFlipBoth
+  };
   
   /**
    */
@@ -62,7 +72,7 @@ public:
   /***/
   inline GLWidget*               getParent()
   { return m_pParent; }
-  
+    
   /***/
   BOOL                           addChild( GLWidget* widget );
   
@@ -132,8 +142,12 @@ public:
   /***/
   VOID                           setBackground( const glm::vec4& cr );
 
-  /***/
-  VOID                           setBackground( GLTexture* texture );
+  /**
+   * @bo  usually image loaded from files needs a vertival flip in order to be shown as original.
+   *      The reason is related to format type used to store image where images are store starting
+   *      from the bottom line in the image.
+   */
+  VOID                           setBackground( GLTexture* texture, BackgroundOptions bo );
   
   inline const glm::vec4&        getBkColor() const
   { return m_crBackground;   }
@@ -228,6 +242,7 @@ private:
 private:
   typedef std::vector< GLWidget* >   WIDGETS;
   
+  BackgroundOptions         m_ebo;
   GLPosition                m_pos;
   GLSize                    m_size;
   BOOL                      m_bVisible;

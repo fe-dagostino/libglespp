@@ -19,13 +19,15 @@
 
 
 #include "../include/widgets/GLWidget.h"
+#include "../include/GLViewPort.h"
 
 
 GENERATE_CLASSINFO( GLWidget, GLCanvas )
 
 
 GLWidget::GLWidget( GLWidget* pParent )
- : m_size( 0, 0 ), m_bVisible( TRUE ), m_bEnabled( TRUE ),
+ : m_ebo( eboUndefined ), 
+   m_size( 0, 0 ), m_bVisible( TRUE ), m_bEnabled( TRUE ),
    m_pParent( nullptr ), m_eBackground( NoBackground ), m_imBackground( nullptr )
 {
   m_Focused = m_vChildren.end();
@@ -63,7 +65,7 @@ BOOL      GLWidget::addChild( GLWidget* widget )
     if ( w == widget )
       return FALSE;
   }
-  
+    
   m_vChildren.push_back( widget );
 
   // Iterator must be updated each time 
@@ -94,10 +96,14 @@ VOID      GLWidget::setPosition( const GLPosition& pos )
 
 VOID      GLWidget::setPosition( GLint x, GLint y )
 { 
-  m_pos.x = x; m_pos.y = y; 
+  if ( (m_pos.x != x) || (m_pos.y != y) )
+  {
+    m_pos.x = x; 
+    m_pos.y = y; 
   
-  _updateBkVertices();
-  
+    _updateBkVertices();
+  }
+    
   OnPositionChanged( m_pos );
 }
   
@@ -108,9 +114,13 @@ VOID      GLWidget::setSize( const GLSize& size )
 
 VOID      GLWidget::setSize( GLsizei width, GLsizei height )
 { 
-  m_size.width = width; m_size.height = height; 
-  
-  _updateBkVertices();
+  if (( m_size.width != width ) || (m_size.height != height))
+  {
+    m_size.width  = width; 
+    m_size.height = height; 
+
+    _updateBkVertices();
+  }
   
   OnSizeChanged( m_size );
 }  
@@ -122,20 +132,49 @@ VOID      GLWidget::setBackground( const glm::vec4& cr )
   m_eBackground  = SolidColor;
 }
   
-VOID      GLWidget::setBackground( GLTexture* texture )
+VOID      GLWidget::setBackground( GLTexture* texture, BackgroundOptions bo )
 { 
   m_imBackground.attach(texture);     
   
   m_eBackground  = ImageBrush;
   
-  // Default Texture coordinates
-  m_bkTexCoord.clear();
-  m_bkTexCoord.push_back( glm::vec2( 0.0f, 0.0f )  );
-  m_bkTexCoord.push_back( glm::vec2( 1.0f, 0.0f )  );
-  m_bkTexCoord.push_back( glm::vec2( 0.0f, 1.0f )  );
-  m_bkTexCoord.push_back( glm::vec2( 1.0f, 1.0f )  );
-  
-  _updateBkVertices();
+  if ( m_ebo != bo )
+  {
+    // Default Texture coordinates
+    m_bkTexCoord.clear();
+    m_bkTexCoord.reserve(4);
+    switch ( bo )
+    {
+      case eboOriginal:
+        m_bkTexCoord.push_back( glm::vec2( 0.0f, 1.0f )  );
+        m_bkTexCoord.push_back( glm::vec2( 1.0f, 1.0f )  );
+        m_bkTexCoord.push_back( glm::vec2( 0.0f, 0.0f )  );
+        m_bkTexCoord.push_back( glm::vec2( 1.0f, 0.0f )  );
+      break;
+      case eboFlipHorizontal:
+        m_bkTexCoord.push_back( glm::vec2( 1.0f, 1.0f )  );
+        m_bkTexCoord.push_back( glm::vec2( 0.0f, 1.0f )  );
+        m_bkTexCoord.push_back( glm::vec2( 1.0f, 0.0f )  );
+        m_bkTexCoord.push_back( glm::vec2( 0.0f, 0.0f )  );
+      break;
+      case eboFlipVertical:
+        m_bkTexCoord.push_back( glm::vec2( 0.0f, 0.0f )  );
+        m_bkTexCoord.push_back( glm::vec2( 1.0f, 0.0f )  );
+        m_bkTexCoord.push_back( glm::vec2( 0.0f, 1.0f )  );
+        m_bkTexCoord.push_back( glm::vec2( 1.0f, 1.0f )  );
+      break;
+      case eboFlipBoth:
+        m_bkTexCoord.push_back( glm::vec2( 1.0f, 0.0f )  );
+        m_bkTexCoord.push_back( glm::vec2( 0.0f, 0.0f )  );
+        m_bkTexCoord.push_back( glm::vec2( 1.0f, 1.0f )  );
+        m_bkTexCoord.push_back( glm::vec2( 0.0f, 1.0f )  );
+      break;
+      default:
+      break;
+    }
+    
+    m_ebo = bo;
+  }
 }
 
 BOOL      GLWidget::draw( const glm::mat4& mvp, const GLRecti& rect )
@@ -304,6 +343,7 @@ VOID       GLWidget::_updateBkVertices( )
 {
   // Remove all vertices
   m_bkVertices.clear();
+  m_bkVertices.reserve(4);
   
   // Default Vertices coordinates 
   GLPosition pos  = getPosition();
