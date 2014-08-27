@@ -16,7 +16,6 @@ Download and Install all dependencies
 In the following opearaion we are supposing to work with an ARM device that supports "HARD FLOAT" https://wiki.debian.org/ArmHardFloatPort an "NEON" http://www.arm.com/products/processors/technologies/neon.php also supposing to have EGL and OpenGL ES 2.0.
 
 FEDLibrary - http://sourceforge.net/projects/fedlibrary/
-
 ```
 #git clone git://git.code.sf.net/p/fedlibrary/git fedlibrary
 #cd fedlibrary 
@@ -30,7 +29,7 @@ FEDLibrary - http://sourceforge.net/projects/fedlibrary/
 ```
 
 GLFW - http://www.glfw.org/
-
+```
 #git clone https://github.com/glfw/glfw.git glfw 
 #cd glfw 
 #git checkout 3.0.4
@@ -41,15 +40,17 @@ GLFW - http://www.glfw.org/
 #make install 
 #ldconfig 
 #cd ../../ 
+```
 
 OpenGL Mathematics (GLM) - http://glm.g-truc.net/0.9.5/index.html
-
+```
 #wget http://softlayer-ams.dl.sourceforge.net/project/ogl-math/glm-0.9.5.4/glm-0.9.5.4.zip
 #unzip glm-0.9.5.4.zip 
 #cp -R glm/glm /usr/include/ 
+```
 
 FreeImage - http://freeimage.sourceforge.net/
-
+```
 You can optimize this library using -mfloat-abi=hard option, do not use neon or you will get link error.
 
 #wget http://garr.dl.sourceforge.net/project/freeimage/Source%20Distribution/3.16.0/FreeImage3160.zip 
@@ -59,9 +60,10 @@ You can optimize this library using -mfloat-abi=hard option, do not use neon or 
 #make install 
 #ldconfig
 #cd .. 
+```
 
 libsigc++ - http://libsigc.sourceforge.net/
-
+```
 #wget http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.3/libsigc++-2.3.1.tar.xz
 #unxz libsigc++-2.3.1.tar.xz
 #tar xvf  libsigc++-2.3.1.tar
@@ -72,9 +74,10 @@ libsigc++ - http://libsigc.sourceforge.net/
 #cp sigc++config.h /usr/local/include/sigc++-2.0/
 #ldconfig 
 #cd .. 
+```
 
 libgles++ - <here you are>
-
+```
 #git clone https://github.com/fe-dagostino/libglespp.git libgles++
 #cd libgles++ 
 #mkdir build 
@@ -84,5 +87,5 @@ libgles++ - <here you are>
 #make install 
 #ldconfig 
 #cd ../../ 
-
+```
 
