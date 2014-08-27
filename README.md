@@ -17,6 +17,7 @@ In the following opearaion we are supposing to work with an ARM device that supp
 
 FEDLibrary - http://sourceforge.net/projects/fedlibrary/
 
+```
 #git clone git://git.code.sf.net/p/fedlibrary/git fedlibrary
 #cd fedlibrary 
 #mkdir build 
@@ -26,6 +27,7 @@ FEDLibrary - http://sourceforge.net/projects/fedlibrary/
 #make install 
 #ldconfig 
 #cd ../../ 
+```
 
 GLFW - http://www.glfw.org/
 
