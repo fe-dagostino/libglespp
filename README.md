@@ -15,8 +15,7 @@ Download and Install all dependencies
 
 In the following opearaion we are supposing to work with an ARM device that supports "HARD FLOAT" https://wiki.debian.org/ArmHardFloatPort an "NEON" http://www.arm.com/products/processors/technologies/neon.php also supposing to have EGL and OpenGL ES 2.0.
 
-FEDLibrary - http://sourceforge.net/projects/fedlibrary/
-----------
+*FEDLibrary - http://sourceforge.net/projects/fedlibrary/*
 ```
 #git clone git://git.code.sf.net/p/fedlibrary/git fedlibrary
 #cd fedlibrary 
