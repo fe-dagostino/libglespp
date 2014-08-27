@@ -65,7 +65,10 @@ public:
     
     GLCamera*  pCamera =  new GLCamera( TRUE );
     
-    glm::vec3 cameraPosition = glm::vec3(4,3,3); // Camera is at (4,3,3), in World Space
+    //glm::vec3 cameraPosition = glm::vec3(4,3,3); // Camera is at (4,3,3), in World Space
+    //glm::vec3 cameraTarget   = glm::vec3(0,0,0); // and looks at the origin
+    //glm::vec3 upVector       = glm::vec3(0,1,0);  // Head is up (set to 0,-1,0 to look upside-down)
+    glm::vec3 cameraPosition = glm::vec3(0,0,1); // Camera is at (4,3,3), in World Space
     glm::vec3 cameraTarget   = glm::vec3(0,0,0); // and looks at the origin
     glm::vec3 upVector       = glm::vec3(0,1,0);  // Head is up (set to 0,-1,0 to look upside-down)
 
@@ -78,15 +81,17 @@ public:
     //pCamera->getViewMatrix().get() = glm::mat4(1.0);
     //pCamera->getViewMatrix().get() = glm::ortho( (float)0, (float)m_iWidth, (float)m_iHeight, (float)0 );
     //pCamera->getViewMatrix().get() = glm::perspective(45.0f, (float)m_iWidth / (float)m_iHeight, 0.1f, 50.0f);
+    //pCamera->getViewMatrix().get() = glm::perspective(45.0f, (float)m_iWidth / (float)m_iHeight, 0.1f, 50.0f);
 	
     m_pSceneGraph->addSceneNode( new GLSceneCameraNode( "MainCamera", pCamera ) );
   
     
     //glm::mat4 mProjection = glm::mat4( 0.1f );
     //glm::mat4 mProjection = glm::perspective(45.0f, (float)m_iWidth / (float)m_iHeight, 0.1f, 50.0f); 
-    //glm::mat4 mProjection = glm::ortho( (float)0, (float)m_iWidth, (float)m_iHeight, (float)0 );
-    //glm::mat4 mProjection = glm::ortho( (float)0, (float)m_iWidth, (float)m_iHeight, (float)0 );
-    glm::mat4 mProjection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+    //glm::mat4 mProjection = glm::perspective(0.785398163f, (float)m_iWidth / (float)m_iHeight, 0.1f, 50.0f); 
+    //glm::mat4 mProjection = glm::ortho( (float)0, (float)m_iWidth, (float)m_iHeight, (float)0, 0.1f, 500.0f );
+    //glm::mat4 mProjection = glm::ortho( -1.0f*(float)m_iWidth/2, (float)m_iWidth/2, (float)m_iHeight/2, -1.0f*(float)m_iHeight/2, 0.1f, 500.0f );
+    glm::mat4 mProjection = glm::perspectiveFov(45.0f, (float)m_iWidth, (float)m_iHeight, 0.1f, 500.0f);
   
     m_pViewPort   = new GLViewPort( m_pSceneGraph, mProjection ); 
   
@@ -113,6 +118,12 @@ public:
     GLLayer* pLayer4 = new GLLayer( *m_pViewPort );
     GLLayer* pLayer5 = new GLLayer( *m_pViewPort );
     
+    pLayer1->setPosition( -1.0f*m_iWidth/2, -1.0f*m_iHeight/2, TRUE );
+    pLayer2->setPosition( -1.0f*m_iWidth/2, -1.0f*m_iHeight/2, TRUE );
+    pLayer3->setPosition( -1.0f*m_iWidth/2, -1.0f*m_iHeight/2, TRUE );
+    pLayer4->setPosition( -1.0f*m_iWidth/2, -1.0f*m_iHeight/2, TRUE );
+    pLayer5->setPosition( -1.0f*m_iWidth/2, -1.0f*m_iHeight/2, TRUE );
+    
     m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer5", pLayer5 ) );
     m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer4", pLayer4 ) );
     m_pSceneGraph->addSceneNode( new GLSceneLayerNode( "Layer3", pLayer3 ) );
@@ -134,8 +145,10 @@ public:
 
     //glm::mat4 mModel = glm::mat4( 0.1f );
     //glm::mat4 mModel = glm::translate( glm::mat4(1.0f), glm::vec3( 0, 0, 0 ) );
-    glm::mat4 mModel =  glm::ortho( (float)0, (float)m_iWidth, (float)m_iHeight, (float)0 );
+    //glm::mat4 mModel =  glm::ortho( (float)0, (float)m_iWidth, (float)m_iHeight, (float)0, 0.1f, 1000.0f );
+    //glm::mat4 mModel =  glm::ortho( (float)-1.0f, (float)1.0f, (float)1.0f, (float)-1.0f );    
     //glm::mat4 mModel =  glm::perspective(45.0f, (float)m_iWidth / (float)m_iHeight, 0.1f, 50.0f);
+    glm::mat4 mModel =  glm::ortho( -1.0f*(float)m_iWidth/2, (float)m_iWidth/2, (float)m_iHeight/2, -1.0f*(float)m_iHeight/2, 0.1f, 1000.0f );
 
     pNodeLayer1->getMatrixModel().get() =  mModel;
     pNodeLayer2->getMatrixModel().get() =  mModel;
@@ -147,12 +160,11 @@ public:
     //m_Animation.attach( new GLAnimation() );
     //pNodeLayer1->setAnimation( m_Animation );
     
-    pNodeLayer1->getMatrixModel().translate( 10, 0,  1 );
-
-    pNodeLayer2->getMatrixModel().translate( 0, 0,  2 );
-    pNodeLayer3->getMatrixModel().translate( 0, 0,  3 );
-    pNodeLayer4->getMatrixModel().translate( 0, 0,  4 );
-    pNodeLayer5->getMatrixModel().translate( 0, 0,  5 );
+    pNodeLayer1->getMatrixModel().translate( 0, 0,   0 );
+    pNodeLayer2->getMatrixModel().translate( 0, 0, 200 );
+    pNodeLayer3->getMatrixModel().translate( 0, 0, 400 );
+    pNodeLayer4->getMatrixModel().translate( 0, 0, 600 );
+    pNodeLayer5->getMatrixModel().translate( 0, 0, 800 );
     
     
     ((GLLayer*)pNodeLayer1->getReference())->setBackground( glm::vec4( 0.5,0.5,0.5, 0.2 ) );
@@ -160,7 +172,6 @@ public:
     ((GLLayer*)pNodeLayer3->getReference())->setBackground( glm::vec4( 0.0,0.5,0.0, 0.4 ) );
     ((GLLayer*)pNodeLayer4->getReference())->setBackground( glm::vec4( 0.5,0.0,0.0, 0.5 ) );
     ((GLLayer*)pNodeLayer5->getReference())->setBackground( glm::vec4( 0.0,0.5,0.5, 1.0 ) );
-    
     
     
     
@@ -174,17 +185,20 @@ public:
     GLTexture* pTexture = new GLTexture();
     pTexture->load( GLTexture::etlFreeImage, "/etc/gles-gui/media/wall.jpg" );
     
-    widget->setPosition( 100, 100 );
-    widget->setSize( 800, 800 );
-    //widget->setBackground( glm::vec4( 0,0,1,1 ) );
+    widget->setPosition( 0, 100, TRUE );
+    //widget->setSize( 800, 800 );
+    widget->setBackground( glm::vec4( 0,0,1,1 ) );
     //widget->setBackground( pTexture );
     
     wfont->setMargins(  10,10,10,10 );
     
     widget->setLabel( wfont, L"Testo Di Prova", glm::vec4( 1,1,1,1), wtaAutoResize );
     
-    ((GLLayer*)pNodeLayer1->getReference())->setBackground( pTexture );
-    ((GLLayer*)pNodeLayer1->getReference())->addChild( widget );
+    ((GLLayer*)pNodeLayer1->getReference())->setBackground( pTexture, GLWidget::eboAsIs );
+      ((GLLayer*)pNodeLayer1->getReference())->addChild( widget );
+    ((GLLayer*)pNodeLayer2->getReference())->setBackground( pTexture, GLWidget::eboFlipHorizontal );
+    ((GLLayer*)pNodeLayer3->getReference())->setBackground( pTexture, GLWidget::eboFlipVertical   );
+    ((GLLayer*)pNodeLayer4->getReference())->setBackground( pTexture, GLWidget::eboFlipBoth       );
     
     int counter = 0;
     FString sLabel( 0, "Counter %03d", counter++ );
@@ -195,6 +209,7 @@ public:
       
       ///////////////
       m_pViewPort->setArea( 0, 0, _iWidth, _iHeight );
+      m_pViewPort->use();
 
       // Update background color
       m_pViewPort->getScene()->setBackground( 0.2f, 0.2f, 0.2f, 0.0f );
@@ -409,6 +424,9 @@ private:
   /***/
   VOID   HandleKey( INT iKey, WORD wMods )
   {
+    double ax = 0.01f;  // angle x
+    double ay = 0.01f;  // angle y
+    
     GLSceneCameraNode* pMainCamera = dynamic_cast<GLSceneCameraNode*>(m_pSceneGraph->getSceneNode( "GLSceneCameraNode", "MainCamera" ));
     GLSceneLayerNode*  pLayer1     = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer1" ));
     
@@ -418,22 +436,22 @@ private:
       {
 	case GLFW_KEY_LEFT : // left arrow
 	{
-	  pLayer1->getMatrixModel().rotateX( -.1 );
+	  pLayer1->getMatrixModel().rotateX( -1.0f*ax );
 	}; break;
 	
 	case GLFW_KEY_RIGHT : // right arrow
 	{
-	  pLayer1->getMatrixModel().rotateX( +.1 );
+	  pLayer1->getMatrixModel().rotateX( ax );
 	}; break;
 
 	case GLFW_KEY_UP : // up arrow
 	{
-	  pLayer1->getMatrixModel().rotateY( -.1 );
+	  pLayer1->getMatrixModel().rotateY( -1.0f*ay );
 	}; break;
 	
 	case GLFW_KEY_DOWN : // down arrow
 	{
-	  pLayer1->getMatrixModel().rotateY( +.1 );
+	  pLayer1->getMatrixModel().rotateY( ay );
 	}; break;
       }
       
@@ -442,14 +460,31 @@ private:
     
     switch ( iKey )
     {
+      case 67:
+      {
+	/*
+        GLSceneLayerNode* pNodeLayer2 = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer2" ));
+	
+	pNodeLayer2->getMatrixModel().rotateX( ax );
+	*/
+      }; break;
+      case 66:
+      {
+	/*
+        GLSceneLayerNode* pNodeLayer2 = dynamic_cast<GLSceneLayerNode*>(m_pSceneGraph->getSceneNode( "GLSceneLayerNode", "Layer2" ));
+
+	pNodeLayer2->getMatrixModel().rotateX( -1.0f*ax );
+	*/
+      }; break;
+      
       case 65 : // a
       {
-	pMainCamera->getCamera()->getViewMatrix().translate( 0, 0, -.1 );
+	pMainCamera->getCamera()->getViewMatrix().translate( 0, 0, -0.5f );
       }; break;
       
       case 90 : // z
       {
-	pMainCamera->getCamera()->getViewMatrix().translate( 0, 0, +.1 );
+	pMainCamera->getCamera()->getViewMatrix().translate( 0, 0, +0.5f );
       }; break;
       
       case 263 : // left arrow
