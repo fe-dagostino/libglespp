@@ -1,20 +1,18 @@
 /*
-    gles plus plus
-    Copyright (C) 2013 <fedagostino@gmail.com>
+    This file is part of lib gles plus plus.
 
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
+    libgles++ is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-    This library is distributed in the hope that it will be useful,
+    libgles++ is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
 
-    You should have received a copy of the GNU Lesser General Public
-    License along with this library; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+    You should have received a copy of the GNU Lesser General Public License
+    along with libgles++.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
@@ -22,15 +20,17 @@
 
 GENERATE_CLASSINFO( GLLayer, GLWidget )
 
+
 GLLayer::GLLayer( GLViewPort& rViewPort )
- : GLWidget(nullptr), m_rViewPort( rViewPort )
+ : GLWidget(nullptr)
 {
   GLint    x,y = 0;
   GLsizei  w,h = 0;
   
-  m_rViewPort.getArea( x, y, w, h );
+  rViewPort.getArea( x, y, w, h );
   
-  setSize( w, h );
+  setPosition( x, y, FALSE );
+  setSize( w, h, FALSE );
 }
 
 GLLayer::~GLLayer()
@@ -44,22 +44,7 @@ BOOL    GLLayer::render( const glm::mat4& mvp )
   if ( isVisible() == FALSE )
     return FALSE;
   
-  GLint   x, y   = 0;
-  GLsizei width  = 0;
-  GLsizei height = 0;
-  
-  getViewPort().getArea( x, y, width, height );
-
-  if ( 
-       ( width  != getSize().width  ) ||
-       ( height != getSize().height ) 
-     )
-  {
-    setPosition( 0, 0 );
-    setSize( width, height );
-  }
-  
-  GLRecti cliRect( x, y, width, height );
+  GLRecti cliRect( getPosition().x, getPosition().y, getSize().width, getSize().height );
   
   return draw( mvp, cliRect );
 }

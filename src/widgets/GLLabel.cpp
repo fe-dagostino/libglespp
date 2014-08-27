@@ -1,20 +1,18 @@
 /*
-    gles plus plus
-    Copyright (C) 2013 <fedagostino@gmail.com>
+    This file is part of lib gles plus plus.
 
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
+    libgles++ is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-    This library is distributed in the hope that it will be useful,
+    libgles++ is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
 
-    You should have received a copy of the GNU Lesser General Public
-    License along with this library; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+    You should have received a copy of the GNU Lesser General Public License
+    along with libgles++.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
@@ -73,16 +71,22 @@ BOOL      GLLabel::OnDraw( const GLRecti& rect )
 }
 
   
-VOID      GLLabel::OnPositionChanged( const GLPosition& pos )
+VOID      GLLabel::OnPositionChanged( const GLPosition2D& pos )
 {
-  _updateVertices( m_eAlignment );
+  _updateVertices( getAlignment() );
 }
 
 VOID      GLLabel::OnSizeChanged( const GLSize& size )
 {
-  _updateVertices( m_eAlignment );
+  _updateVertices( getAlignment() );
 }
   
+BOOL      GLLabel::OnUpdateBackgroundVertices()
+{
+  _updateVertices( getAlignment() );
+  return FALSE;  
+} 
+
 VOID      GLLabel::_updateVertices( WidgetTextAligment align )
 {
   m_eAlignment = align;
@@ -94,16 +98,22 @@ VOID      GLLabel::_updateVertices( WidgetTextAligment align )
   m_vVertices.clear();
   
   // Default Vertices coordinates 
-  GLPosition pos = getPosition();
-  GLSize     size(0,0);
+  GLPosition2D pos = getPosition();
+  GLSize       size(0,0);
   
-  switch ( align )
+  if (getParent()!=nullptr)
+  {
+    pos += getParent()->getPosition();
+  }
+  
+  switch ( getAlignment() )
   {
     case wtaAutoResize :
     {
       size = m_pText->getTexture()->getSize();
+      
       // Resize client area without notifications
-      clientResize( size );
+      setSize( size.width, size.height, FALSE );
     }; break;
     case wtaFillClientArea :
     {

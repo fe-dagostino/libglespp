@@ -1,20 +1,18 @@
 /*
-    gles plus plus
-    Copyright (C) 2013 <fedagostino@gmail.com>
+    This file is part of lib gles plus plus.
 
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
+    libgles++ is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-    This library is distributed in the hope that it will be useful,
+    libgles++ is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
 
-    You should have received a copy of the GNU Lesser General Public
-    License along with this library; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+    You should have received a copy of the GNU Lesser General Public License
+    along with libgles++.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
@@ -68,6 +66,9 @@ BOOL      GLWidget::addChild( GLWidget* widget )
     
   m_vChildren.push_back( widget );
 
+  // Update parent 
+  widget->setParent(this);
+  
   // Iterator must be updated each time 
   // m_vChildren become changed
   m_Focused = m_vChildren.end();
@@ -89,12 +90,12 @@ BOOL      GLWidget::hasFocus() const
   return FALSE;
 }
 
-VOID      GLWidget::setPosition( const GLPosition& pos )
+VOID      GLWidget::setPosition( const GLPosition2D& pos )
 { 
-  setPosition( pos.x, pos.y );
+  setPosition( pos.x, pos.y, TRUE );
 }
 
-VOID      GLWidget::setPosition( GLint x, GLint y )
+VOID      GLWidget::setPosition( GLint x, GLint y, BOOL notify )
 { 
   if ( (m_pos.x != x) || (m_pos.y != y) )
   {
@@ -103,16 +104,19 @@ VOID      GLWidget::setPosition( GLint x, GLint y )
   
     _updateBkVertices();
   }
-    
-  OnPositionChanged( m_pos );
+  
+  if ( notify == TRUE )
+  {
+    OnPositionChanged( m_pos );
+  }
 }
   
 VOID      GLWidget::setSize( const GLSize& size )
 { 
-  setSize( size.width, size.height );
+  setSize( size.width, size.height, TRUE );
 }
 
-VOID      GLWidget::setSize( GLsizei width, GLsizei height )
+VOID      GLWidget::setSize( GLsizei width, GLsizei height, BOOL notify )
 { 
   if (( m_size.width != width ) || (m_size.height != height))
   {
@@ -122,7 +126,10 @@ VOID      GLWidget::setSize( GLsizei width, GLsizei height )
     _updateBkVertices();
   }
   
-  OnSizeChanged( m_size );
+  if ( notify == TRUE )
+  {
+    OnSizeChanged( m_size );
+  }
 }  
 
   
@@ -145,7 +152,7 @@ VOID      GLWidget::setBackground( GLTexture* texture, BackgroundOptions bo )
     m_bkTexCoord.reserve(4);
     switch ( bo )
     {
-      case eboOriginal:
+      case eboAsIs:
         m_bkTexCoord.push_back( glm::vec2( 0.0f, 1.0f )  );
         m_bkTexCoord.push_back( glm::vec2( 1.0f, 1.0f )  );
         m_bkTexCoord.push_back( glm::vec2( 0.0f, 0.0f )  );
@@ -244,13 +251,6 @@ VOID     GLWidget::OnKeyRepeated( GLWindow* pGlWindow, GLLayer* pGlLayer, INT iK
   signalKeyRepeated.emit( pGlWindow, pGlLayer, iKey, iScanCode, wMods );  
 } 
 
-VOID  GLWidget::clientResize( const GLSize& size )
-{
-  m_size =  size;
-  
-  _updateBkVertices( );
-} 
-
 BOOL  GLWidget::stepFocus()
 {
   if ( hasFocusable() == FALSE )
@@ -329,7 +329,7 @@ VOID                   GLWidget::OnEndDrawing( const GLRecti& rect )
   
 }
 
-VOID                   GLWidget::OnPositionChanged( const GLPosition& pos )
+VOID                   GLWidget::OnPositionChanged( const GLPosition2D& pos )
 {
   
 }
@@ -339,15 +339,29 @@ VOID                   GLWidget::OnSizeChanged( const GLSize& size )
   
 }
 
+BOOL       GLWidget::OnUpdateBackgroundVertices()
+{
+  return TRUE;
+}
+
+
 VOID       GLWidget::_updateBkVertices( )
 {
+  if ( OnUpdateBackgroundVertices() == FALSE )
+    return;
+    
   // Remove all vertices
   m_bkVertices.clear();
   m_bkVertices.reserve(4);
   
   // Default Vertices coordinates 
-  GLPosition pos  = getPosition();
-  GLSize     size = getSize();
+  GLPosition2D pos  = getPosition();
+  GLSize       size = getSize();
+  
+  if (getParent()!=nullptr)
+  {
+    pos += getParent()->getPosition();
+  }
   
   m_bkVertices.push_back( glm::vec2( pos.x             , pos.y + size.height ) );
   m_bkVertices.push_back( glm::vec2( pos.x + size.width, pos.y + size.height ) );
@@ -373,6 +387,8 @@ VOID       GLWidget::setParent( GLWidget* pParent )
     slotKeyPressed  = m_pParent->signalKeyPressed.connect ( sigc::mem_fun(this, &GLWidget::OnKeyPressed ) );
     slotKeyRepeated = m_pParent->signalKeyRepeated.connect( sigc::mem_fun(this, &GLWidget::OnKeyRepeated) );
   }
+  
+  _updateBkVertices();
 }
 
 
