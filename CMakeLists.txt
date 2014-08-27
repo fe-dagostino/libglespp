@@ -20,7 +20,7 @@ ENDIF()
 
 IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
   set(  LIBGLES++_VERSION
-	-0.1.0-debug
+	-0.2.0-debug
     )
   set(  FEDLIB_VER
         -3.1.0-debug
@@ -30,7 +30,7 @@ IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
      )
 ELSE()
   set(  LIBGLES++_VERSION
-	-0.1.0
+	-0.2.0
     )
   set(  FEDLIB_VER
         -3.1.0
