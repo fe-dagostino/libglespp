@@ -13,7 +13,17 @@ libgles++ has been build on the above of many other libraries and many others wi
 Download and Install all dependencies
 -------------------------------------
 
-In the following opearaion we are supposing to work with an ARM device that supports **HARD FLOAT** *https://wiki.debian.org/ArmHardFloatPort* and **NEON** *http://www.arm.com/products/processors/technologies/neon.php* also supposing to have **EGL** and **OpenGL ES 2.0**.
+In the following opearaion we are supposing to work with an ARM device that supports **hard float** *https://wiki.debian.org/ArmHardFloatPort* and **neon** *http://www.arm.com/products/processors/technologies/neon.php* also supposing to have **EGL** and **OpenGL ES 2.0**.
+
+ - **FEDLibrary** used to keep code portable between linux and windows OSs
+ - **GLFW**       multi-platform library for creating windows with OpenGL contexts and receiving input and events. 
+ - **GLM**        OpenGL Mathematics (GLM)
+ - **FreeImage**  Add supports for popular graphics image formats like PNG, BMP, JPEG. 
+ - **libav++**    Add supports for many graphics image formats and also to multimedia files.
+ - **libsigc++**  implements a typesafe callback system for standard C++. It allows you to define signals 
+                  and to connect those signals to any callback function, either global or a member function, 
+                  regardless of whether it is static or virtual. 
+ 
 
 **FEDLibrary** - *http://sourceforge.net/projects/fedlibrary/*
 ```
