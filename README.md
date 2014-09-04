@@ -20,6 +20,9 @@ Here a list with all dependecies and their use
                   and to connect those signals to any callback function, either global or a member function, 
                   regardless of whether it is static or virtual. 
 
+# Build instructions
+
+Please refer to the [Building](https://github.com/limetext/lime/wiki/Building) page in the [wiki](https://github.com/limetext/lime/wiki/_pages).
 
 Download and Install all dependencies
 -------------------------------------
