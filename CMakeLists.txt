@@ -8,7 +8,6 @@ include_directories( ${CMAKE_INSTALL_PREFIX}/include/ )
 include_directories( ${CMAKE_INSTALL_PREFIX}/include/sigc++-2.0/ )
 include_directories( ${CMAKE_INSTALL_PREFIX}/include/fedlibrary/include )
 include_directories( ${CMAKE_INSTALL_PREFIX}/include/fedlibrary/template_include )
-include_directories( ${CMAKE_INSTALL_PREFIX}/usr/include/ )
 
 link_directories( ${CMAKE_FIND_ROOT_PATH}/lib )
 link_directories( ${CMAKE_FIND_ROOT_PATH}/usr/lib )
