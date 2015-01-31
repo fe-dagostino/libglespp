@@ -11,7 +11,7 @@ libgles++ has been build on the above of many other libraries and many others wi
 
 Here a list with all dependecies and their use
 
- - **FEDLibrary** used to keep code portable between linux and windows OSs
+ - [**FEDLibrary**](http://sourceforge.net/projects/fedlibrary/) used to keep code portable between linux and windows OSs
  - **GLFW**       multi-platform library for creating windows with OpenGL contexts and receiving input and events. 
  - **GLM**        OpenGL Mathematics (GLM)
  - **FreeImage**  Add supports for popular graphics image formats like PNG, BMP, JPEG. 
