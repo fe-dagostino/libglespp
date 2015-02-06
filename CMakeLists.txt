@@ -23,7 +23,7 @@ IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 	-0.2.0-debug
     )
   set(  FEDLIB_VER
-        -3.1.0-debug
+        -3.1.1-debug
      )
   set(  LIBAVC++_VERSION
         -1.0.0-debug
@@ -33,7 +33,7 @@ ELSE()
 	-0.2.0
     )
   set(  FEDLIB_VER
-        -3.1.0
+        -3.1.1
      )
   set(  LIBAVC++_VERSION
         -1.0.0
@@ -224,32 +224,6 @@ set(  LIBGLES++_LI_LIBRARIES
 )
 endif (USE_DEVIL)
 
-
-set(  GLPLAYER_LIBRARIES
-      avc++${LIBAVC++_VERSION}
-      portaudio
-      glfw3
-      avutil
-      avcodec
-      avfilter
-      avformat
-      avdevice
-      avresample
-      swscale
-      rt
-      Xrandr
-      Xi
-      Xxf86vm
-      m
-      Xrender
-      Xext
-      X11
-      pthread
-      xcb
-      Xau
-      Xdmcp
-      ao
-)
 
 set(  GLES_GUI_LIBRARIES
       glfw3
