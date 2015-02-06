@@ -35,11 +35,11 @@ class GLApplicationEvents
 {
 public:
   /***/
-  virtual VOID OnInitializeError() = 0;
+  virtual VOID OnInitializeError(/* @todo */) = 0;
   /***/
   virtual VOID OnError( INT iError, const FString& sDescription ) = 0;
   /***/
-  virtual VOID OnFinalizeError() = 0;
+  virtual VOID OnFinalizeError(/* @todo */) = 0;
 };
 
 class GLApplication : protected FSingleton

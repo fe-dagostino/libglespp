@@ -38,7 +38,8 @@ public:
   enum ImageLoader
   {
     eilFreeImage,
-    eilLibAV
+    eilLibAV,
+    eilDevIL
   };
   
   /***/

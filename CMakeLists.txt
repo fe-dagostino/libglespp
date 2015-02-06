@@ -47,7 +47,8 @@ option (HAVE_OPENGL_ES_API "OPENGL ES API"               OFF)
 option (TARGET_NV_CARD     "Target NV Card"              OFF)
 option (USE_FREEIMAGE      "Build FreeImage loader"       ON)
 option (USE_AVCPP          "Build avc++ loader"          OFF)
-option (BUILD_GLPLAYER     "Build gles++ libav player"    ON)
+option (USE_DEVIL          "Build DevIL loader"          OFF)
+option (BUILD_GLPLAYER     "Build gles++ libav player"   OFF)
 option (BUILD_GLES_GUI     "Build gles++ gui test"        ON)
 
 
@@ -171,8 +172,20 @@ set(  LIBGLES++_SRC
         ./src/GLWindow.cpp
         ./src/GLWindowEvents.cpp
         ./src/GLMonitor.cpp
+)
+
+if (USE_FREEIMAGE)
+set(  LIBGLES++_SRC_FREEIMAGE   
         ./src/images/freeimage.c
 )
+endif (USE_FREEIMAGE)
+
+if (USE_DEVIL)
+set(  LIBGLES++_SRC_DEVIL
+        ./src/images/devil.c
+)
+endif (USE_DEVIL)
+
 
 set(  LIBGLES++_SRC_FONT   
         ./src/font/GLFreeTypeFont.cpp
@@ -201,6 +214,15 @@ else()
 set(  LIBGLES++_FI_LIBRARIES
 )
 endif (USE_FREEIMAGE)
+
+if (USE_DEVIL)
+set(  LIBGLES++_LI_LIBRARIES
+      IL
+)
+else()
+set(  LIBGLES++_LI_LIBRARIES
+)
+endif (USE_DEVIL)
 
 
 set(  GLPLAYER_LIBRARIES
@@ -293,22 +315,28 @@ add_definitions(
 )
 ENDIF(USE_AVCPP)
 
-add_library   ( gles++${LIBGLES++_VERSION}  SHARED  ${LIBGLES++_SRC} ${LIBGLES++_SRC_FONT} ${LIBGLES++_SRC_WIDGETS} )
+IF(USE_DEVIL)
+add_definitions(
+                -D_USE_DEVIL
+)
+ENDIF(USE_DEVIL)
+
+add_library   ( gles++${LIBGLES++_VERSION}  SHARED  ${LIBGLES++_SRC} ${LIBGLES++_SRC_FREEIMAGE} ${LIBGLES++_SRC_DEVIL} ${LIBGLES++_SRC_FONT} ${LIBGLES++_SRC_WIDGETS} )
 
 if (BUILD_GLPLAYER)
-add_executable( glplayer                     ${LIBGLES++_SRC} ${LIBGLES++_SRC_FONT} ${LIBGLES++_SRC_WIDGETS} glplayer.cpp )
+add_executable( glplayer                     ${LIBGLES++_SRC} ${LIBGLES++_SRC_FREEIMAGE} ${LIBGLES++_SRC_DEVIL} ${LIBGLES++_SRC_FONT} ${LIBGLES++_SRC_WIDGETS} glplayer.cpp )
 endif()
 if (BUILD_GLES_GUI)
-add_executable( gles-gui                     ${LIBGLES++_SRC} ${LIBGLES++_SRC_FONT} ${LIBGLES++_SRC_WIDGETS} gles-gui.cpp )
+add_executable( gles-gui                     ${LIBGLES++_SRC} ${LIBGLES++_SRC_FREEIMAGE} ${LIBGLES++_SRC_DEVIL} ${LIBGLES++_SRC_FONT} ${LIBGLES++_SRC_WIDGETS} gles-gui.cpp )
 endif()
 
-target_link_libraries( gles++${LIBGLES++_VERSION}  ${LIBGLES++_LIBRARIES} ${LIBGLES++_FI_LIBRARIES} )
+target_link_libraries( gles++${LIBGLES++_VERSION}  ${LIBGLES++_LIBRARIES} ${LIBGLES++_FI_LIBRARIES} ${LIBGLES++_LI_LIBRARIES} )
 
 if (BUILD_GLPLAYER)
-target_link_libraries( glplayer                    ${LIBGLES++_LIBRARIES} ${LIBGLES++_FI_LIBRARIES} ${GLPLAYER_LIBRARIES} ${GL_LIBRARIES}  )
+target_link_libraries( glplayer                    ${LIBGLES++_LIBRARIES} ${LIBGLES++_FI_LIBRARIES} ${LIBGLES++_LI_LIBRARIES} ${GLPLAYER_LIBRARIES} ${GL_LIBRARIES}  )
 endif()
 if (BUILD_GLES_GUI)
-target_link_libraries( gles-gui                    ${LIBGLES++_LIBRARIES} ${LIBGLES++_FI_LIBRARIES} ${GLES_GUI_LIBRARIES} ${GL_LIBRARIES}  )
+target_link_libraries( gles-gui                    ${LIBGLES++_LIBRARIES} ${LIBGLES++_FI_LIBRARIES} ${LIBGLES++_LI_LIBRARIES} ${GLES_GUI_LIBRARIES} ${GL_LIBRARIES}  )
 endif()
 
 install( TARGETS gles++${LIBGLES++_VERSION}  LIBRARY DESTINATION lib                       )

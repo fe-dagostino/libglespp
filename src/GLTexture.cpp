@@ -18,12 +18,10 @@
 
 #include "../include/GLTexture.h"
 
-#ifdef _USE_FREEIMAGE
 extern "C"
 {
-# include "images/images.h"
+#include "images/images.h"
 }
-#endif
 
 #include "LOGGING/FLogger.h"
 
@@ -147,6 +145,31 @@ BOOL                    GLTexture::load( TextureLoader tl, const FString& sFilen
     ERROR_INFO( "Use: cmake -DUSE_AVCPP=ON in order to enable FreeImage loader", load() )
     return FALSE;
 #endif //_USE_AVCPP    
+  }
+  
+  if ( tl == etlDevIL )
+  {
+#ifdef _USE_DEVIL
+    m_pixels = il_load( sFilename.GetBuffer(), &m_length, &width, &height );
+    if (m_pixels==nullptr)
+    {
+      ERROR_INFO( FString( 0, "Failed to load Texture [%s]", sFilename.GetBuffer() ), load() );
+    
+      return FALSE;
+    }
+  
+    m_size.width  = width;
+    m_size.height = height;
+  
+    m_format = GL_RGBA;
+    m_type   = GL_UNSIGNED_BYTE;
+    
+    LOG_INFO( FString( 0, "Loaded Texture [%s] MEM BYTES [%d] W:[%d] Pixel x H:[%d] D:[32] Bits", sFilename.GetBuffer(), m_length, m_size.width, m_size.height ), load() );
+    return TRUE;
+#else  //_USE_DEVIL
+    ERROR_INFO( "Use: cmake -DUSE_DEVIL=ON in order to enable FreeImage loader", load() )
+    return FALSE;
+#endif //_USE_DEVIL    
   }
   
   return FALSE;

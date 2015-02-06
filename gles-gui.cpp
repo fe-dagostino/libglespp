@@ -183,7 +183,10 @@ public:
     GLLabel* widget = new GLLabel(nullptr);
     
     GLTexture* pTexture = new GLTexture();
+    // Using default loader FreeImage
     pTexture->load( GLTexture::etlFreeImage, "/etc/gles-gui/media/wall.jpg" );
+    // Using DevIL image loader
+    //pTexture->load( GLTexture::etlDevIL, "/etc/gles-gui/media/wall.jpg" );
     
     widget->setPosition( 0, 100, TRUE );
     //widget->setSize( 800, 800 );

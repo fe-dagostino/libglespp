@@ -41,7 +41,8 @@ public:
   enum TextureLoader
   {
     etlFreeImage,
-    etlLibAV
+    etlLibAV,
+    etlDevIL
   };
   
   /***/

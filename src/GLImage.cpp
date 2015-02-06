@@ -20,12 +20,10 @@
 
 #include "LOGGING/FLogger.h"
 
-#ifdef _USE_FREEIMAGE
 extern "C"
 {
-# include "images/images.h"
+#include "images/images.h"
 }
-#endif
 
 GENERATE_CLASSINFO( GLImage, GLObject )
 
@@ -73,6 +71,24 @@ GLboolean   GLImage::load( ImageLoader il, const FString& sFilename )
     ERROR_INFO( "Use: cmake -DUSE_AVCPP=ON in order to enable FreeImage loader", load() )
     return FALSE;
 #endif //_USE_AVCPP    
+  }
+  
+  if ( il == eilDevIL )
+  {
+#ifdef _USE_DEVIL
+    m_pData = il_load( sFilename.GetBuffer(), &m_uiDataSize, &m_iWidth, &m_iHeight );
+    if (m_pData==nullptr)
+    {
+      ERROR_INFO( FString( 0, "Failed to load Image [%s]", sFilename.GetBuffer() ), load() );
+      return FALSE;
+    }
+    
+    LOG_INFO( FString( 0, "Loaded Image [%s] MEM BYTES [%d] W:[%d] Pixel x H:[%d] D:[32] Bits", sFilename.GetBuffer(), m_uiDataSize, m_iWidth, m_iHeight ), load() );
+    return TRUE;
+#else  //_USE_DEVIL
+    ERROR_INFO( "Use: cmake -DUSE_DEVIL=ON in order to enable FreeImage loader", load() )
+    return FALSE;
+#endif //_USE_DEVIL    
   }
   
   return FALSE;
