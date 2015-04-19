@@ -15,7 +15,7 @@ Here a list with all dependecies and their use
  - [**GLFW**](http://www.glfw.org/)       multi-platform library for creating windows with OpenGL contexts and receiving input and events. 
  - [**GLM**](http://glm.g-truc.net/)        OpenGL Mathematics (GLM)
  - [**FreeImage**](http://freeimage.sourceforge.net/)  Add supports for popular graphics image formats like PNG, BMP, JPEG. 
- - **libav++**    Add supports for many graphics image formats and also to multimedia files.
+ - [**libav++**](https://github.com/fe-dagostino/libavcpp)    Add supports for many graphics image formats and also to multimedia files.
  - [**DevIL**](http://openil.sourceforge.net/about.php)      Add supports DevIL loading image library. 
  - [**libsigc++**](http://libsigc.sourceforge.net/)  implements a typesafe callback system for standard C++. It allows you to define signals 
                   and to connect those signals to any callback function, either global or a member function, 
