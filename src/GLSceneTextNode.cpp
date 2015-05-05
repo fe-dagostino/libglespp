@@ -33,7 +33,7 @@ GLSceneTextNode::GLSceneTextNode( const FString& sInstanceName, GLText* text, GL
  : GLSceneNode( sInstanceName, text ), m_program( program )
 {
   // Init model matrix
-  m_matModel.get() = glm::mat4( 1.0f );
+  m_matModel = glm::mat4( 1.0f );
     
   // Uodate datas related to specific reference
   OnSetReference( text );
