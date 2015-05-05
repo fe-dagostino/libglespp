@@ -15,8 +15,6 @@
     along with libgles++.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-
 #ifndef GLAPPLICATION_H
 #define GLAPPLICATION_H
 

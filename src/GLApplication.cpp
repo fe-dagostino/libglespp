@@ -20,10 +20,9 @@
 #include "../include/GLProgramsCollector.h"
 #include "../include/GLResourcesCollector.h"
 
-extern "C"
-{
+
 #include "images/images.h"
-}
+
 
 GENERATE_CLASSINFO( GLApplication, FSingleton )
 IMPLEMENT_SINGLETON( GLApplication )
@@ -58,6 +57,16 @@ VOID GLApplication::init( GLApplicationEvents* pEvents )
     }
   }
   
+#ifdef _USE_AVCPP
+  if (!av_init())
+  {
+    if ( GetInstance().getEvents() != nullptr )
+    {
+      GetInstance().getEvents()->OnInitializeError();
+    }
+  }
+#endif //_USE_AVCPP
+
 #ifdef _USE_DEVIL
   if (!il_init())
   {
@@ -75,6 +84,17 @@ VOID GLApplication::init( GLApplicationEvents* pEvents )
 
 VOID GLApplication::final()
 {
+  
+#ifdef _USE_AVCPP
+  if (!av_final())
+  {
+    if ( GetInstance().getEvents() != nullptr )
+    {
+      GetInstance().getEvents()->OnFinalizeError();
+    }
+  }
+#endif //_USE_AVCPP
+  
 #ifdef _USE_DEVIL
   if (!il_final())
   {
