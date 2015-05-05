@@ -33,13 +33,22 @@ class GLTransformationsMatrix
 {
 public:
   /***/
-  GLTransformationsMatrix();
+  GLTransformationsMatrix( );
   /***/
-  virtual ~GLTransformationsMatrix();
+  GLTransformationsMatrix( const GLTransformationsMatrix& tmat );
+  /***/
+  ~GLTransformationsMatrix();
   
   /***/
   inline glm::mat4&  get()
   { return m_matrix; }
+  
+  /***/
+  inline glm::mat4&  operator = ( const glm::mat4& mat )
+  { 
+    m_matrix = mat; 
+    return m_matrix;
+  }
   
   /***/
   inline VOID  scale( double xs, double ys, double zs )

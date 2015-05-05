@@ -24,6 +24,13 @@ GLTransformationsMatrix::GLTransformationsMatrix()
 
 }
 
+GLTransformationsMatrix::GLTransformationsMatrix( const GLTransformationsMatrix& tmat )
+ : m_matrix( tmat.m_matrix )
+{
+  
+}
+
+
 GLTransformationsMatrix::~GLTransformationsMatrix()
 {
 
