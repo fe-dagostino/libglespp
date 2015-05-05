@@ -37,7 +37,7 @@ GLSceneLayerNode::GLSceneLayerNode( const FString& sInstanceName, GLLayer* layer
  : GLSceneNode( sInstanceName, layer )
 {
   // Init model matrix
-  m_matModel.get() = glm::mat4( 1.0f );
+  m_matModel = glm::mat4( 1.0f );
 }
   
 GLSceneLayerNode::~GLSceneLayerNode()
