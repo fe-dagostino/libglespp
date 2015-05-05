@@ -18,12 +18,14 @@
 
 #include "../include/GLTexture.h"
 
-extern "C"
-{
 #include "images/images.h"
-}
 
 #include "LOGGING/FLogger.h"
+
+
+
+typedef unsigned char* (*load_image)( const char* filename, unsigned int* size, int* width, int* height );
+
 
 
 GLTexture::GLTexture()
@@ -109,28 +111,14 @@ VOID                    GLTexture::setUnpacking( GLint param )
 
 BOOL                    GLTexture::load( TextureLoader tl, const FString& sFilename )
 {
-  int width  = 0;
-  int height = 0;
+  int        width  = 0;
+  int        height = 0;
+  load_image load   = NULL; 
   
   if ( tl == etlFreeImage )
   {
 #ifdef _USE_FREEIMAGE
-    m_pixels = fi_load( sFilename.GetBuffer(), &m_length, &width, &height );
-    if (m_pixels==nullptr)
-    {
-      ERROR_INFO( FString( 0, "Failed to load Texture [%s]", sFilename.GetBuffer() ), load() );
-    
-      return FALSE;
-    }
-  
-    m_size.width  = width;
-    m_size.height = height;
-  
-    m_format = GL_RGBA;
-    m_type   = GL_UNSIGNED_BYTE;
-    
-    LOG_INFO( FString( 0, "Loaded Texture [%s] MEM BYTES [%d] W:[%d] Pixel x H:[%d] D:[32] Bits", sFilename.GetBuffer(), m_length, m_size.width, m_size.height ), load() );
-    return TRUE;
+    load = fi_load;
 #else  //_USE_FREEIMAGE
     ERROR_INFO( "Use: cmake -DUSE_FREEIMAGE=ON in order to enable FreeImage loader", load() )
     return FALSE;
@@ -140,7 +128,7 @@ BOOL                    GLTexture::load( TextureLoader tl, const FString& sFilen
   if ( tl == etlLibAV )
   {
 #ifdef _USE_AVCPP
-
+    load = av_load;
 #else  //_USE_AVCPP
     ERROR_INFO( "Use: cmake -DUSE_AVCPP=ON in order to enable FreeImage loader", load() )
     return FALSE;
@@ -150,29 +138,33 @@ BOOL                    GLTexture::load( TextureLoader tl, const FString& sFilen
   if ( tl == etlDevIL )
   {
 #ifdef _USE_DEVIL
-    m_pixels = il_load( sFilename.GetBuffer(), &m_length, &width, &height );
-    if (m_pixels==nullptr)
-    {
-      ERROR_INFO( FString( 0, "Failed to load Texture [%s]", sFilename.GetBuffer() ), load() );
-    
-      return FALSE;
-    }
-  
-    m_size.width  = width;
-    m_size.height = height;
-  
-    m_format = GL_RGBA;
-    m_type   = GL_UNSIGNED_BYTE;
-    
-    LOG_INFO( FString( 0, "Loaded Texture [%s] MEM BYTES [%d] W:[%d] Pixel x H:[%d] D:[32] Bits", sFilename.GetBuffer(), m_length, m_size.width, m_size.height ), load() );
-    return TRUE;
+    load = il_load;
 #else  //_USE_DEVIL
     ERROR_INFO( "Use: cmake -DUSE_DEVIL=ON in order to enable FreeImage loader", load() )
     return FALSE;
 #endif //_USE_DEVIL    
   }
+
+  if ( load == NULL )
+    return FALSE;
   
-  return FALSE;
+  m_pixels = load( sFilename.GetBuffer(), &m_length, &width, &height );
+  if (m_pixels==nullptr)
+  {
+    ERROR_INFO( FString( 0, "Failed to load Texture [%s]", sFilename.GetBuffer() ), load() );
+  
+    return FALSE;
+  }
+  
+  m_size.width  = width;
+  m_size.height = height;
+  
+  m_format = GL_RGBA;
+  m_type   = GL_UNSIGNED_BYTE;
+    
+  LOG_INFO( FString( 0, "Loaded Texture [%s] MEM BYTES [%d] W:[%d] Pixel x H:[%d] D:[32] Bits", sFilename.GetBuffer(), m_length, m_size.width, m_size.height ), load() );
+  
+  return TRUE;
 }
 
 VOID                    GLTexture::render(  const std::vector<glm::vec2>& vertices, 

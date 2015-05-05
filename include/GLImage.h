@@ -35,6 +35,17 @@ class GLImage : public GLObject, public GLReference
 {
   ENABLE_FRTTI( GLImage )
 public:
+  /**
+   * Note: Both eilFreeImage and eilDevIL load the image in the same order 
+   *       it has been stored, so if file format store the image from top
+   *       to bottom or from bottom to top these two libraries don't take 
+   *       care of it and image should be adjusted in rendering.
+   *       eilLibAV will load the image from top to bottom as for and 
+   *       image viewer even the file format store the image in a different 
+   *       manner. 
+   *       This so eilLibAV will be the best option if you don't knwo what
+   *       kind of image will be loaded.
+   */  
   enum ImageLoader
   {
     eilFreeImage,

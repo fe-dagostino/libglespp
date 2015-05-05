@@ -20,12 +20,14 @@
 
 #include "LOGGING/FLogger.h"
 
-extern "C"
-{
 #include "images/images.h"
-}
+
 
 GENERATE_CLASSINFO( GLImage, GLObject )
+
+
+typedef unsigned char* (*load_image)( const char* filename, unsigned int* size, int* width, int* height );
+
 
 GLImage::GLImage()
  : m_iWidth(0), m_iHeight(0), m_pData(nullptr)
@@ -45,28 +47,22 @@ GLImage::~GLImage()
 
 GLboolean   GLImage::load( ImageLoader il, const FString& sFilename )
 {
+  load_image load   = NULL; 
+  
   if ( il == eilFreeImage )
   {
 #ifdef _USE_FREEIMAGE
-    m_pData = fi_load( sFilename.GetBuffer(), &m_uiDataSize, &m_iWidth, &m_iHeight );
-    if (m_pData==nullptr)
-    {
-      ERROR_INFO( FString( 0, "Failed to load Image [%s]", sFilename.GetBuffer() ), load() );
-      return FALSE;
-    }
-    
-    LOG_INFO( FString( 0, "Loaded Image [%s] MEM BYTES [%d] W:[%d] Pixel x H:[%d] D:[32] Bits", sFilename.GetBuffer(), m_uiDataSize, m_iWidth, m_iHeight ), load() );
-    return TRUE;
+    load = fi_load;
 #else  //_USE_FREEIMAGE
     ERROR_INFO( "Use: cmake -DUSE_FREEIMAGE=ON in order to enable FreeImage loader", load() )
     return FALSE;
-#endif //_USE_FREEIMAGE
+#endif //_USE_FREEIMAGE   
   }
-
+  
   if ( il == eilLibAV )
   {
 #ifdef _USE_AVCPP
-
+    load = av_load;
 #else  //_USE_AVCPP
     ERROR_INFO( "Use: cmake -DUSE_AVCPP=ON in order to enable FreeImage loader", load() )
     return FALSE;
@@ -76,21 +72,26 @@ GLboolean   GLImage::load( ImageLoader il, const FString& sFilename )
   if ( il == eilDevIL )
   {
 #ifdef _USE_DEVIL
-    m_pData = il_load( sFilename.GetBuffer(), &m_uiDataSize, &m_iWidth, &m_iHeight );
-    if (m_pData==nullptr)
-    {
-      ERROR_INFO( FString( 0, "Failed to load Image [%s]", sFilename.GetBuffer() ), load() );
-      return FALSE;
-    }
-    
-    LOG_INFO( FString( 0, "Loaded Image [%s] MEM BYTES [%d] W:[%d] Pixel x H:[%d] D:[32] Bits", sFilename.GetBuffer(), m_uiDataSize, m_iWidth, m_iHeight ), load() );
-    return TRUE;
+    load = il_load;
 #else  //_USE_DEVIL
     ERROR_INFO( "Use: cmake -DUSE_DEVIL=ON in order to enable FreeImage loader", load() )
     return FALSE;
 #endif //_USE_DEVIL    
   }
+
+  if ( load == NULL )
+    return FALSE;
   
-  return FALSE;
+  m_pData = load( sFilename.GetBuffer(), &m_uiDataSize, &m_iWidth, &m_iHeight );
+  if (m_pData==nullptr)
+  {
+    ERROR_INFO( FString( 0, "Failed to load Texture [%s]", sFilename.GetBuffer() ), load() );
+  
+    return FALSE;
+  }
+    
+  LOG_INFO( FString( 0, "Loaded Texture [%s] MEM BYTES [%d] W:[%d] Pixel x H:[%d] D:[32] Bits", sFilename.GetBuffer(), m_uiDataSize, m_iWidth, m_iHeight ), load() );
+  
+  return TRUE;
 }
 
