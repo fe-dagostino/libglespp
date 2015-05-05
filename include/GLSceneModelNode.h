@@ -28,16 +28,20 @@ class GLSceneModelNode : public GLSceneNode
   ENABLE_FRTTI(GLSceneModelNode)
 public:
   /***/
-  GLSceneModelNode( const FString& sInstanceName, GLModel* text );
+  GLSceneModelNode( const FString& sInstanceName, GLModel* model );
   /***/
   virtual ~GLSceneModelNode();
   
   /***/  
   virtual BOOL render( const GLCamera* pCamera, const glm::mat4& mView );
   
+  /***/
+  inline  GLTransformationsMatrix&   getMatrixModel()
+  { return m_matModel; }
+  
 private:
-  glm::mat4         m_matModel;
-
+  
+  GLTransformationsMatrix   m_matModel;  
 };
 
 #endif // GLSCENEMODELNODE_H
