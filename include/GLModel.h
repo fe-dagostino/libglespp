@@ -21,6 +21,9 @@
 
 #include "GLCommonDefs.h"
 #include "GLReference.h"
+#include "GLMesh.h"
+
+#include <vector>
 
 /**
  */
@@ -32,6 +35,9 @@ public:
   /***/
   virtual ~GLModel();
   
+private:  
+  std::vector<GLMesh*>    m_vMeshes;
+
 };
 
 #endif // GLMODEL_H
