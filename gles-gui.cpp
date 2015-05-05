@@ -184,7 +184,11 @@ public:
     
     GLTexture* pTexture = new GLTexture();
     // Using default loader FreeImage
-    pTexture->load( GLTexture::etlFreeImage, "/etc/gles-gui/media/wall.jpg" );
+    //pTexture->load( GLTexture::etlFreeImage, "/etc/gles-gui/media/wall.jpg" );
+    
+    // Using LibAV++ image loader
+    pTexture->load( GLTexture::etlLibAV, "/etc/gles-gui/media/wall.jpg" );
+    
     // Using DevIL image loader
     //pTexture->load( GLTexture::etlDevIL, "/etc/gles-gui/media/wall.jpg" );
     
