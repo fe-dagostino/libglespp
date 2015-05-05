@@ -8,6 +8,7 @@ include_directories( ${CMAKE_INSTALL_PREFIX}/include/ )
 include_directories( ${CMAKE_INSTALL_PREFIX}/include/sigc++-2.0/ )
 include_directories( ${CMAKE_INSTALL_PREFIX}/include/fedlibrary/include )
 include_directories( ${CMAKE_INSTALL_PREFIX}/include/fedlibrary/template_include )
+include_directories( ${CMAKE_INSTALL_PREFIX}/include/libav++ )
 
 link_directories( ${CMAKE_FIND_ROOT_PATH}/lib )
 link_directories( ${CMAKE_FIND_ROOT_PATH}/usr/lib )
@@ -26,7 +27,7 @@ IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
         -3.1.1-debug
      )
   set(  LIBAVC++_VERSION
-        -1.0.0-debug
+        -3.3.0-debug
      )
 ELSE()
   set(  LIBGLES++_VERSION
@@ -36,7 +37,7 @@ ELSE()
         -3.1.1
      )
   set(  LIBAVC++_VERSION
-        -1.0.0
+        -3.3.0
      )
 ENDIF()
 
@@ -91,6 +92,7 @@ set(  LIBGLES++_INCLUDE
         ./include/GLFontLoaderException.h
         ./include/GLFpsSync.h
         ./include/GLImage.h
+        ./include/GLMesh.h
         ./include/GLMessage.h
         ./include/GLModel.h
         ./include/GLPosition.h
@@ -148,7 +150,8 @@ set(  LIBGLES++_SRC
         ./src/GLFontLoaderException.cpp
         ./src/GLFpsSync.cpp
         ./src/GLImage.cpp
-        ./src/GLMessage.cpp
+        ./src/GLMesh.cpp
+        ./src/GLMessage.cpp        
         ./src/GLModel.cpp
         ./src/GLPosition.cpp
         ./src/GLProgram.cpp
@@ -179,6 +182,12 @@ set(  LIBGLES++_SRC_FREEIMAGE
         ./src/images/freeimage.c
 )
 endif (USE_FREEIMAGE)
+
+if (USE_AVCPP)
+set(  LIBGLES++_SRC_AVCPP
+        ./src/images/libav++.cpp
+)
+endif (USE_AVCPP)
 
 if (USE_DEVIL)
 set(  LIBGLES++_SRC_DEVIL
@@ -214,6 +223,16 @@ else()
 set(  LIBGLES++_FI_LIBRARIES
 )
 endif (USE_FREEIMAGE)
+
+if (USE_AVCPP)
+set(  LIBGLES++_AV_LIBRARIES
+      av++${LIBAVC++_VERSION}
+)
+else()
+set(  LIBGLES++_AV_LIBRARIES
+)
+endif (USE_AVCPP)
+
 
 if (USE_DEVIL)
 set(  LIBGLES++_LI_LIBRARIES
@@ -295,22 +314,22 @@ add_definitions(
 )
 ENDIF(USE_DEVIL)
 
-add_library   ( gles++${LIBGLES++_VERSION}  SHARED  ${LIBGLES++_SRC} ${LIBGLES++_SRC_FREEIMAGE} ${LIBGLES++_SRC_DEVIL} ${LIBGLES++_SRC_FONT} ${LIBGLES++_SRC_WIDGETS} )
+add_library   ( gles++${LIBGLES++_VERSION}  SHARED  ${LIBGLES++_SRC} ${LIBGLES++_SRC_FREEIMAGE} ${LIBGLES++_SRC_AVCPP} ${LIBGLES++_SRC_DEVIL} ${LIBGLES++_SRC_FONT} ${LIBGLES++_SRC_WIDGETS} )
 
 if (BUILD_GLPLAYER)
-add_executable( glplayer                     ${LIBGLES++_SRC} ${LIBGLES++_SRC_FREEIMAGE} ${LIBGLES++_SRC_DEVIL} ${LIBGLES++_SRC_FONT} ${LIBGLES++_SRC_WIDGETS} glplayer.cpp )
+add_executable( glplayer                     ${LIBGLES++_SRC} ${LIBGLES++_SRC_FREEIMAGE} ${LIBGLES++_SRC_AVCPP} ${LIBGLES++_SRC_DEVIL} ${LIBGLES++_SRC_FONT} ${LIBGLES++_SRC_WIDGETS} glplayer.cpp )
 endif()
 if (BUILD_GLES_GUI)
-add_executable( gles-gui                     ${LIBGLES++_SRC} ${LIBGLES++_SRC_FREEIMAGE} ${LIBGLES++_SRC_DEVIL} ${LIBGLES++_SRC_FONT} ${LIBGLES++_SRC_WIDGETS} gles-gui.cpp )
+add_executable( gles-gui                     ${LIBGLES++_SRC} ${LIBGLES++_SRC_FREEIMAGE} ${LIBGLES++_SRC_AVCPP} ${LIBGLES++_SRC_DEVIL} ${LIBGLES++_SRC_FONT} ${LIBGLES++_SRC_WIDGETS} gles-gui.cpp )
 endif()
 
-target_link_libraries( gles++${LIBGLES++_VERSION}  ${LIBGLES++_LIBRARIES} ${LIBGLES++_FI_LIBRARIES} ${LIBGLES++_LI_LIBRARIES} )
+target_link_libraries( gles++${LIBGLES++_VERSION}  ${LIBGLES++_LIBRARIES} ${LIBGLES++_FI_LIBRARIES} ${LIBGLES++_AV_LIBRARIES} ${LIBGLES++_LI_LIBRARIES} )
 
 if (BUILD_GLPLAYER)
-target_link_libraries( glplayer                    ${LIBGLES++_LIBRARIES} ${LIBGLES++_FI_LIBRARIES} ${LIBGLES++_LI_LIBRARIES} ${GLPLAYER_LIBRARIES} ${GL_LIBRARIES}  )
+target_link_libraries( glplayer                    ${LIBGLES++_LIBRARIES} ${LIBGLES++_FI_LIBRARIES} ${LIBGLES++_AV_LIBRARIES} ${LIBGLES++_LI_LIBRARIES} ${GLPLAYER_LIBRARIES} ${GL_LIBRARIES}  )
 endif()
 if (BUILD_GLES_GUI)
-target_link_libraries( gles-gui                    ${LIBGLES++_LIBRARIES} ${LIBGLES++_FI_LIBRARIES} ${LIBGLES++_LI_LIBRARIES} ${GLES_GUI_LIBRARIES} ${GL_LIBRARIES}  )
+target_link_libraries( gles-gui                    ${LIBGLES++_LIBRARIES} ${LIBGLES++_FI_LIBRARIES} ${LIBGLES++_AV_LIBRARIES} ${LIBGLES++_LI_LIBRARIES} ${GLES_GUI_LIBRARIES} ${GL_LIBRARIES}  )
 endif()
 
 install( TARGETS gles++${LIBGLES++_VERSION}  LIBRARY DESTINATION lib                       )
