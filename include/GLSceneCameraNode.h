@@ -40,6 +40,7 @@ public:
   /***/
   inline const GLCamera* getCamera() const 
   { return dynamic_cast<const GLCamera*>( getReference() ); }
+  /***/
   inline GLCamera*       getCamera()
   { return dynamic_cast<GLCamera*>( getReference() ); }
 
