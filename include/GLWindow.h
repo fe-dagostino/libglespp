@@ -23,8 +23,12 @@
 #include "FString.h"
 #include "FTMailbox.tlh"
 #include "GLObject.h"
+#include "GLRenderer.h"
 #include "GLWindowEvents.h"
+#include "GLWindowOptions.h"
 #include "GLMessage.h"
+#include "GLReference.h"
+#include "GLAutoPtr.h"
 
 #include "GLFW/glfw3.h"
 
@@ -35,9 +39,14 @@
 
 USING_NAMESPACE_FED
 
-
+/**
+ * GLWindow class represent a Window on host operating system.
+ * It can be a simple window or the whole screen when in full
+ * screen mode.
+ */
 class GLWindow : public GLObject
 {
+  ENABLE_FRTTI(GLWindow)
 public:
   enum GLFlags
   {
@@ -56,7 +65,7 @@ public:
   GLWindow();
 
   /***/
-  ~GLWindow();
+  virtual ~GLWindow();
   
   /**
    * Initialize events interface in order to raise window events.
@@ -67,10 +76,12 @@ public:
   /***/
   const std::vector<GLWindowEvents*>&   getConnections() const;
   
+  /**
+   * GLWindow take ownership of  
+   */
+  BOOL             create( GLWindowOptions* pOptions, WORD wFlags = epfCalling );
   /***/
-  BOOL             create( const FString& sTitle, INT iPosX, INT iPosY, INT iWidth, INT iHeight, WORD wFlags = epfCalling );
-  /***/
-  BOOL             createFullScreen( const FString& sMonitor, const FString& sTitle, INT iWidth, INT iHeight, WORD wFlags = epfCalling );
+  GLRenderer*      getRenderer();
   /***/
   BOOL             show( WORD wFlags = epfCalling );
   /***/
@@ -168,9 +179,10 @@ protected:
   std::vector<GLWindowEvents*>   m_vEvents;
   
 private:
-  GLFWwindow*               m_hWindow;
-  FTMailbox<GLMessage*>     m_mbxMessages;
-  FString                   m_sTitle;
+  GLAutoPtr<GLWindowOptions>  m_ptrWinOptions;
+  GLFWwindow*                 m_hWindow;
+  GLRenderer*                 m_glRenderer;
+  FTMailbox<GLMessage*>       m_mbxMessages;  
 };
 
 #endif // GLWINDOW_H

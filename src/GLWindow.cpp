@@ -20,6 +20,7 @@
 #include "../include/GLApplication.h"
 #include "../include/GLMessage.h"
 
+GENERATE_CLASSINFO( GLWindow, GLObject )
 
 /**
  * Specialized message class intended to be used for showing window if hidden.
@@ -68,12 +69,10 @@ public:
 class GLWCreate : public GLMessage
 {
 public:
-  GLWCreate( GLWindow* pWindow, const FString& sTitle, 
-	     int xpos, int ypos, int width, int height 
-	   )
-   : GLMessage( pWindow ), m_sTitle( sTitle ), m_xpos(xpos), m_ypos(ypos),
-     m_width(width), m_height(height)
+  GLWCreate( GLWindow* pWindow, GLWindowOptions* pOptions )
+    : GLMessage( pWindow ), m_ptrWinOptions( pOptions )
   {
+    
   }
   
   virtual ~GLWCreate()
@@ -81,49 +80,12 @@ public:
   
   BOOL OnExecute()
   {
-    return m_pWindow->create( m_sTitle, m_xpos, m_ypos, m_width, m_height, GLWindow::epfCalling );
+    return m_pWindow->create( m_ptrWinOptions, GLWindow::epfCalling );
   }
   
 private:
-  const FString  m_sTitle;
-  int            m_xpos;
-  int            m_ypos;
-  int            m_width;
-  int            m_height;
-};
+  GLAutoPtr<GLWindowOptions> m_ptrWinOptions;
 
-/**
- * Specialized message class intended to be used for creating a new window.
- */
-class GLWCreateFullScreen : public GLMessage
-{
-public:
-  GLWCreateFullScreen( GLWindow* pWindow, const FString& sMonitor, 
-	     const FString& sTitle, 
-	     int width, int height 
-	   )
-   : GLMessage( pWindow ), m_sMonitor( sMonitor ), m_sTitle( sTitle ),
-     m_width(width), m_height(height)
-  {
-  }
-  
-  virtual ~GLWCreateFullScreen()
-  {}
-  
-  BOOL OnExecute()
-  {
-    return m_pWindow->createFullScreen( m_sMonitor, m_sTitle, m_width, m_height, GLWindow::epfCalling );
-  }
-  
-  bool  getResult() const
-  { return m_bResult; }
-  
-private:
-  const FString  m_sMonitor;
-  const FString  m_sTitle;
-  int            m_width;
-  int            m_height;
-  bool           m_bResult;
 };
 
 /**
@@ -491,16 +453,18 @@ const std::vector<GLWindowEvents*>&   GLWindow::getConnections() const
   return m_vEvents;
 }
 
-BOOL             GLWindow::create( const FString& sTitle, INT iPosX, INT iPosY, INT iWidth, INT iHeight, WORD wFlags )
+BOOL             GLWindow::create( GLWindowOptions* pOpts, WORD wFlags )
 {
-  if ( m_hWindow != nullptr )
+  if ((m_hWindow != nullptr) || (pOpts == nullptr))
     return FALSE;
-
+  
+  m_ptrWinOptions = pOpts;
+  
   if ( wFlags & epfEnqueue )
   {
     BOOL bResult = TRUE;
     
-    GLWCreate* pMessage  = new GLWCreate( this, sTitle, iPosX, iPosY, iWidth, iHeight );
+    GLWCreate* pMessage  = new GLWCreate( this, pOpts );
     
     if ( wFlags & epfWait )
       bResult = sendMessage( pMessage );
@@ -510,8 +474,30 @@ BOOL             GLWindow::create( const FString& sTitle, INT iPosX, INT iPosY, 
     return bResult;
   }
 
+  m_glRenderer = new GLRenderer();
+  if ( m_glRenderer == nullptr )
+    return FALSE;
   
-  glfwWindowHint( GLFW_VISIBLE              , GL_FALSE           );
+  // Full Screen monitor
+  GLFWmonitor* pFsMonitor = nullptr;
+  
+  if ( ! m_ptrWinOptions->getMonitor().IsEmpty() )
+  {
+    pFsMonitor                = glfwGetPrimaryMonitor(); // Set Default
+    const GLMonitor* pMonitor = GLApplication::GetInstance().getMonitorByName( m_ptrWinOptions->getMonitor() );
+    if ( pMonitor != nullptr )
+    {
+      pFsMonitor = (GLFWmonitor*)pMonitor->m_pGlfwMonitor;
+    }
+   
+    // Set Refresh rate accordingly with video mode max refresh rate
+    glfwWindowHint( GLFW_REFRESH_RATE, 0 );
+  }
+  else
+  {
+    // For windowed mode initial state will be not visible.
+    glfwWindowHint( GLFW_VISIBLE              , GL_FALSE           );
+  }
   
   // Raise event for custom settings
   for ( auto e : getConnections() )
@@ -519,24 +505,31 @@ BOOL             GLWindow::create( const FString& sTitle, INT iPosX, INT iPosY, 
     e->OnCreating( this );
   }
 
-  m_sTitle = sTitle;
-  
-  m_hWindow = glfwCreateWindow( iWidth, iHeight, 
-			       m_sTitle.GetBuffer(),
-			       nullptr, 
-			       nullptr
+  m_hWindow = glfwCreateWindow( 
+                                m_ptrWinOptions->getWidth(), m_ptrWinOptions->getHeight(),
+			        m_ptrWinOptions->getTitle().GetBuffer(),
+			        pFsMonitor, 
+			        nullptr
 			      );
 
   if (!m_hWindow)
   {
-      glfwTerminate();
-      return FALSE;
+    delete m_glRenderer;
+    m_glRenderer = nullptr;
+    
+    glfwTerminate();
+    return FALSE;
   }
 
-  glfwSetWindowPos( m_hWindow, iPosX, iPosY );
+  // Only in windowed mode it is necessary to move window
+  // and to make it visible after move.
+  if ( pFsMonitor == nullptr )
+  {
+    glfwSetWindowPos( m_hWindow, m_ptrWinOptions->getPosX(), m_ptrWinOptions->getPosY() );
     
-  glfwShowWindow( m_hWindow );
-
+    glfwShowWindow( m_hWindow );
+  }
+  
   glfwMakeContextCurrent( m_hWindow );
   
   glfwSetWindowUserPointer( m_hWindow, this );
@@ -544,65 +537,11 @@ BOOL             GLWindow::create( const FString& sTitle, INT iPosX, INT iPosY, 
   setCallbacks(true);
   
   return TRUE;
+  
 }
 
-BOOL             GLWindow::createFullScreen( const FString& sMonitor, const FString& sTitle, INT iWidth, INT iHeight, WORD wFlags )
-{
-  if ( m_hWindow != nullptr )
-    return FALSE;
-
-  if ( wFlags & epfEnqueue )
-  {
-    BOOL bResult = TRUE;
-    
-    GLWCreateFullScreen* pMessage  = new GLWCreateFullScreen( this, sMonitor, sTitle, iWidth, iHeight );
-    if ( wFlags & epfWait )
-      bResult = sendMessage( pMessage );
-    else
-      bResult = postMessage( pMessage );
-    
-    return bResult;
-  } 
-  
-  GLFWmonitor*     pFsMonitor   = glfwGetPrimaryMonitor();
-  const GLMonitor* pMonitor     = GLApplication::GetInstance().getMonitorByName( sMonitor );
-  if ( pMonitor != nullptr )
-  {
-    pFsMonitor = (GLFWmonitor*)pMonitor->m_pGlfwMonitor;
-  }
-  
-  // Set Refresh rate accordingly with video mode max refresh rate
-  glfwWindowHint( GLFW_REFRESH_RATE, 0 );
-
-  // Raise event for custom settings
-  for ( auto e : getConnections() )
-  {
-    e->OnCreating( this );
-  }
-  
-  m_sTitle = sTitle;
-  
-  m_hWindow = glfwCreateWindow( iWidth, iHeight,
-			       m_sTitle.GetBuffer(),
-			       pFsMonitor,
-			       nullptr
-			      );
-
-
-  if (!m_hWindow)
-  {
-      glfwTerminate();
-      return FALSE;
-  }
-
-  glfwMakeContextCurrent( m_hWindow );
-
-  glfwSetWindowUserPointer( m_hWindow, this );
- 
-  setCallbacks( true );
-  
-  return TRUE;
-}
+GLRenderer*      GLWindow::getRenderer()
+{ return m_glRenderer; }
 
 BOOL             GLWindow::show( WORD wFlags )
 {
@@ -833,6 +772,9 @@ BOOL             GLWindow::destroy( WORD wFlags )
   
   if ( wFlags == epfCalling )
   {
+    delete m_glRenderer;
+    m_glRenderer = nullptr;
+  
     setCallbacks( false );
     
     glfwDestroyWindow(m_hWindow);
