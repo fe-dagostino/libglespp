@@ -20,6 +20,7 @@
 #define GLAUTOPTR_H
 
 #include "GLCommonDefs.h"
+#include "GLReference.h"
 #include "fedlibrary/include/FString.h"
 #include "GLFW/glfw3.h"
 
@@ -31,6 +32,11 @@
 USING_NAMESPACE_FED
 
 /**
+ * Intended to manage automatic release of memory into heap.
+ * An instance of GLAutoPtr will automatically release
+ * the internal pointer on destructor. In case pointed memory
+ * is an object derived form GLReference then memory
+ * will be released only if reference counter is zero. 
  */
 template< class T >
 class GLAutoPtr 
@@ -38,36 +44,96 @@ class GLAutoPtr
 public:
   /***/
   GLAutoPtr()
-  { m_pObject = nullptr; }
+   : m_pObject( nullptr )
+  {  }
   
   /***/
   GLAutoPtr( T* pObject )
-  { m_pObject = pObject; }
+   : GLAutoPtr()
+  { *this = pObject; }
   
   /***/
   virtual ~GLAutoPtr()
   { 
+    release();
+  }
+
+  T& operator = ( T* pObject )
+  { 
+    // Release previous allocated memory.
+    // Instance can be re-used or updated with a new pointer.
+    release();
+    
+    m_pObject = pObject;
+    
+    GLReference* ref = dynamic_cast<GLReference*>(m_pObject);
+    if ( ref != nullptr )
+    {
+      (*ref)++;
+    }    
+    
+    return *m_pObject;
+  }
+  
+  /**
+   * Detach current pointer without to release it.
+   * In case the pointer is and instance of GLReference*
+   * then that instance reference count will be decreased
+   * by one in order to balance increasing done during init. 
+   */
+  T* detach()
+  {
+    T*           ret = m_pObject;
+    GLReference* ref = dynamic_cast<GLReference*>(m_pObject);
+    if ( ref != nullptr )
+    {
+      (*ref)--;
+    }    
+    
+    m_pObject = nullptr;
+    
+    return ret;
+  }
+    
+  const T* operator->() const
+  { return m_pObject; }
+  
+  T* operator->()
+  { return m_pObject; }
+      
+  operator T*()
+  { return m_pObject; }
+  
+  operator const T*() const
+  { return m_pObject; }
+  
+  operator T*() const
+  { return m_pObject; }
+
+
+protected:
+private:
+  /***/
+  VOID release()
+  {
+    GLReference* ref = dynamic_cast<GLReference*>(m_pObject);
+    if ( ref != nullptr )
+    {
+      (*ref)--;
+      if ( ref->count() == 0 )
+      {
+	delete m_pObject;
+	m_pObject = nullptr;
+      }
+    }
+    else
     if ( m_pObject != nullptr )
     { 
       delete m_pObject;
       m_pObject = nullptr;
     }
   }
-
-  T& operator = ( T* pObject )
-  { 
-    m_pObject = pObject; 
-    return *m_pObject;
-  }
   
-  T* operator ->()
-  { return m_pObject; }
-    
-  operator T*()
-  { return m_pObject; }
-
-protected:
-
 private:
   T* m_pObject;
   
