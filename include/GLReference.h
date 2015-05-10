@@ -67,7 +67,7 @@ public:
   { }
   
   GLAutoRef( T* ref )
-    : m_pRef( ref )
+    : m_pRef( nullptr )
   {
     attach(ref);
   }
