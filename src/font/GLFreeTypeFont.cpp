@@ -110,7 +110,7 @@ GLText*   GLFreeTypeFont::getText( const FWString& sText, const glm::vec4& frCol
         ///////////
         // Update bounding rect
 	size.width  += (pGlyph->advance.x >> 16);
-        size.height = std::max( size.height, bmpGlyph->bitmap.rows );
+        size.height = std::max( size.height, (GLsizei)bmpGlyph->bitmap.rows );
       
         glyphs.push_back( pGlyph );
       }
@@ -133,7 +133,7 @@ GLText*   GLFreeTypeFont::getText( const FWString& sText, const glm::vec4& frCol
     
     int yOffset = (size.height - bmpGlyph->top) + m_top;
 
-    for ( register int y = 0; y < bmp.rows; y++ )
+    for ( register unsigned int y = 0; y < bmp.rows; y++ )
     {
       memcpy( &(pTextureData[((y+yOffset)*width)+(xPos+bmpGlyph->left)]), &(bmp.buffer[y*bmp.width]), bmp.width );
     }
