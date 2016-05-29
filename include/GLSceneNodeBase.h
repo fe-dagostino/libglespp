@@ -22,11 +22,10 @@
 #include "GLCommonDefs.h"
 #include "GLObject.h"
 #include "GLViewPort.h"
-#include "GLReference.h"
-
+#include "GLAutoPtr.h"
+#include "GLAnimation.h"
 
 class GLCamera;
-class GLAnimation;
 
 /**
  */
@@ -87,8 +86,8 @@ protected:
   
 private:
   const FString           m_sInstanceName;
-  GLAutoRef<GLReference>  m_ref;
-  GLAutoRef<GLAnimation>  m_ani;
+  GLAutoPtr<GLReference>  m_ref;
+  GLAutoPtr<GLAnimation>  m_ani;
   
 };
 

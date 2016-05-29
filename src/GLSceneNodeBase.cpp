@@ -22,21 +22,13 @@
 GENERATE_CLASSINFO(GLSceneNodeBase, GLObject)
 
 GLSceneNodeBase::GLSceneNodeBase( const FString& sInstanceName, GLReference* pRef )
- : m_sInstanceName( sInstanceName )
+ : m_sInstanceName( sInstanceName ), m_ref( pRef )
 {
-  m_ref.attach(pRef);
+  
 }
 
 GLSceneNodeBase::~GLSceneNodeBase()
 {
-  GLReference* pRef = m_ref.detach();
-  if ( pRef != nullptr )
-  {
-    if (pRef->count() == 0 )
-    {
-      delete pRef;
-    }
-  }
 }
 
 const FRTTI*          GLSceneNodeBase::getRunTimeTypeInfo() const
@@ -48,7 +40,7 @@ GLReference*          GLSceneNodeBase::setReference( GLReference* ref )
 {
   GLReference*  pOldRef = m_ref.detach();
 
-  m_ref.attach(ref);
+  m_ref = ref;
   
   OnSetReference( ref );
   
@@ -64,7 +56,7 @@ GLAnimation*          GLSceneNodeBase::setAnimation( GLAnimation* ani )
 {
   GLAnimation*  pOldAni = m_ani.detach();
 
-  m_ani.attach(ani);
+  m_ani = ani;
   
   OnSetAnimation( ani );
   
