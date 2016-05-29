@@ -86,6 +86,7 @@ set(  LIBGLES++_INCLUDE
         ./include/GLHandleObject.h
         ./include/GLShaderObject.h
         ./include/GLVertexShader.h 
+        ./include/GLExtensions.h
         ./include/GLFragmentShader.h
         ./include/GLFont.h
         ./include/GLFontLoader.h
@@ -101,6 +102,7 @@ set(  LIBGLES++_INCLUDE
         ./include/GLResourcesCollector.h
         ./include/GLRect.h 
         ./include/GLReference.h
+        ./include/GLRenderer.h
         ./include/GLSceneCameraNode.h
         ./include/GLSceneGraph.h
         ./include/GLSceneLayerNode.h
@@ -116,6 +118,7 @@ set(  LIBGLES++_INCLUDE
         ./include/GLViewPort.h
         ./include/GLWindow.h
         ./include/GLWindowEvents.h
+        ./include/GLWindowOptions.h
         ./include/GLVertex.h  
         ./include/GLVertex.inl
         ./include/GLVertices.h 
@@ -144,6 +147,7 @@ set(  LIBGLES++_SRC
         ./src/GLHandleObject.cpp
         ./src/GLShaderObject.cpp 
         ./src/GLVertexShader.cpp 
+        ./src/GLExtensions.cpp
         ./src/GLFragmentShader.cpp
         ./src/GLFont.cpp
         ./src/GLFontLoader.cpp
@@ -159,6 +163,7 @@ set(  LIBGLES++_SRC
         ./src/GLResourcesCollector.cpp
         ./src/GLRect.cpp 
         ./src/GLReference.cpp
+        ./src/GLRenderer.cpp
         ./src/GLSceneCameraNode.cpp
         ./src/GLSceneGraph.cpp
         ./src/GLSceneLayerNode.cpp
@@ -174,6 +179,7 @@ set(  LIBGLES++_SRC
         ./src/GLViewPort.cpp
         ./src/GLWindow.cpp
         ./src/GLWindowEvents.cpp
+        ./src/GLWindowOptions.cpp
         ./src/GLMonitor.cpp
 )
 
@@ -258,7 +264,7 @@ set(  GLES_GUI_LIBRARIES
 #	xcb
 #	Xau
 #	Xdmcp
-      
+      Xinerama
 )
 
 if (HAVE_OPENGL_ES_API)
@@ -314,16 +320,36 @@ add_definitions(
 )
 ENDIF(USE_DEVIL)
 
-add_library   ( gles++${LIBGLES++_VERSION}  SHARED  ${LIBGLES++_SRC} ${LIBGLES++_SRC_FREEIMAGE} ${LIBGLES++_SRC_AVCPP} ${LIBGLES++_SRC_DEVIL} ${LIBGLES++_SRC_FONT} ${LIBGLES++_SRC_WIDGETS} )
+add_library   ( gles++${LIBGLES++_VERSION}  SHARED  ${LIBGLES++_SRC} 
+                                                    ${LIBGLES++_SRC_FREEIMAGE} 
+                                                    ${LIBGLES++_SRC_AVCPP} 
+                                                    ${LIBGLES++_SRC_DEVIL} 
+                                                    ${LIBGLES++_SRC_FONT} 
+                                                    ${LIBGLES++_SRC_WIDGETS} )
 
 if (BUILD_GLPLAYER)
-add_executable( glplayer                     ${LIBGLES++_SRC} ${LIBGLES++_SRC_FREEIMAGE} ${LIBGLES++_SRC_AVCPP} ${LIBGLES++_SRC_DEVIL} ${LIBGLES++_SRC_FONT} ${LIBGLES++_SRC_WIDGETS} glplayer.cpp )
+add_executable( glplayer                     ${LIBGLES++_SRC} 
+                                             ${LIBGLES++_SRC_FREEIMAGE} 
+                                             ${LIBGLES++_SRC_AVCPP} 
+                                             ${LIBGLES++_SRC_DEVIL} 
+                                             ${LIBGLES++_SRC_FONT} 
+                                             ${LIBGLES++_SRC_WIDGETS} 
+                                             glplayer.cpp )
 endif()
 if (BUILD_GLES_GUI)
-add_executable( gles-gui                     ${LIBGLES++_SRC} ${LIBGLES++_SRC_FREEIMAGE} ${LIBGLES++_SRC_AVCPP} ${LIBGLES++_SRC_DEVIL} ${LIBGLES++_SRC_FONT} ${LIBGLES++_SRC_WIDGETS} gles-gui.cpp )
+add_executable( gles-gui                     ${LIBGLES++_SRC} 
+                                             ${LIBGLES++_SRC_FREEIMAGE} 
+                                             ${LIBGLES++_SRC_AVCPP} 
+                                             ${LIBGLES++_SRC_DEVIL} 
+                                             ${LIBGLES++_SRC_FONT} 
+                                             ${LIBGLES++_SRC_WIDGETS} 
+                                             gles-gui.cpp )
 endif()
 
-target_link_libraries( gles++${LIBGLES++_VERSION}  ${LIBGLES++_LIBRARIES} ${LIBGLES++_FI_LIBRARIES} ${LIBGLES++_AV_LIBRARIES} ${LIBGLES++_LI_LIBRARIES} )
+target_link_libraries( gles++${LIBGLES++_VERSION}  ${LIBGLES++_LIBRARIES} 
+                                                   ${LIBGLES++_FI_LIBRARIES} 
+                                                   ${LIBGLES++_AV_LIBRARIES} 
+                                                   ${LIBGLES++_LI_LIBRARIES} )
 
 if (BUILD_GLPLAYER)
 target_link_libraries( glplayer                    ${LIBGLES++_LIBRARIES} ${LIBGLES++_FI_LIBRARIES} ${LIBGLES++_AV_LIBRARIES} ${LIBGLES++_LI_LIBRARIES} ${GLPLAYER_LIBRARIES} ${GL_LIBRARIES}  )
@@ -331,6 +357,9 @@ endif()
 if (BUILD_GLES_GUI)
 target_link_libraries( gles-gui                    ${LIBGLES++_LIBRARIES} ${LIBGLES++_FI_LIBRARIES} ${LIBGLES++_AV_LIBRARIES} ${LIBGLES++_LI_LIBRARIES} ${GLES_GUI_LIBRARIES} ${GL_LIBRARIES}  )
 endif()
+
+add_executable( gles-dev                           ${LIBGLES++_SRC} ${LIBGLES++_SRC_FREEIMAGE} ${LIBGLES++_SRC_AVCPP} ${LIBGLES++_SRC_DEVIL} ${LIBGLES++_SRC_FONT} ${LIBGLES++_SRC_WIDGETS} gles-dev.cpp )
+target_link_libraries( gles-dev                    ${LIBGLES++_LIBRARIES} ${LIBGLES++_FI_LIBRARIES} ${LIBGLES++_AV_LIBRARIES} ${LIBGLES++_LI_LIBRARIES} ${GLES_GUI_LIBRARIES} ${GL_LIBRARIES}  )
 
 install( TARGETS gles++${LIBGLES++_VERSION}  LIBRARY DESTINATION lib                       )
 install( FILES   ${LIBGLES++_INCLUDE}                DESTINATION include/libgles++         )
