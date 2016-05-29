@@ -17,6 +17,7 @@
 #include "GLSceneLayerNode.h"
 
 #include "widgets/GLLabel.h"
+#include <GLRenderer.h>
 
 #include "LOGGING/FLogger.h"
 #include "LOGGING/FConsoleLogDevice.h"
@@ -39,7 +40,7 @@ public:
 
   /***/
   VOID             Run()
-  {
+  {    
     m_pWindow = new GLWindow();
     if ( m_pWindow == nullptr )
     {
@@ -50,10 +51,12 @@ public:
     // Add this as listener for WindowEvents
     m_pWindow->connect( this );
     
-    if ( m_bFullScreen == TRUE )
-      m_pWindow->createFullScreen( "", "BCM GUI Application", m_iWidth, m_iHeight, GLWindow::epfCalling );
-    else
-	m_pWindow->create( "BCM GUI Application", 0, 0, m_iWidth, m_iHeight, GLWindow::epfCalling );
+    GLAutoPtr<GLWindowOptions> ptrOptions = new GLWindowOptions( (m_bFullScreen==TRUE)?"main":"", 
+								 "BCM GUI Application", 
+								 0, 0, 
+								 m_iWidth, m_iHeight );
+    
+    m_pWindow->create( ptrOptions, GLWindow::epfCalling );
 
     m_pSceneGraph = new GLSceneGraph();
     if ( m_pSceneGraph == nullptr )
@@ -61,6 +64,25 @@ public:
       ERROR_INFO( "Unable to allocate SceneGraph", Run() )
       return ;
     }
+    
+ 
+    GLRenderer* glRenderer = m_pWindow->getRenderer();
+    FString     sVendor;
+    FString     sRenderer;
+    FString     sVersion;
+    FString     sShaderVersion;
+    
+    
+    glRenderer->getVendor  ( sVendor );
+    printf( "Vendor:         [%s]\n", sVendor.GetBuffer() );
+    glRenderer->getRenderer( sRenderer );
+    printf( "Renderer:       [%s]\n", sRenderer.GetBuffer() );    
+    glRenderer->getVersion( sVersion );
+    printf( "Version:        [%s]\n", sVersion.GetBuffer() );    
+    glRenderer->getShaderVersion( sShaderVersion );
+    printf( "Shader Version: [%s]\n", sShaderVersion.GetBuffer() );
+    
+
     
     
     GLCamera*  pCamera =  new GLCamera( TRUE );
