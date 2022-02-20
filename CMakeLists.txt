@@ -1,5 +1,4 @@
-
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required(VERSION 3.0)
 project(libgles++)
 
 include_directories( ./include/ )
@@ -21,7 +20,7 @@ ENDIF()
 
 IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
   set(  LIBGLES++_VERSION
-	-0.2.0-debug
+        -0.2.0-debug
     )
   set(  FEDLIB_VER
         -3.2.0-debug
@@ -31,7 +30,7 @@ IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
      )
 ELSE()
   set(  LIBGLES++_VERSION
-	-0.2.0
+        -0.2.0
     )
   set(  FEDLIB_VER
         -3.2.0
