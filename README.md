@@ -17,7 +17,7 @@ Here a list with all dependecies and their use
  - [**FreeImage**](http://freeimage.sourceforge.net/)  Add supports for popular graphics image formats like PNG, BMP, JPEG. 
  - [**libav++**](https://github.com/fe-dagostino/libavcpp)    Add supports for many graphics image formats and also to multimedia files.
  - [**DevIL**](http://openil.sourceforge.net/about.php)      Add supports DevIL loading image library. 
- - [**libsigc++**](http://libsigc.sourceforge.net/)  implements a typesafe callback system for standard C++. It allows you to define signals 
+ - [**libsigc++**](https://wiki.linuxfromscratch.org/blfs/wiki/libsigc++)  implements a typesafe callback system for standard C++. It allows you to define signals
                   and to connect those signals to any callback function, either global or a member function, 
                   regardless of whether it is static or virtual. 
 
