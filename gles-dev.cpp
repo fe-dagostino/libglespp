@@ -52,7 +52,7 @@ public:
     m_pWindow->connect( this );
     
     GLAutoPtr<GLWindowOptions> ptrOptions = new GLWindowOptions( (m_bFullScreen==TRUE)?"main":"", 
-								 "BCM GUI Application", 
+								 "GLES DEV Application",
 								 0, 0, 
 								 m_iWidth, m_iHeight );
     
@@ -174,7 +174,7 @@ public:
     //pTexture->load( GLTexture::etlFreeImage, "/etc/gles-gui/media/wall.jpg" );
     
     // Using LibAV++ image loader
-    pTexture->load( GLTexture::etlLibAV, "/etc/gles-gui/media/wall.jpg" );
+    //pTexture->load( GLTexture::etlLibAV, "/etc/gles-gui/media/wall.jpg" );
     
     {
 //      GLCanvas* c = new GLCanvas();
@@ -185,7 +185,7 @@ public:
       
     }
     // Using DevIL image loader
-    //pTexture->load( GLTexture::etlDevIL, "/etc/gles-gui/media/wall.jpg" );
+    pTexture->load( GLTexture::etlDevIL, "../resources/media/wall.jpg" );
     
     widget->setPosition( 0, 100, TRUE );
     //widget->setSize( 800, 800 );
@@ -229,32 +229,32 @@ public:
 
       if ( m_bVerticalSync == TRUE )
       {
-	// Wait for vertical sync, at least one moonitor refresh
-	// 
-	m_pWindow->setSwapInterval(1);
-	
-	DOUBLE dTime = fps.sync();
-	if ( dTime > 0 )
-	{      
-	  FThread::Sleep( dTime * 1000 );
-	}
+        // Wait for vertical sync, at least one moonitor refresh
+        //
+        m_pWindow->setSwapInterval(1);
+
+        DOUBLE dTime = fps.sync();
+        if ( dTime > 0 )
+        {
+          FThread::Sleep( dTime * 1000 );
+        }
       }
 
       
       if ( m_bShowStats == TRUE )
       {
-	dParFrames += 1.0f;
-	dTotFrames += 1.0f;
-	
-	printf( "TOT %.2f fps : CUR %.2f fps : RENDER TIME %.4f          \r", (dTotFrames / swTotSeconds.Peek()), (dParFrames / swParSeconds.Peek()), swRender.Peek() );
-	
-	swRender.Reset();
-	
-	if ( swParSeconds.Peek() >= 1 )
-	{
-	  dParFrames = 0.0f;
-	  swParSeconds.Reset();
-	}
+        dParFrames += 1.0f;
+        dTotFrames += 1.0f;
+
+        printf( "TOT %.2f fps : CUR %.2f fps : RENDER TIME %.4f          \r", (dTotFrames / swTotSeconds.Peek()), (dParFrames / swParSeconds.Peek()), swRender.Peek() );
+
+        swRender.Reset();
+
+        if ( swParSeconds.Peek() >= 1 )
+        {
+          dParFrames = 0.0f;
+          swParSeconds.Reset();
+        }
       }    
       
       ///////////////
@@ -318,7 +318,7 @@ protected:
     
     m_pWindow = nullptr;
 
-    GLApplication::init( this );
+    GLApplication::init( this, "../resources/shaders/", "../resources/media/" );
     
     LOG_INFO( FString( 0, "GLFW Version %s", GLApplication::GetInstance().getVersion().GetBuffer() ), OnInitialize() );
   }
@@ -355,11 +355,11 @@ private:
       
       if ( sArg == "--help" )
       {
-	printf("BCM GUI Application\n");
+	printf("GLES DEV Application\n");
 	printf("----------------\n");
 	printf("\n");
 	printf("Usage: \n");
-	printf("  ./bcm-gui <options>\n");
+	printf("  ./gles-dev <options>\n");
 	printf("\n");
 	printf("Options:\n");
 	printf("\n");

@@ -550,7 +550,7 @@ int main( int argc, char* argv[] )
   
   CAVApplication::initLibAVCPP();
 
-  GLApplication::init(NULL);
+  GLApplication::init(NULL, "../resources/shaders/", "../resources/media/" );
   
   GLApplication::GetInstance().getMonitorsList();
   
