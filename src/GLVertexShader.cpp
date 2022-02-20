@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/GLVertexShader.h"
+#include "GLVertexShader.h"
 
 GLVertexShader::GLVertexShader()
  : GLShaderObject( eVertexShader )

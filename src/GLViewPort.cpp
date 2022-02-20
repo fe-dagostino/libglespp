@@ -16,8 +16,8 @@
 */
 
 
-#include "../include/GLViewPort.h"
-#include "../include/GLSceneGraph.h"
+#include "GLViewPort.h"
+#include "GLSceneGraph.h"
 
 
 GLViewPort::GLViewPort( )

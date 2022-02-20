@@ -16,9 +16,9 @@
 */
 
 
-#include "../include/GLProgramsCollector.h"
-#include "../include/GLVertexShader.h"
-#include "../include/GLFragmentShader.h"
+#include "GLProgramsCollector.h"
+#include "GLVertexShader.h"
+#include "GLFragmentShader.h"
 
 #include "LOGGING/FLogger.h"
 #include <fcntl.h>
@@ -26,11 +26,7 @@
 GENERATE_CLASSINFO( GLProgramsCollector, FSingleton )
 IMPLEMENT_SINGLETON( GLProgramsCollector )
 
-#ifdef _LINUX
-# define SHADER_PATH  "/etc/gles-gui/shaders"
-#else
-# define SHADER_PATH  "./shaders"
-#endif
+#define SHADER_PATH  "./shaders"
 
 GLProgram*   GLProgramsCollector::find( const FString& sProgramName )
 {

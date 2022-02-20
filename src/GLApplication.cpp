@@ -16,9 +16,9 @@
 */
 
 
-#include "../include/GLApplication.h"
-#include "../include/GLProgramsCollector.h"
-#include "../include/GLResourcesCollector.h"
+#include "GLApplication.h"
+#include "GLProgramsCollector.h"
+#include "GLResourcesCollector.h"
 
 
 #include "images/images.h"
@@ -43,12 +43,18 @@ static void error_callback(int iError, const char* description)
   }
 }
 
-VOID GLApplication::init( GLApplicationEvents* pEvents )
+VOID GLApplication::init( GLApplicationEvents* pEvents, const FString& sShadersPath, const FString& sMediaPath  )
 {
   Initialize();
-  
+
   GetInstance().setEvents( pEvents );
-    
+
+  GLProgramsCollector::Initialize();
+  GLProgramsCollector::GetInstance().setShadersPath( sShadersPath );
+
+  GLResourcesCollector::Initialize();
+  GLResourcesCollector::GetInstance().setResourcesPath( sMediaPath );
+
   if (!glfwInit())
   {
     if ( GetInstance().getEvents() != nullptr )
@@ -217,9 +223,6 @@ const GLMonitor* GLApplication::getMonitorByName( const FString& sName )
 
 VOID     GLApplication::OnInitialize()
 {
-  GLProgramsCollector::Initialize();
-  GLResourcesCollector::Initialize();
-  
   m_pEvents = nullptr;
   
   glfwSetErrorCallback(error_callback);

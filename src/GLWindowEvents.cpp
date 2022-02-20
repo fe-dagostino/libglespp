@@ -16,8 +16,8 @@
 */
 
 
-#include "../include/GLWindowEvents.h"
-#include "../include/GLWindow.h"
+#include "GLWindowEvents.h"
+#include "GLWindow.h"
 
 GLWindowEvents::GLWindowEvents()
 {

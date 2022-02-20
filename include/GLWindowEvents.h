@@ -20,8 +20,8 @@
 #define GLWINDOWEVENTS_H
 
 #include "GLCommonDefs.h"
-#include "fedlibrary/include/FString.h"
-#include "fedlibrary/template_include/FTMailbox.tlh"
+#include "FString.h"
+#include "FTMailbox.tlh"
 #include "GLFW/glfw3.h"
 #include "GLObject.h"
 

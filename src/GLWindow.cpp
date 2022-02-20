@@ -16,9 +16,9 @@
 */
 
 
-#include "../include/GLWindow.h"
-#include "../include/GLApplication.h"
-#include "../include/GLMessage.h"
+#include "GLWindow.h"
+#include "GLApplication.h"
+#include "GLMessage.h"
 
 GENERATE_CLASSINFO( GLWindow, GLObject )
 

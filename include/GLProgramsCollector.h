@@ -60,9 +60,9 @@ public:
   
 protected:
   /***/
-  VOID     OnInitialize();
+  VOID     OnInitialize() override;
   /***/
-  VOID     OnFinalize();
+  VOID     OnFinalize() override;
 
 private:
   struct lstr

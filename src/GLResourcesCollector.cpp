@@ -21,12 +21,7 @@
 GENERATE_CLASSINFO( GLResourcesCollector, FSingleton )
 IMPLEMENT_SINGLETON( GLResourcesCollector )
 
-#ifdef _LINUX
-# define RESOURCES_PATH  "/etc/gles-gui/media"
-#else
-# define RESOURCES_PATH  "./media"
-#endif
-
+#define RESOURCES_PATH  "./media"
 
 GLReference*   GLResourcesCollector::find( const FString& sResourceName )
 {

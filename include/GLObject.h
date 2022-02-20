@@ -20,7 +20,7 @@
 #define GLOBJECT_H
 
 #include "GLCommonDefs.h"
-#include "fedlibrary/include/FString.h"
+#include "FString.h"
 #include "GLFW/glfw3.h"
 
 #define GLM_FORCE_RADIANS

@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/GLTransformationsMatrix.h"
+#include "GLTransformationsMatrix.h"
 
 GLTransformationsMatrix::GLTransformationsMatrix()
  : m_matrix( glm::mat4( 1.0f) )

@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/GLShaderObject.h"
+#include "GLShaderObject.h"
 #include "FFile.h"
 #include "LOGGING/FLogger.h"
 

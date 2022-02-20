@@ -20,7 +20,7 @@
 #define GLPROGRAM_H
 
 #include "GLCommonDefs.h"
-#include "fedlibrary/include/FString.h"
+#include "FString.h"
 #include "GLFW/glfw3.h"
 #include <functional>
 #include "GLReference.h"

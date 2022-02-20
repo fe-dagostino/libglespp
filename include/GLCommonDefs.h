@@ -22,7 +22,7 @@
 #define GLM_FORCE_RADIANS
 #define GLM_PRECISION_MEDIUMP_FLOAT
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 #include "GLFW/glfw3.h"
 
 #endif //GLCOMMONDEFS_H

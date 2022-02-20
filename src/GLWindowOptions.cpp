@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/GLWindowOptions.h"
+#include "GLWindowOptions.h"
 
 GLWindowOptions::GLWindowOptions(
                    const FString& sMonitor,

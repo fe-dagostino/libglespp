@@ -54,7 +54,7 @@ private:
   typedef std::map<const char*, GLMonitor*, lstr>  MonitorsMap;
 public:
   /***/
-  static VOID init( GLApplicationEvents* pEvents );
+  static VOID init( GLApplicationEvents* pEvents, const FString& sShadersPath, const FString& sMediaPath );
   /***/
   VOID        final();
   

@@ -21,7 +21,7 @@
 
 #include "GLCommonDefs.h"
 #include "GLObject.h"
-#include "fedlibrary/include/FEvent.h"
+#include "FEvent.h"
 
 USING_NAMESPACE_FED
 

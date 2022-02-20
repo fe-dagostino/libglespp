@@ -21,7 +21,7 @@
 
 #include "GLCommonDefs.h"
 #include "GLReference.h"
-#include "fedlibrary/include/FString.h"
+#include "FString.h"
 #include "GLFW/glfw3.h"
 
 #define GLM_FORCE_RADIANS
