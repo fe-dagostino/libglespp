@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/GLMesh.h"
+#include "GLMesh.h"
 
 GLMesh::GLMesh( )
 {

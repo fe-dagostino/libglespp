@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/GLSceneGraph.h"
+#include "GLSceneGraph.h"
 
 #define GLM_FORCE_RADIANS
 #define GLM_PRECISION_MEDIUMP_FLOAT
@@ -24,7 +24,7 @@
 #include <glm/gtc/matrix_transform.hpp>  // glm::translate, glm::rotate, glm::scale, glm::perspective
 
 GLSceneGraph::GLSceneGraph( )
-  : GLSceneNode( "Root", nullptr ), 
+  : GLSceneNode( "Root", nullptr ),
     m_red(0.0f), m_green(0.0f), m_blue(0.0f), m_alpha(1.0f)
 {
 }

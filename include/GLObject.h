@@ -21,7 +21,7 @@
 
 #include "GLCommonDefs.h"
 #include "FString.h"
-#include "GLFW/glfw3.h"
+
 
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/type_ptr.hpp>          // glm::value_ptr

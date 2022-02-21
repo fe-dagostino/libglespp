@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/widgets/GLLayer.h"
+#include "widgets/GLLayer.h"
 
 GENERATE_CLASSINFO( GLLayer, GLWidget )
 

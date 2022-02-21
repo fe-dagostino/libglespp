@@ -15,6 +15,7 @@
     along with libgles++.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
 #ifndef GLAPPLICATION_H
 #define GLAPPLICATION_H
 
@@ -94,9 +95,9 @@ private:
   
 protected:
   /***/
-  VOID     OnInitialize();
+  VOID     OnInitialize() override;
   /***/
-  VOID     OnFinalize();
+  VOID     OnFinalize() override;
 
 private:
   GLApplicationEvents*    m_pEvents;

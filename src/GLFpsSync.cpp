@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/GLFpsSync.h"
+#include "GLFpsSync.h"
 
 GLFpsSync::GLFpsSync()
  :   m_dRequestedFps( 0.0f ), m_dFpsInterval( 0.0f ), m_dLastUpdate( 0.0f )

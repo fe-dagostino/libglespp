@@ -16,11 +16,11 @@
 */
 
 
-#include "../include/GLCanvas.h"
-#include "../include/GLProgramsCollector.h"
-#include "../include/GLProgram.h"
-#include "../include/GLVertexShader.h"
-#include "../include/GLFragmentShader.h"
+#include "GLCanvas.h"
+#include "GLProgramsCollector.h"
+#include "GLProgram.h"
+#include "GLVertexShader.h"
+#include "GLFragmentShader.h"
 
 #include "LOGGING/FLogger.h"
 

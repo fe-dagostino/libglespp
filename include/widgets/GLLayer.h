@@ -16,7 +16,6 @@
 */
 
 
-
 #ifndef GLLAYER_H
 #define GLLAYER_H
 

@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/GLSceneCameraNode.h"
+#include "GLSceneCameraNode.h"
 
 
 GENERATE_CLASSINFO( GLSceneCameraNode, GLSceneNodeBase )

@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/GLMonitor.h"
+#include "GLMonitor.h"
 
 
 GLMonitor::GLMonitor( const GLFWmonitor* pMonitor )

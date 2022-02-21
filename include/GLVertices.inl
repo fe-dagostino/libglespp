@@ -15,7 +15,6 @@
     along with libgles++.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #define VERTEX_POS_SIZE            3  // x, y and z
 #define VERTEX_NORMAL_SIZE         3  // x, y and z
 #define VERTEX_TEXCOORD0_SIZE      2  // s and t

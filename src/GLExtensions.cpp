@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/GLExtensions.h"
+#include "GLExtensions.h"
 #include "FDynamicLibrary.h"
 #include "FStringTokenizer.h"
 #include "GL/glx.h"

@@ -24,7 +24,6 @@
 #include "GLProgram.h"
 #include "GLVertexShader.h"
 #include "GLFragmentShader.h"
-#include "GLFW/glfw3.h"
 #include "glm/mat4x4.hpp"
 
 USING_NAMESPACE_FED

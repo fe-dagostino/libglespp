@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/GLGraphicObject.h"
+#include "GLGraphicObject.h"
 
 
 GLGraphicObject::GLGraphicObject( )

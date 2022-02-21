@@ -22,7 +22,7 @@
 #include "GLCommonDefs.h"
 #include "FString.h"
 #include "GLObject.h"
-#include "GLFW/glfw3.h"
+
 
 USING_NAMESPACE_FED
 

@@ -22,9 +22,6 @@
 #include "GLCommonDefs.h"
 #include "GLReference.h"
 #include "GLTexture.h"
-
-#include "GLFW/glfw3.h"
-
 #include "FString.h"
 
 USING_NAMESPACE_FED

@@ -16,12 +16,12 @@
 */
 
 
-#include "../include/GLSceneLayerNode.h"
+#include "GLSceneLayerNode.h"
 
-#include "../include/GLVertexShader.h"
-#include "../include/GLFragmentShader.h"
-#include "../include/GLCamera.h"
-#include "../include/GLAnimation.h"
+#include "GLVertexShader.h"
+#include "GLFragmentShader.h"
+#include "GLCamera.h"
+#include "GLAnimation.h"
 
 #include "fedlibrary/include/LOGGING/FLogger.h"
 

@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/GLFragmentShader.h"
+#include "GLFragmentShader.h"
 
 GLFragmentShader::GLFragmentShader()
  : GLShaderObject( eFragmentShader )

@@ -16,7 +16,6 @@
 */
 
 
-
 #ifndef GLLABEL_H
 #define GLLABEL_H
 

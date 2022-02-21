@@ -50,7 +50,6 @@ public:
   { return m_matModel; }
   
 private:
-  
   GLTransformationsMatrix   m_matModel;
 };
 

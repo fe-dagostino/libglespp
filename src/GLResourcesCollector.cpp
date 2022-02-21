@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/GLResourcesCollector.h"
+#include "GLResourcesCollector.h"
 
 GENERATE_CLASSINFO( GLResourcesCollector, FSingleton )
 IMPLEMENT_SINGLETON( GLResourcesCollector )

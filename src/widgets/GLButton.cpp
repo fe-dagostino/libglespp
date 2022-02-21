@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/widgets/GLButton.h"
+#include "widgets/GLButton.h"
 
 GENERATE_CLASSINFO( GLButton, GLWidget )
 

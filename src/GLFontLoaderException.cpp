@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/GLFontLoaderException.h"
+#include "GLFontLoaderException.h"
 
 GENERATE_CLASSINFO( GLFontLoaderException, FException )
 

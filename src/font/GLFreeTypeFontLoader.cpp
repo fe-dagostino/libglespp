@@ -16,8 +16,8 @@
 */
 
 
-#include "../include/font/GLFreeTypeFontLoader.h"
-#include "../include/font/GLFreeTypeFont.h"
+#include "font/GLFreeTypeFontLoader.h"
+#include "font/GLFreeTypeFont.h"
 
 #include "FFile.h"
 
@@ -44,7 +44,8 @@ GLFreeTypeFontLoader::~GLFreeTypeFontLoader()
 {
   if ( m_tid != GetCurrentThreadId() )
   {
-    FTHROW_MSG_EXCEPTION( GLFontLoaderException, "GLFontLoader must be created, used and released with the same thread.", GLFontLoaderException::WRONG_THREAD );
+    //@todo
+    //FTHROW_MSG_EXCEPTION( GLFontLoaderException, "GLFontLoader must be created, used and released with the same thread.", GLFontLoaderException::WRONG_THREAD );
   }
   
   FT_Error error = FT_Done_FreeType( m_library );

@@ -16,8 +16,8 @@
 */
 
 
-#include "../include/widgets/GLWidget.h"
-#include "../include/GLViewPort.h"
+#include "widgets/GLWidget.h"
+#include "GLViewPort.h"
 
 
 GENERATE_CLASSINFO( GLWidget, GLCanvas )

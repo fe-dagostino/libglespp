@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/GLMessage.h"
+#include "GLMessage.h"
 
 GENERATE_CLASSINFO( GLMessage, GLObject )
 

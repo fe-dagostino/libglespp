@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/GLAnimation.h"
+#include "GLAnimation.h"
 
 GLAnimation::GLAnimation()
 {

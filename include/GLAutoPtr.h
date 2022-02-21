@@ -110,8 +110,8 @@ public:
   operator T*() const
   { return m_pObject; }
 
-
 protected:
+
 private:
   /***/
   VOID release()

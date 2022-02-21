@@ -20,8 +20,7 @@
 #define GLSHADEROBJECT_H
 
 #include "GLCommonDefs.h"
-#include "fedlibrary/include/FString.h"
-#include "GLFW/glfw3.h"
+#include "FString.h"
 #include "GLHandleObject.h"
 
 

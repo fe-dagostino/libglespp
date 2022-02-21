@@ -16,7 +16,6 @@
 */
 
 
-
 #ifndef GLANIMATION_H
 #define GLANIMATION_H
 

@@ -20,10 +20,7 @@
 #define GLMONITORINFO_H
 
 #include "GLCommonDefs.h"
-
 #include "GLObject.h"
-#include "GLFW/glfw3.h"
-
 #include <vector>
 
 

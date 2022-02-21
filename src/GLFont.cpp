@@ -16,8 +16,8 @@
 */
 
 
-#include "../include/GLFont.h"
-#include "../include/GLFontLoader.h"
+#include "GLFont.h"
+#include "GLFontLoader.h"
 
 GENERATE_CLASSINFO( GLFont, FObject )
 

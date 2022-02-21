@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/GLFontLoader.h"
+#include "GLFontLoader.h"
 
 USING_NAMESPACE_FED
 

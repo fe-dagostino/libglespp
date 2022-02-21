@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/GLModel.h"
+#include "GLModel.h"
 
 GLModel::GLModel()
 {

@@ -24,7 +24,7 @@
 #include "FWString.h"
 #include "GLSize.h"
 #include "GLReference.h"
-#include "glm/glm.hpp"
+
 
 USING_NAMESPACE_FED
 

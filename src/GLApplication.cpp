@@ -111,6 +111,9 @@ VOID GLApplication::final()
   }
 #endif  //_USE_DEVIL
   
+  GLProgramsCollector::GetInstance().Finalize();
+  GLResourcesCollector::GetInstance().Finalize();
+
   Finalize();
 }
 
@@ -230,8 +233,5 @@ VOID     GLApplication::OnInitialize()
 
 VOID     GLApplication::OnFinalize()
 {
-  GLProgramsCollector::GetInstance().Finalize();
-  GLResourcesCollector::GetInstance().Finalize();
-  
   glfwTerminate();
 }

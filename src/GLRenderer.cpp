@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/GLRenderer.h"
+#include "GLRenderer.h"
 
 GLRenderer::GLRenderer()
   : m_glExtensions( NULL )

@@ -16,7 +16,7 @@
 */
 
 
-#include "../include/widgets/GLLabel.h"
+#include "widgets/GLLabel.h"
 
 GENERATE_CLASSINFO( GLLabel, GLWidget )
 

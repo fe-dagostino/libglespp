@@ -21,7 +21,6 @@
 
 #include "GLCommonDefs.h"
 #include "FString.h"
-#include "GLFW/glfw3.h"
 #include "GLObject.h"
 #include "GLVertex.h"
 
